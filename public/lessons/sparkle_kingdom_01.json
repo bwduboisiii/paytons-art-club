@@ -1,0 +1,73 @@
+{
+  "id": "sparkle_kingdom_01",
+  "world_id": "sparkle_kingdom",
+  "order_index": 1,
+  "title": "Sparkle Crown",
+  "subject": "crown",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": false,
+  "palette": ["#2A1B3D", "#FFD166", "#F5B82E", "#D67FBA", "#FF8E80", "#8FB8E8"],
+  "completion_sticker": "crown_royal",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Draw the crown base",
+      "companion_line": "A long rectangle — that's the bottom of the crown!",
+      "reference_paths": [
+        "M 260 400 L 540 400 L 540 460 L 260 460 Z"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Three pointy triangles on top",
+      "companion_line": "Three pointy peaks on top — up, down, up, down!",
+      "reference_paths": [
+        "M 260 400 L 540 400 L 540 460 L 260 460 Z",
+        "M 260 400 L 320 280 L 380 400",
+        "M 380 400 L 440 280 L 500 400",
+        "M 500 400 L 540 340 L 540 400"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "A sparkle on each point",
+      "companion_line": "Add a round jewel on top of each pointy peak!",
+      "reference_paths": [
+        "M 260 400 L 540 400 L 540 460 L 260 460 Z",
+        "M 260 400 L 320 280 L 380 400",
+        "M 380 400 L 440 280 L 500 400",
+        "M 500 400 L 540 340 L 540 400",
+        "M 320 270 m -14 0 a 14 14 0 1 0 28 0 a 14 14 0 1 0 -28 0",
+        "M 440 270 m -14 0 a 14 14 0 1 0 28 0 a 14 14 0 1 0 -28 0",
+        "M 540 330 m -14 0 a 14 14 0 1 0 28 0 a 14 14 0 1 0 -28 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Add gems along the base",
+      "companion_line": "Three shiny gems across the bottom band!",
+      "reference_paths": [
+        "M 260 400 L 540 400 L 540 460 L 260 460 Z",
+        "M 260 400 L 320 280 L 380 400",
+        "M 380 400 L 440 280 L 500 400",
+        "M 500 400 L 540 340 L 540 400",
+        "M 320 270 m -14 0 a 14 14 0 1 0 28 0 a 14 14 0 1 0 -28 0",
+        "M 440 270 m -14 0 a 14 14 0 1 0 28 0 a 14 14 0 1 0 -28 0",
+        "M 540 330 m -14 0 a 14 14 0 1 0 28 0 a 14 14 0 1 0 -28 0",
+        "M 320 430 m -12 0 a 12 12 0 1 0 24 0 a 12 12 0 1 0 -24 0",
+        "M 400 430 m -12 0 a 12 12 0 1 0 24 0 a 12 12 0 1 0 -24 0",
+        "M 480 430 m -12 0 a 12 12 0 1 0 24 0 a 12 12 0 1 0 -24 0"
+      ],
+      "show_ghost": true
+    }
+  ],
+  "remix_options": [
+    { "id": "stars", "label": "Sparkle trail", "emoji": "✨", "sticker_keys": ["sparkle_star"] },
+    { "id": "ribbon", "label": "Royal ribbon", "emoji": "🎀", "sticker_keys": ["ribbon"] },
+    { "id": "hearts", "label": "Tiny hearts", "emoji": "💖", "sticker_keys": ["heart_mini"] }
+  ]
+}

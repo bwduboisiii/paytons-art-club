@@ -1,0 +1,85 @@
+{
+  "id": "star_hop_02",
+  "world_id": "star_hop",
+  "order_index": 2,
+  "title": "Smiley Moon",
+  "subject": "moon",
+  "guidance_level": "show_and_copy",
+  "estimated_minutes": 5,
+  "is_premium": false,
+  "palette": ["#2A1B3D", "#FFD166", "#F5B82E", "#8FB8E8", "#D67FBA", "#FFFBF4"],
+  "completion_sticker": "moon_dreamy",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "A big curvy crescent",
+      "companion_line": "Watch me! A curvy moon shape — like a banana!",
+      "reference_paths": [
+        "M 440 200 q -180 30 -180 200 q 0 170 180 200 q -100 -30 -100 -200 q 0 -170 100 -200 Z"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "A sleepy closed eye",
+      "companion_line": "Now a curvy sleepy eye — peaceful moon is dreaming!",
+      "reference_paths": [
+        "M 440 200 q -180 30 -180 200 q 0 170 180 200 q -100 -30 -100 -200 q 0 -170 100 -200 Z",
+        "M 320 370 q 20 -15 40 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Three little eyelashes",
+      "companion_line": "Tiny lashes above the eye — one, two, three!",
+      "reference_paths": [
+        "M 440 200 q -180 30 -180 200 q 0 170 180 200 q -100 -30 -100 -200 q 0 -170 100 -200 Z",
+        "M 320 370 q 20 -15 40 0",
+        "M 325 365 L 318 352",
+        "M 340 360 L 338 345",
+        "M 355 363 L 362 350"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "A soft smile and rosy cheek",
+      "companion_line": "A gentle smile and a pink blush cheek!",
+      "reference_paths": [
+        "M 440 200 q -180 30 -180 200 q 0 170 180 200 q -100 -30 -100 -200 q 0 -170 100 -200 Z",
+        "M 320 370 q 20 -15 40 0",
+        "M 325 365 L 318 352",
+        "M 340 360 L 338 345",
+        "M 355 363 L 362 350",
+        "M 310 430 q 20 15 40 0",
+        "M 330 410 m -12 0 a 12 8 0 1 0 24 0 a 12 8 0 1 0 -24 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s5",
+      "instruction": "Twinkly stars all around",
+      "companion_line": "Little star sparkles all around the moon!",
+      "reference_paths": [
+        "M 440 200 q -180 30 -180 200 q 0 170 180 200 q -100 -30 -100 -200 q 0 -170 100 -200 Z",
+        "M 320 370 q 20 -15 40 0",
+        "M 325 365 L 318 352",
+        "M 340 360 L 338 345",
+        "M 355 363 L 362 350",
+        "M 310 430 q 20 15 40 0",
+        "M 330 410 m -12 0 a 12 8 0 1 0 24 0 a 12 8 0 1 0 -24 0",
+        "M 520 220 l 0 -16 M 520 236 l 0 -16 M 512 228 l 16 0",
+        "M 560 350 l 0 -12 M 560 362 l 0 -12 M 554 356 l 12 0",
+        "M 230 250 l 0 -14 M 230 264 l 0 -14 M 223 257 l 14 0",
+        "M 540 480 l 0 -12 M 540 492 l 0 -12 M 534 486 l 12 0"
+      ],
+      "show_ghost": true
+    }
+  ],
+  "remix_options": [
+    { "id": "clouds", "label": "Dreamy clouds", "emoji": "☁️", "sticker_keys": ["cloud_fluffy"] },
+    { "id": "nightcap", "label": "Sleepy hat", "emoji": "🎩", "sticker_keys": ["nightcap"] },
+    { "id": "stars", "label": "Extra stars", "emoji": "⭐", "sticker_keys": ["sparkle_star"] }
+  ]
+}

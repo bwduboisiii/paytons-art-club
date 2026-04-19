@@ -1,0 +1,63 @@
+{
+  "id": "star_hop_01",
+  "world_id": "star_hop",
+  "order_index": 1,
+  "title": "Little Rocket",
+  "subject": "rocket",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": false,
+  "palette": ["#2A1B3D", "#FF6B5B", "#8FB8E8", "#FFD166", "#D67FBA", "#FFFBF4"],
+  "completion_sticker": "rocket_zoom",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Draw the rocket body",
+      "companion_line": "A long tall shape — like a pill standing up!",
+      "reference_paths": [
+        "M 360 250 q 0 -40 40 -40 q 40 0 40 40 L 440 440 L 360 440 Z"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Add a round window",
+      "companion_line": "A big round porthole window in the middle!",
+      "reference_paths": [
+        "M 360 250 q 0 -40 40 -40 q 40 0 40 40 L 440 440 L 360 440 Z",
+        "M 400 310 m -30 0 a 30 30 0 1 0 60 0 a 30 30 0 1 0 -60 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Triangle fins on each side",
+      "companion_line": "Two pointy fins at the bottom — left and right!",
+      "reference_paths": [
+        "M 360 250 q 0 -40 40 -40 q 40 0 40 40 L 440 440 L 360 440 Z",
+        "M 400 310 m -30 0 a 30 30 0 1 0 60 0 a 30 30 0 1 0 -60 0",
+        "M 360 400 L 310 460 L 360 440 Z",
+        "M 440 400 L 490 460 L 440 440 Z"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Flames blasting out!",
+      "companion_line": "Wiggly flames shooting out the bottom — blastoff!",
+      "reference_paths": [
+        "M 360 250 q 0 -40 40 -40 q 40 0 40 40 L 440 440 L 360 440 Z",
+        "M 400 310 m -30 0 a 30 30 0 1 0 60 0 a 30 30 0 1 0 -60 0",
+        "M 360 400 L 310 460 L 360 440 Z",
+        "M 440 400 L 490 460 L 440 440 Z",
+        "M 360 440 q 5 30 20 30 q 5 -20 20 40 q 15 -60 20 -40 q 15 0 20 -30"
+      ],
+      "show_ghost": true
+    }
+  ],
+  "remix_options": [
+    { "id": "stars", "label": "Starry sky", "emoji": "⭐", "sticker_keys": ["sparkle_star"] },
+    { "id": "planet", "label": "Little planet", "emoji": "🪐", "sticker_keys": ["planet_mini"] },
+    { "id": "astronaut", "label": "Space buddy", "emoji": "🧑‍🚀", "sticker_keys": ["astronaut_mini"] }
+  ]
+}

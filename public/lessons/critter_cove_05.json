@@ -1,0 +1,68 @@
+{
+  "id": "critter_cove_05",
+  "world_id": "critter_cove",
+  "order_index": 5,
+  "title": "Toadie the Frog",
+  "subject": "frog",
+  "guidance_level": "show_and_copy",
+  "estimated_minutes": 5,
+  "is_premium": false,
+  "palette": ["#2A1B3D", "#8BCE8B", "#5FB85F", "#FF8E80", "#FFD166", "#6B98D6"],
+  "completion_sticker": "frog_hoppy",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Round frog body",
+      "companion_line": "A wide round body — frogs are squishy and squat!",
+      "reference_paths": [
+        "M 400 360 m -140 0 a 140 100 0 1 0 280 0 a 140 100 0 1 0 -280 0"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Two big bumpy eyes on top",
+      "companion_line": "Two big bumps on top — those are Toadie's eyes!",
+      "reference_paths": [
+        "M 400 360 m -140 0 a 140 100 0 1 0 280 0 a 140 100 0 1 0 -280 0",
+        "M 340 260 m -40 0 a 40 40 0 1 0 80 0 a 40 40 0 1 0 -80 0",
+        "M 460 260 m -40 0 a 40 40 0 1 0 80 0 a 40 40 0 1 0 -80 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Black circles inside the eyes",
+      "companion_line": "Inside each eye, a big black pupil!",
+      "reference_paths": [
+        "M 400 360 m -140 0 a 140 100 0 1 0 280 0 a 140 100 0 1 0 -280 0",
+        "M 340 260 m -40 0 a 40 40 0 1 0 80 0 a 40 40 0 1 0 -80 0",
+        "M 460 260 m -40 0 a 40 40 0 1 0 80 0 a 40 40 0 1 0 -80 0",
+        "M 340 265 m -18 0 a 18 18 0 1 0 36 0 a 18 18 0 1 0 -36 0",
+        "M 460 265 m -18 0 a 18 18 0 1 0 36 0 a 18 18 0 1 0 -36 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Big wide smile and little legs",
+      "companion_line": "A huge smile all the way across, and little froggy legs!",
+      "reference_paths": [
+        "M 400 360 m -140 0 a 140 100 0 1 0 280 0 a 140 100 0 1 0 -280 0",
+        "M 340 260 m -40 0 a 40 40 0 1 0 80 0 a 40 40 0 1 0 -80 0",
+        "M 460 260 m -40 0 a 40 40 0 1 0 80 0 a 40 40 0 1 0 -80 0",
+        "M 340 265 m -18 0 a 18 18 0 1 0 36 0 a 18 18 0 1 0 -36 0",
+        "M 460 265 m -18 0 a 18 18 0 1 0 36 0 a 18 18 0 1 0 -36 0",
+        "M 290 370 q 110 80 220 0",
+        "M 280 440 q -15 20 0 40 q 15 -5 25 -20 z",
+        "M 520 440 q 15 20 0 40 q -15 -5 -25 -20 z"
+      ],
+      "show_ghost": true
+    }
+  ],
+  "remix_options": [
+    { "id": "lilypad", "label": "Lily pad", "emoji": "🍃", "sticker_keys": ["lilypad"] },
+    { "id": "bug", "label": "Snack bug", "emoji": "🐛", "sticker_keys": ["bug_mini"] },
+    { "id": "rain", "label": "Rain drops", "emoji": "💧", "sticker_keys": ["raindrop"] }
+  ]
+}

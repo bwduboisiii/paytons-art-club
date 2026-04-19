@@ -1,0 +1,72 @@
+{
+  "id": "critter_cove_04",
+  "world_id": "critter_cove",
+  "order_index": 4,
+  "title": "Bumble the Bee",
+  "subject": "bee",
+  "guidance_level": "show_and_copy",
+  "estimated_minutes": 5,
+  "is_premium": false,
+  "palette": ["#2A1B3D", "#FFD166", "#F5B82E", "#FF8E80", "#8FB8E8", "#8BCE8B"],
+  "completion_sticker": "bee_buzzy",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Draw Bumble's oval body",
+      "companion_line": "Watch me first! Now you try — a round oval body.",
+      "reference_paths": [
+        "M 400 350 m -110 0 a 110 80 0 1 0 220 0 a 110 80 0 1 0 -220 0"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Add bumble stripes",
+      "companion_line": "Now two curvy stripes across the middle.",
+      "reference_paths": [
+        "M 400 350 m -110 0 a 110 80 0 1 0 220 0 a 110 80 0 1 0 -220 0",
+        "M 340 310 q 60 -20 120 0",
+        "M 330 370 q 70 25 140 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Two floaty wings on top",
+      "companion_line": "Two teardrop wings — like little leaves!",
+      "reference_paths": [
+        "M 400 350 m -110 0 a 110 80 0 1 0 220 0 a 110 80 0 1 0 -220 0",
+        "M 340 310 q 60 -20 120 0",
+        "M 330 370 q 70 25 140 0",
+        "M 350 290 q -40 -60 -90 -30 q 10 40 80 50",
+        "M 450 290 q 40 -60 90 -30 q -10 40 -80 50"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Tiny face and antennae",
+      "companion_line": "Two dot eyes, a happy smile, and wiggly antennae!",
+      "reference_paths": [
+        "M 400 350 m -110 0 a 110 80 0 1 0 220 0 a 110 80 0 1 0 -220 0",
+        "M 340 310 q 60 -20 120 0",
+        "M 330 370 q 70 25 140 0",
+        "M 350 290 q -40 -60 -90 -30 q 10 40 80 50",
+        "M 450 290 q 40 -60 90 -30 q -10 40 -80 50",
+        "M 310 340 m -5 0 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0",
+        "M 360 340 m -5 0 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0",
+        "M 310 360 q 20 15 40 0",
+        "M 320 270 q -10 -30 10 -50",
+        "M 360 260 q 10 -30 -10 -50",
+        "M 330 220 m -5 0 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0",
+        "M 350 215 m -5 0 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0"
+      ],
+      "show_ghost": true
+    }
+  ],
+  "remix_options": [
+    { "id": "flowers", "label": "Flower garden", "emoji": "🌼", "sticker_keys": ["flower_daisy", "flower_tulip"] },
+    { "id": "hive", "label": "Honey drops", "emoji": "🍯", "sticker_keys": ["honey_drop"] },
+    { "id": "sun", "label": "Sunny sun", "emoji": "☀️", "sticker_keys": ["sun_smiley"] }
+  ]
+}

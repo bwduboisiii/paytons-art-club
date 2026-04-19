@@ -1,0 +1,66 @@
+{
+  "id": "critter_cove_02",
+  "world_id": "critter_cove",
+  "order_index": 2,
+  "title": "Splashy the Fish",
+  "subject": "fish",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": false,
+  "palette": ["#2A1B3D", "#FF8E80", "#FFD166", "#8FB8E8", "#6B98D6", "#D67FBA"],
+  "completion_sticker": "fish_rainbow",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Draw a big oval body",
+      "companion_line": "A big oval — like an egg lying down. That's Splashy's body!",
+      "reference_paths": [
+        "M 400 320 m -150 0 a 150 90 0 1 0 300 0 a 150 90 0 1 0 -300 0"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Add a tail triangle",
+      "companion_line": "Now a pointy tail! A triangle on the back.",
+      "reference_paths": [
+        "M 400 320 m -150 0 a 150 90 0 1 0 300 0 a 150 90 0 1 0 -300 0",
+        "M 550 320 l 80 -50 l 0 100 z"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Big happy eye",
+      "companion_line": "One big sparkly eye on the side!",
+      "reference_paths": [
+        "M 400 320 m -150 0 a 150 90 0 1 0 300 0 a 150 90 0 1 0 -300 0",
+        "M 550 320 l 80 -50 l 0 100 z",
+        "M 320 300 m -20 0 a 20 20 0 1 0 40 0 a 20 20 0 1 0 -40 0",
+        "M 320 300 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Smile and bubbles!",
+      "companion_line": "A little smile, and some bubbles floating up!",
+      "reference_paths": [
+        "M 400 320 m -150 0 a 150 90 0 1 0 300 0 a 150 90 0 1 0 -300 0",
+        "M 550 320 l 80 -50 l 0 100 z",
+        "M 320 300 m -20 0 a 20 20 0 1 0 40 0 a 20 20 0 1 0 -40 0",
+        "M 320 300 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 300 360 q 20 15 40 0",
+        "M 260 200 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 230 160 m -6 0 a 6 6 0 1 0 12 0 a 6 6 0 1 0 -12 0",
+        "M 205 130 m -4 0 a 4 4 0 1 0 8 0 a 4 4 0 1 0 -8 0"
+      ],
+      "show_ghost": true
+    }
+  ],
+  "remix_options": [
+    { "id": "seaweed", "label": "Seaweed friend", "emoji": "🌿", "sticker_keys": ["seaweed"] },
+    { "id": "crown", "label": "Fishy crown", "emoji": "👑", "sticker_keys": ["crown_mini"] },
+    { "id": "star", "label": "Sparkle stars", "emoji": "⭐", "sticker_keys": ["sparkle_star"] }
+  ]
+}

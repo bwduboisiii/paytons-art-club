@@ -1,0 +1,80 @@
+{
+  "id": "sparkle_kingdom_03",
+  "world_id": "sparkle_kingdom",
+  "order_index": 3,
+  "title": "Cupcake Castle",
+  "subject": "cupcake",
+  "guidance_level": "show_and_copy",
+  "estimated_minutes": 5,
+  "is_premium": false,
+  "palette": ["#2A1B3D", "#E8A5D1", "#D67FBA", "#FFD166", "#FF8E80", "#8FB8E8"],
+  "completion_sticker": "cupcake_sprinkle",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Draw the cupcake bottom",
+      "companion_line": "A wide trapezoid — wider at top, narrower at bottom!",
+      "reference_paths": [
+        "M 300 370 L 500 370 L 470 480 L 330 480 Z"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Squiggly lines on the wrapper",
+      "companion_line": "Add wavy lines on the wrapper — like ribbon folds!",
+      "reference_paths": [
+        "M 300 370 L 500 370 L 470 480 L 330 480 Z",
+        "M 345 370 L 340 480",
+        "M 400 370 L 400 480",
+        "M 455 370 L 460 480"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Big swirly frosting",
+      "companion_line": "Now the yummy swirly frosting on top — like soft-serve ice cream!",
+      "reference_paths": [
+        "M 300 370 L 500 370 L 470 480 L 330 480 Z",
+        "M 345 370 L 340 480",
+        "M 400 370 L 400 480",
+        "M 455 370 L 460 480",
+        "M 300 370 q 30 -60 100 -50 q 70 -10 100 50",
+        "M 320 340 q 30 -50 80 -45 q 60 -5 80 45",
+        "M 340 310 q 25 -40 60 -35 q 40 -5 60 35",
+        "M 400 200 q -20 35 -30 70",
+        "M 400 200 q 20 35 30 70"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "A cherry on top and sprinkles!",
+      "companion_line": "A round cherry with a tiny stem, and colorful sprinkles everywhere!",
+      "reference_paths": [
+        "M 300 370 L 500 370 L 470 480 L 330 480 Z",
+        "M 345 370 L 340 480",
+        "M 400 370 L 400 480",
+        "M 455 370 L 460 480",
+        "M 300 370 q 30 -60 100 -50 q 70 -10 100 50",
+        "M 320 340 q 30 -50 80 -45 q 60 -5 80 45",
+        "M 340 310 q 25 -40 60 -35 q 40 -5 60 35",
+        "M 400 200 q -20 35 -30 70",
+        "M 400 200 q 20 35 30 70",
+        "M 400 180 m -18 0 a 18 18 0 1 0 36 0 a 18 18 0 1 0 -36 0",
+        "M 402 162 q 5 -15 20 -20",
+        "M 350 290 l 15 -5",
+        "M 430 320 l 15 5",
+        "M 380 350 l 10 10",
+        "M 460 280 l 10 0"
+      ],
+      "show_ghost": true
+    }
+  ],
+  "remix_options": [
+    { "id": "candles", "label": "Birthday candles", "emoji": "🕯️", "sticker_keys": ["candle"] },
+    { "id": "hearts", "label": "Love hearts", "emoji": "💖", "sticker_keys": ["heart_mini"] },
+    { "id": "stars", "label": "Sprinkle stars", "emoji": "⭐", "sticker_keys": ["sparkle_star"] }
+  ]
+}
