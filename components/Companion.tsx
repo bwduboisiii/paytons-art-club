@@ -112,7 +112,7 @@ export default function Companion({
 
   return (
     <motion.div
-      animate={variants[mood]}
+      animate={variants[mood] as any}
       transition={transitions[mood] as any}
       style={{ width: size, height: size }}
     >
