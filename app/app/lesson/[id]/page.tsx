@@ -283,7 +283,7 @@ export default function LessonPage({ params }: { params: Promise<{ id: string }>
                   <button
                     key={opt.id}
                     onClick={() => {
-                      canvasRef.current?.placeSticker(opt.emoji);
+                      canvasRef.current?.placeSticker(opt.emoji, opt.emoji);
                       setRemixApplied(true);
                     }}
                     className="card-cozy card-cozy-hover px-4 py-3 flex items-center gap-2"
