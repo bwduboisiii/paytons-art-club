@@ -1,10 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  // Safety net: lets production builds succeed even if there are
-  // TypeScript or ESLint nits. The code still runs correctly — these
-  // are just pedantic type complaints. You can remove these later if
-  // you want stricter checking.
+  // Production safety net: don't let TypeScript or ESLint nits block a build.
+  // The code runs correctly; these flags just stop pedantic type complaints
+  // from killing deploys. Remove them if you want stricter checking later.
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -24,6 +23,10 @@ const nextConfig = {
           { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
           { key: 'X-Content-Type-Options', value: 'nosniff' },
           { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+          {
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=()',
+          },
         ],
       },
     ];

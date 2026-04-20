@@ -1,14 +1,17 @@
 import type { Metadata, Viewport } from 'next';
+import ErrorBoundary from '@/components/ErrorBoundary';
 import './globals.css';
 
+const appName = process.env.NEXT_PUBLIC_APP_NAME || "Payton's Art Club";
+
 export const metadata: Metadata = {
-  title: "Payton's Art Club",
+  title: appName,
   description: 'A cozy drawing club for young artists',
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: "Payton's Art Club",
+    title: appName,
   },
   icons: {
     icon: '/icon.svg',
@@ -31,7 +34,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <ErrorBoundary>{children}</ErrorBoundary>
+      </body>
     </html>
   );
 }

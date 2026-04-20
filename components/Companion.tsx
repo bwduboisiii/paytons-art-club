@@ -9,27 +9,20 @@ interface Props {
   size?: number;
 }
 
-// Simple built-in SVG characters. Each is a single-color pastel friend with
-// a happy face, designed to look consistent and cute without external assets.
 const CHARACTERS: Record<CompanionKey, (fill: string) => JSX.Element> = {
   bunny: (fill) => (
     <g>
-      {/* ears */}
       <ellipse cx="40" cy="22" rx="8" ry="22" fill={fill} />
       <ellipse cx="40" cy="22" rx="3" ry="14" fill="#FFB3A7" />
       <ellipse cx="60" cy="22" rx="8" ry="22" fill={fill} />
       <ellipse cx="60" cy="22" rx="3" ry="14" fill="#FFB3A7" />
-      {/* head */}
       <circle cx="50" cy="58" r="28" fill={fill} />
-      {/* cheeks */}
       <circle cx="35" cy="62" r="5" fill="#FFB3A7" opacity="0.6" />
       <circle cx="65" cy="62" r="5" fill="#FFB3A7" opacity="0.6" />
-      {/* eyes */}
       <circle cx="42" cy="54" r="3" fill="#2A1B3D" />
       <circle cx="58" cy="54" r="3" fill="#2A1B3D" />
       <circle cx="43" cy="53" r="1" fill="white" />
       <circle cx="59" cy="53" r="1" fill="white" />
-      {/* nose + mouth */}
       <path d="M47 64 L50 62 L53 64 Z" fill="#FF6B5B" />
       <path d="M46 68 Q50 72 54 68" stroke="#2A1B3D" strokeWidth="1.5" fill="none" strokeLinecap="round" />
     </g>
@@ -47,7 +40,6 @@ const CHARACTERS: Record<CompanionKey, (fill: string) => JSX.Element> = {
       <path d="M56 52 Q58 48 60 52" stroke="#2A1B3D" strokeWidth="2" fill="none" strokeLinecap="round" />
       <path d="M47 62 L50 60 L53 62 L50 65 Z" fill="#FF6B5B" />
       <path d="M46 68 Q50 72 54 68" stroke="#2A1B3D" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-      {/* whiskers */}
       <line x1="20" y1="62" x2="35" y2="63" stroke="#2A1B3D" strokeWidth="1" />
       <line x1="65" y1="63" x2="80" y2="62" stroke="#2A1B3D" strokeWidth="1" />
     </g>
@@ -96,12 +88,11 @@ export default function Companion({
   const renderChar = CHARACTERS[character];
   const fill = FILLS[character];
 
-  // NOTE: Mutable arrays (not `as const`) so Framer Motion's types accept them.
   const variants: Record<string, any> = {
     idle: { y: [0, -6, 0], rotate: [0, 1, 0] },
     happy: { y: [0, -10, 0], rotate: [-3, 3, -3] },
     cheering: { y: [0, -14, 0], rotate: [-6, 6, -6] },
-    thinking: { y: [0], rotate: [-2, 2, -2] },
+    thinking: { y: [0, 0, 0], rotate: [-2, 2, -2] },
   };
 
   const transitions: Record<string, any> = {
@@ -115,7 +106,7 @@ export default function Companion({
     <motion.div
       animate={variants[mood]}
       transition={transitions[mood]}
-      style={{ width: size, height: size }}
+      style={{ width: size, height: size, display: 'inline-block' }}
     >
       <svg viewBox="0 0 100 100" width={size} height={size}>
         {renderChar(fill)}

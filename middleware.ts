@@ -1,7 +1,18 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 
+// Routes that require an authenticated parent session. Everything else
+// (landing page, login, auth callback, static assets) passes through without
+// the supabase round-trip.
+const PROTECTED_PREFIXES = ['/app', '/parent', '/onboarding'];
+
 export async function middleware(request: NextRequest) {
+  const pathname = request.nextUrl.pathname;
+  const needsAuth = PROTECTED_PREFIXES.some((p) => pathname.startsWith(p));
+
+  // Cheap path: no session check needed, just let the request through.
+  if (!needsAuth) return NextResponse.next();
+
   let response = NextResponse.next({ request: { headers: request.headers } });
 
   const supabase = createServerClient(
@@ -26,13 +37,11 @@ export async function middleware(request: NextRequest) {
     }
   );
 
-  // Refresh the session (writes new cookies if needed)
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  // Protect /parent/* and /app/* — redirect to /login if not authed
-  const pathname = request.nextUrl.pathname;
-  const isProtected = pathname.startsWith('/parent') || pathname.startsWith('/app');
-  if (isProtected && !user) {
+  if (!user) {
     const url = request.nextUrl.clone();
     url.pathname = '/login';
     url.searchParams.set('next', pathname);
@@ -44,11 +53,7 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    /*
-     * Match all paths except:
-     * - _next/static, _next/image, favicon
-     * - public static files
-     */
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|mp3|wav)$).*)',
+    // Skip static assets and images — middleware never runs on them.
+    '/((?!_next/static|_next/image|favicon.ico|icon.svg|manifest.json|.*\\.(?:svg|png|jpg|jpeg|gif|webp|mp3|wav)$).*)',
   ],
 };

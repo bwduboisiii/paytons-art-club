@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -13,13 +13,14 @@ import DrawingCanvas, { type DrawingCanvasHandle } from '@/components/DrawingCan
 import { getLesson } from '@/lib/lessons';
 import { useKidStore } from '@/lib/store';
 import { createClient } from '@/lib/supabase/client';
+import { safeUUID, MAX_ARTWORK_BYTES } from '@/lib/utils';
 
 type Phase = 'intro' | 'drawing' | 'remix' | 'reward';
 
 export default function LessonPage({ params }: { params: { id: string } }) {
   const { id } = params;
   const router = useRouter();
-  const activeKid = useKidStore(s => s.activeKid);
+  const activeKid = useKidStore((s) => s.activeKid);
   const lesson = getLesson(id);
 
   const canvasRef = useRef<DrawingCanvasHandle>(null);
@@ -30,16 +31,21 @@ export default function LessonPage({ params }: { params: { id: string } }) {
   const [remixApplied, setRemixApplied] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
+  const [showExitConfirm, setShowExitConfirm] = useState(false);
   const startTime = useRef(Date.now());
   const [canvasSize, setCanvasSize] = useState({ width: 800, height: 600 });
 
+  // --------------------------------------------------------------
   // Responsive canvas sizing
+  // --------------------------------------------------------------
   useEffect(() => {
     function resize() {
       const isMobile = window.innerWidth < 768;
       const maxWidth = Math.min(window.innerWidth - 48, 900);
-      const maxHeight = Math.min(window.innerHeight - (isMobile ? 280 : 200), 700);
-      // Keep 4:3 aspect
+      const maxHeight = Math.min(
+        window.innerHeight - (isMobile ? 300 : 220),
+        700
+      );
       const width = Math.min(maxWidth, (maxHeight * 4) / 3);
       const height = (width * 3) / 4;
       setCanvasSize({ width, height });
@@ -48,6 +54,33 @@ export default function LessonPage({ params }: { params: { id: string } }) {
     window.addEventListener('resize', resize);
     return () => window.removeEventListener('resize', resize);
   }, []);
+
+  // --------------------------------------------------------------
+  // Warn before reload/close if there's unsaved work
+  // --------------------------------------------------------------
+  useEffect(() => {
+    function handler(e: BeforeUnloadEvent) {
+      if (phase !== 'drawing' && phase !== 'remix') return;
+      if (!canvasRef.current?.hasContent()) return;
+      e.preventDefault();
+      e.returnValue = '';
+    }
+    window.addEventListener('beforeunload', handler);
+    return () => window.removeEventListener('beforeunload', handler);
+  }, [phase]);
+
+  const attemptExit = useCallback(() => {
+    if (
+      (phase === 'drawing' || phase === 'remix') &&
+      canvasRef.current?.hasContent()
+    ) {
+      setShowExitConfirm(true);
+    } else if (lesson) {
+      router.push(`/app/world/${lesson.world_id}`);
+    } else {
+      router.push('/app');
+    }
+  }, [phase, lesson, router]);
 
   if (!lesson) {
     return (
@@ -64,67 +97,115 @@ export default function LessonPage({ params }: { params: { id: string } }) {
   const currentStep = lesson.steps[stepIdx];
   const isLastStep = stepIdx === lesson.steps.length - 1;
 
-  async function handleFinishDrawing() {
-    // Move from last step to remix phase
+  function handleFinishDrawing() {
     setPhase('remix');
   }
 
   async function handleSaveAndReward() {
     setSaving(true);
     setSaveError(null);
+
+    // Optimistic UX: move to reward phase even if save is slow.
+    // If save errors, show it inline in the reward screen.
     try {
-      const supabase = createClient();
-      if (activeKid && canvasRef.current) {
-        const dataURL = await canvasRef.current.exportPNG();
-
-        // Upload PNG to storage
-        const blob = await (await fetch(dataURL)).blob();
-        const filename = `${activeKid.id}/${crypto.randomUUID()}.png`;
-        const { error: uploadErr } = await supabase.storage
-          .from('artwork')
-          .upload(filename, blob, { contentType: 'image/png' });
-        if (uploadErr) throw uploadErr;
-
-        // Record artwork
-        await supabase.from('artworks').insert({
-          kid_id: activeKid.id,
-          lesson_id: lesson!.id,
-          title: lesson!.title,
-          storage_path: filename,
-        });
-
-        // Record completion
-        const duration = Math.floor((Date.now() - startTime.current) / 1000);
-        await supabase.from('lesson_completions').insert({
-          kid_id: activeKid.id,
-          lesson_id: lesson!.id,
-          duration_seconds: duration,
-          stickers_earned: [lesson!.completion_sticker],
-          remix_applied: remixApplied,
-        });
-
-        // Award sticker (upsert)
-        await supabase.from('kid_stickers').upsert({
-          kid_id: activeKid.id,
-          sticker_key: lesson!.completion_sticker,
-        }, { onConflict: 'kid_id,sticker_key' });
+      if (!activeKid || !canvasRef.current) {
+        throw new Error('No active kid or canvas');
       }
+      const supabase = createClient();
+      const blob = await canvasRef.current.exportPNG();
+
+      if (blob.size > MAX_ARTWORK_BYTES) {
+        throw new Error('Drawing too large to save. Try fewer strokes.');
+      }
+
+      const filename = `${activeKid.id}/${safeUUID()}.png`;
+      const { error: uploadErr } = await supabase.storage
+        .from('artwork')
+        .upload(filename, blob, { contentType: 'image/png' });
+      if (uploadErr) throw uploadErr;
+
+      await supabase.from('artworks').insert({
+        kid_id: activeKid.id,
+        lesson_id: lesson.id,
+        title: lesson.title,
+        storage_path: filename,
+      });
+
+      const duration = Math.floor((Date.now() - startTime.current) / 1000);
+      await supabase.from('lesson_completions').insert({
+        kid_id: activeKid.id,
+        lesson_id: lesson.id,
+        duration_seconds: duration,
+        stickers_earned: [lesson.completion_sticker],
+        remix_applied: remixApplied,
+      });
+
+      await supabase.from('kid_stickers').upsert(
+        {
+          kid_id: activeKid.id,
+          sticker_key: lesson.completion_sticker,
+        },
+        { onConflict: 'kid_id,sticker_key' }
+      );
     } catch (e: any) {
-      setSaveError(e.message || 'Could not save, but your art is safe on screen!');
+      setSaveError(
+        e?.message || 'Could not save, but your drawing is safe on this screen!'
+      );
     } finally {
       setSaving(false);
       setPhase('reward');
     }
   }
 
-  // Reference paths for the canvas:
-  // Show all paths up to and including current step as the reference.
   const referencePaths = currentStep?.reference_paths || [];
 
   return (
     <main className="min-h-screen flex flex-col overflow-hidden">
-      {/* ============== INTRO PHASE ============== */}
+      {/* Exit confirm dialog */}
+      <AnimatePresence>
+        {showExitConfirm && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-ink-900/50 backdrop-blur-sm flex items-center justify-center px-6"
+            onClick={() => setShowExitConfirm(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+              className="card-cozy p-8 max-w-sm w-full text-center"
+            >
+              <div className="text-5xl mb-3">🎨</div>
+              <h2 className="heading-2 mb-2">Leave this lesson?</h2>
+              <p className="text-ink-700 mb-6">
+                Your drawing won't be saved if you leave now.
+              </p>
+              <div className="flex flex-col gap-2">
+                <Button
+                  variant="primary"
+                  size="md"
+                  onClick={() => setShowExitConfirm(false)}
+                >
+                  Keep Drawing ✏️
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="md"
+                  onClick={() => router.push(`/app/world/${lesson.world_id}`)}
+                >
+                  Leave anyway
+                </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <AnimatePresence mode="wait">
+        {/* INTRO */}
         {phase === 'intro' && (
           <motion.div
             key="intro"
@@ -136,7 +217,7 @@ export default function LessonPage({ params }: { params: { id: string } }) {
             <div className="card-cozy p-8 md:p-12 max-w-xl text-center">
               <div className="flex justify-center mb-6">
                 <Companion
-                  character={activeKid?.avatar_key as any || 'bunny'}
+                  character={(activeKid?.avatar_key as any) || 'bunny'}
                   mood="cheering"
                   size={140}
                 />
@@ -148,9 +229,15 @@ export default function LessonPage({ params }: { params: { id: string } }) {
               </p>
               <div className="flex gap-3 justify-center">
                 <Link href={`/app/world/${lesson.world_id}`}>
-                  <Button variant="ghost" size="md">← Maybe later</Button>
+                  <Button variant="ghost" size="md">
+                    ← Maybe later
+                  </Button>
                 </Link>
-                <Button variant="primary" size="xl" onClick={() => setPhase('drawing')}>
+                <Button
+                  variant="primary"
+                  size="xl"
+                  onClick={() => setPhase('drawing')}
+                >
                   Let's Go! ✏️
                 </Button>
               </div>
@@ -158,7 +245,7 @@ export default function LessonPage({ params }: { params: { id: string } }) {
           </motion.div>
         )}
 
-        {/* ============== DRAWING PHASE ============== */}
+        {/* DRAWING */}
         {phase === 'drawing' && (
           <motion.div
             key="drawing"
@@ -166,24 +253,30 @@ export default function LessonPage({ params }: { params: { id: string } }) {
             animate={{ opacity: 1 }}
             className="flex-1 flex flex-col"
           >
-            {/* Top: companion + instruction */}
             <div className="px-4 md:px-8 pt-4 pb-2 flex items-start gap-4">
               <Companion
-                character={activeKid?.avatar_key as any || 'bunny'}
+                character={(activeKid?.avatar_key as any) || 'bunny'}
                 mood="happy"
                 size={80}
               />
               <div className="flex-1 bg-cream-100 rounded-2xl p-3 md:p-4 relative shadow-float">
-                {/* speech pointer */}
                 <div className="absolute -left-2 top-4 w-4 h-4 bg-cream-100 rotate-45" />
                 <p className="text-sm font-bold text-coral-500 mb-1">
-                  Step {stepIdx + 1} of {lesson.steps.length}: {currentStep.instruction}
+                  Step {stepIdx + 1} of {lesson.steps.length}:{' '}
+                  {currentStep.instruction}
                 </p>
-                <p className="text-ink-700 text-sm md:text-base">"{currentStep.companion_line}"</p>
+                <p className="text-ink-700 text-sm md:text-base">
+                  "{currentStep.companion_line}"
+                </p>
               </div>
-              <Link href={`/app/world/${lesson.world_id}`}>
-                <Button variant="ghost" size="sm">✕</Button>
-              </Link>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={attemptExit}
+                aria-label="Close lesson"
+              >
+                ✕
+              </Button>
             </div>
 
             {/* Progress dots */}
@@ -217,12 +310,18 @@ export default function LessonPage({ params }: { params: { id: string } }) {
 
             {/* Bottom toolbar */}
             <div className="px-4 md:px-8 py-4 flex flex-col md:flex-row gap-3 md:gap-6 items-center justify-between bg-cream-100/60 backdrop-blur-sm">
-              <div className="flex items-center gap-3 flex-wrap justify-center">
-                <ColorPalette colors={lesson.palette} selected={color} onChange={setColor} />
-              </div>
+              <ColorPalette
+                colors={lesson.palette}
+                selected={color}
+                onChange={setColor}
+              />
               <div className="flex items-center gap-3">
                 <BrushSizer value={brushWidth} onChange={setBrushWidth} />
-                <Button variant="secondary" size="md" onClick={() => canvasRef.current?.undo()}>
+                <Button
+                  variant="secondary"
+                  size="md"
+                  onClick={() => canvasRef.current?.undo()}
+                >
                   ↶ Undo
                 </Button>
               </div>
@@ -236,7 +335,11 @@ export default function LessonPage({ params }: { params: { id: string } }) {
                     Next Step →
                   </Button>
                 ) : (
-                  <Button variant="meadow" size="lg" onClick={handleFinishDrawing}>
+                  <Button
+                    variant="meadow"
+                    size="lg"
+                    onClick={handleFinishDrawing}
+                  >
                     I'm done! ✨
                   </Button>
                 )}
@@ -245,7 +348,7 @@ export default function LessonPage({ params }: { params: { id: string } }) {
           </motion.div>
         )}
 
-        {/* ============== REMIX PHASE ============== */}
+        {/* REMIX */}
         {phase === 'remix' && (
           <motion.div
             key="remix"
@@ -255,7 +358,7 @@ export default function LessonPage({ params }: { params: { id: string } }) {
           >
             <div className="px-4 md:px-8 pt-4 pb-2 flex items-center gap-4">
               <Companion
-                character={activeKid?.avatar_key as any || 'bunny'}
+                character={(activeKid?.avatar_key as any) || 'bunny'}
                 mood="cheering"
                 size={80}
               />
@@ -283,7 +386,7 @@ export default function LessonPage({ params }: { params: { id: string } }) {
                   <button
                     key={opt.id}
                     onClick={() => {
-                      canvasRef.current?.placeSticker(opt.emoji, opt.emoji);
+                      canvasRef.current?.placeSticker(opt.emoji);
                       setRemixApplied(true);
                     }}
                     className="card-cozy card-cozy-hover px-4 py-3 flex items-center gap-2"
@@ -292,9 +395,20 @@ export default function LessonPage({ params }: { params: { id: string } }) {
                     <span className="font-display font-bold">{opt.label}</span>
                   </button>
                 ))}
+                <button
+                  onClick={() => canvasRef.current?.undo()}
+                  className="card-cozy card-cozy-hover px-4 py-3 flex items-center gap-2"
+                >
+                  <span className="text-2xl">↶</span>
+                  <span className="font-display font-bold">Undo</span>
+                </button>
               </div>
               <div className="flex justify-between items-center flex-wrap gap-3">
-                <ColorPalette colors={lesson.palette} selected={color} onChange={setColor} />
+                <ColorPalette
+                  colors={lesson.palette}
+                  selected={color}
+                  onChange={setColor}
+                />
                 <Button
                   variant="primary"
                   size="lg"
@@ -304,12 +418,11 @@ export default function LessonPage({ params }: { params: { id: string } }) {
                   {saving ? 'Saving...' : 'All done! 🎉'}
                 </Button>
               </div>
-              {saveError && <p className="text-coral-600 text-sm mt-2">{saveError}</p>}
             </div>
           </motion.div>
         )}
 
-        {/* ============== REWARD PHASE ============== */}
+        {/* REWARD */}
         {phase === 'reward' && (
           <motion.div
             key="reward"
@@ -326,7 +439,7 @@ export default function LessonPage({ params }: { params: { id: string } }) {
             >
               <div className="flex justify-center mb-4">
                 <Companion
-                  character={activeKid?.avatar_key as any || 'bunny'}
+                  character={(activeKid?.avatar_key as any) || 'bunny'}
                   mood="cheering"
                   size={140}
                 />
@@ -343,12 +456,21 @@ export default function LessonPage({ params }: { params: { id: string } }) {
                   New sticker unlocked!
                 </p>
               </div>
+              {saveError && (
+                <p className="text-coral-600 text-sm mb-4">
+                  (Heads up: {saveError})
+                </p>
+              )}
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <Link href="/app/gallery">
-                  <Button variant="secondary" size="lg">See My Art 🖼️</Button>
+                  <Button variant="secondary" size="lg">
+                    See My Art 🖼️
+                  </Button>
                 </Link>
                 <Link href={`/app/world/${lesson.world_id}`}>
-                  <Button variant="primary" size="lg">More Drawing ✏️</Button>
+                  <Button variant="primary" size="lg">
+                    More Drawing ✏️
+                  </Button>
                 </Link>
               </div>
             </motion.div>
