@@ -96,24 +96,25 @@ export default function Companion({
   const renderChar = CHARACTERS[character];
   const fill = FILLS[character];
 
-  const variants = {
+  // NOTE: Mutable arrays (not `as const`) so Framer Motion's types accept them.
+  const variants: Record<string, any> = {
     idle: { y: [0, -6, 0], rotate: [0, 1, 0] },
     happy: { y: [0, -10, 0], rotate: [-3, 3, -3] },
     cheering: { y: [0, -14, 0], rotate: [-6, 6, -6] },
     thinking: { y: [0], rotate: [-2, 2, -2] },
-  } as const;
+  };
 
-  const transitions = {
+  const transitions: Record<string, any> = {
     idle: { duration: 3, repeat: Infinity, ease: 'easeInOut' },
     happy: { duration: 0.8, repeat: Infinity, ease: 'easeInOut' },
     cheering: { duration: 0.5, repeat: Infinity, ease: 'easeInOut' },
     thinking: { duration: 2, repeat: Infinity, ease: 'easeInOut' },
-  } as const;
+  };
 
   return (
     <motion.div
       animate={variants[mood]}
-      transition={transitions[mood] as any}
+      transition={transitions[mood]}
       style={{ width: size, height: size }}
     >
       <svg viewBox="0 0 100 100" width={size} height={size}>
