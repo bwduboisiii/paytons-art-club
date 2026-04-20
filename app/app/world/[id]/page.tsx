@@ -1,6 +1,6 @@
 'use client';
 
-import { use, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Button from '@/components/Button';
@@ -11,8 +11,8 @@ import { useKidStore } from '@/lib/store';
 import { createClient } from '@/lib/supabase/client';
 import clsx from 'clsx';
 
-export default function WorldPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = use(params);
+export default function WorldPage({ params }: { params: { id: string } }) {
+  const { id } = params;
   const router = useRouter();
   const activeKid = useKidStore(s => s.activeKid);
   const world = getWorld(id);

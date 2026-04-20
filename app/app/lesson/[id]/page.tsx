@@ -1,6 +1,6 @@
 'use client';
 
-import { use, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -16,8 +16,8 @@ import { createClient } from '@/lib/supabase/client';
 
 type Phase = 'intro' | 'drawing' | 'remix' | 'reward';
 
-export default function LessonPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = use(params);
+export default function LessonPage({ params }: { params: { id: string } }) {
+  const { id } = params;
   const router = useRouter();
   const activeKid = useKidStore(s => s.activeKid);
   const lesson = getLesson(id);
@@ -283,7 +283,7 @@ export default function LessonPage({ params }: { params: Promise<{ id: string }>
                   <button
                     key={opt.id}
                     onClick={() => {
-                      canvasRef.current?.placeSticker(opt.emoji);
+                      canvasRef.current?.placeSticker(opt.emoji, opt.emoji);
                       setRemixApplied(true);
                     }}
                     className="card-cozy card-cozy-hover px-4 py-3 flex items-center gap-2"
