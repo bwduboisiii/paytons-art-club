@@ -85,6 +85,7 @@ export default function ParentPage() {
     Record<string, number>
   >({});
   const [artworkCount, setArtworkCount] = useState<Record<string, number>>({});
+  const [voiceNoteCount, setVoiceNoteCount] = useState<Record<string, number>>({});
   // Map of kid_id -> friend list with per-friend "new" flag
   const [kidFriends, setKidFriends] = useState<
     Record<string, Array<FriendInfo & { isNew: boolean; friendshipId: string }>>
@@ -114,13 +115,14 @@ export default function ParentPage() {
 
     const completions: Record<string, number> = {};
     const artworks: Record<string, number> = {};
+    const voiceNoteCounts: Record<string, number> = {};
     const friendsMap: Record<
       string,
       Array<FriendInfo & { isNew: boolean; friendshipId: string }>
     > = {};
     await Promise.all(
       kidList.map(async (kid) => {
-        const [{ count: cc }, { count: ac }, friendshipsRes] = await Promise.all([
+        const [{ count: cc }, { count: ac }, { count: vc }, friendshipsRes] = await Promise.all([
           supabase
             .from('lesson_completions')
             .select('*', { count: 'exact', head: true })
@@ -130,6 +132,11 @@ export default function ParentPage() {
             .select('*', { count: 'exact', head: true })
             .eq('kid_id', kid.id),
           supabase
+            .from('artworks')
+            .select('*', { count: 'exact', head: true })
+            .eq('kid_id', kid.id)
+            .not('voice_note_path', 'is', null),
+          supabase
             .from('friendships')
             .select('id, friend_kid_id, created_at, parent_seen_at')
             .eq('kid_id', kid.id)
@@ -137,6 +144,7 @@ export default function ParentPage() {
         ]);
         completions[kid.id] = cc || 0;
         artworks[kid.id] = ac || 0;
+        voiceNoteCounts[kid.id] = vc || 0;
 
         const fRows = (friendshipsRes.data || []) as Array<any>;
         if (fRows.length) {
@@ -170,6 +178,7 @@ export default function ParentPage() {
     );
     setCompletionCount(completions);
     setArtworkCount(artworks);
+    setVoiceNoteCount(voiceNoteCounts);
     setKidFriends(friendsMap);
     setLoading(false);
   }
@@ -368,6 +377,11 @@ export default function ParentPage() {
                       <span className="font-bold text-berry-500">
                         🖼️ {artworkCount[kid.id] || 0} artworks
                       </span>
+                      {(voiceNoteCount[kid.id] || 0) > 0 && (
+                        <span className="font-bold text-coral-500">
+                          🎤 {voiceNoteCount[kid.id]} voice
+                        </span>
+                      )}
                       {kid.friend_code && (
                         <span className="font-mono font-bold text-ink-500">
                           Code: {kid.friend_code}

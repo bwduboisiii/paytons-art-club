@@ -1,92 +1,119 @@
-# Payton's Art Club — v8: Gap Audit Fixes
+# Payton's Art Club — v9 / Pass D-1: Voice Recording 🎤
 
-This is a **maintenance release**. No new features — just fixes for 16 of the 17 gaps I found during the audit. The app will look the same; it'll just break in fewer places.
+## What's new
 
-## What's fixed
+### 🎤 Voice recording for drawings
 
-### 🔴 Critical (5 fixed)
+Kids can now record a short voice note (up to 60 seconds) about their drawing. Saved alongside the artwork, playable from the gallery.
 
-1. **Guess duplication in multiplayer** — guesser no longer sees their guess twice (once wrong, once right). Now we update the existing optimistic guess in place.
-2. **Dead `submitGuess` function** — removed, since the play page uses `sendGuess`.
-3. **`regenerateFriendCode` silent failures** — now returns a proper result with error message. The Friends page shows an alert if regeneration fails instead of appearing to do nothing.
-4. **Friends list only saw one direction** — now queries both friendship directions and dedupes. Resilient to any orphaned rows if an RPC ever fails mid-transaction.
-5. **Home red-dot badge didn't refresh** — after visiting the parent dashboard and marking friendships seen, returning to home now refreshes the badge via visibility/focus listeners.
+**Where it appears:**
+- **After a lesson** — on the reward screen, after the "New sticker unlocked!" celebration, a mic appears: *"Want to tell me about your drawing?"* with a skip option
+- **In Free Draw** — after saving, the success banner includes an **"🎤 Add voice note"** button; tap to open the recorder modal
+- **In Gallery** — any artwork with a voice note gets a 🎤 badge on its tile. In the lightbox, a full audio player appears below the image with delete option
+- **In Friend's gallery** — friends who view shared art also see the voice note (compact "▶ Hear it" button)
+- **Parent dashboard** — kid cards now show "🎤 N voice" alongside lesson and artwork counts
 
-### 🟡 High (6 fixed)
+**How recording works:**
+- Tap the big coral mic button
+- Browser asks for microphone permission (one-time)
+- 60-second countdown with live progress bar
+- Tap stop (or let it auto-stop)
+- Preview your recording → "Keep it!" or "Try again" or skip
+- Saves to private storage bucket
 
-7. **Stale listFriends comments removed** (docstring cleanup).
-8. **Friend detail page checks both directions** — if only the reverse friendship row exists, the kid can still view their friend's art.
-9. **Abandoned game rooms** — added a heartbeat column + `beforeunload` broadcast. If the host closes their tab, the guest now sees "[Name] left the game" and can start a new game.
-10. **Self-echo defense on all game events** — every event handler now explicitly checks if the sender is us, and ignores. Prevents ghost events if Supabase's `self: false` ever misfires.
-11. **Word-pick timeout** — if the drawer takes longer than 2 minutes to pick a word, the round auto-cancels. Prevents the guesser from being stuck forever.
-14. **Parent mark-all-seen race condition** — now marks ONLY the friendships that were visible when the button was tapped. A new friendship arriving mid-view doesn't get silently hidden.
-
-### 🟢 Medium (3 fixed)
-
-12. **Tier badge wording** — changed "⭐ Premium" → "⭐ Bonus" and the section heading now says these are free while we're building. More honest until Stripe actually gates things.
-13. **Daily lesson uses UTC** — consistent across timezones; Payton won't see a different daily lesson than her friend in another city.
-15. **Canvas export no longer flashes selection** — export now renders to an off-screen scratch canvas. No more dashed-outline flicker on save.
-
-### ⚪ Low (1 fixed)
-
-17. **Reconnection for multiplayer** — if wifi drops during a game, the Realtime channel now retries with exponential backoff up to 5 times (1s → 2s → 4s → 8s → 15s). Connection status shows as "Reconnecting..." (yellow) or "Disconnected" (red) so kids know what's happening.
-
-### What I deferred
-
-- **Gap 6** (3+ player safety): added code comment; not applicable to current 2-player game
-- **Gap 16** (room code mixed-case): extremely low priority, client + SQL already normalize
+**Browser support:**
+- ✅ Chrome, Safari, Firefox on iPad and desktop
+- ⚠️  Very old iOS (< 14.3) — recorder shows a clear error and lets kids skip
+- Permission denied → clear error message telling kids to look for the pop-up
 
 ---
 
 ## How to apply
 
-### Step 1: Run the v8 SQL migration
-
-This adds the `last_heartbeat` column to game_rooms and updates the cleanup function (for Gap 9).
+### Step 1: Run the voice schema SQL
 
 1. Supabase → SQL Editor → **New query**
-2. Paste contents of `supabase/v8_fixes.sql`
+2. Paste contents of `supabase/voice_schema.sql`
 3. Click **Run**
-4. Should say "Success" — idempotent, safe to re-run
+4. Should say "Success"
+
+This adds:
+- `voice_note_path` and `voice_note_duration_seconds` columns to `artworks`
+- A `voice-notes` storage bucket (private)
+- RLS policies so parents can read/write/delete their own kids' voice notes, and friends can read voice notes only on artworks the kid has marked shared
 
 ### Step 2: Swap folders
 
-1. Back up v7 folder, unzip v8, copy `.git` over
-2. `git add . && git commit -m "v8: gap audit fixes" && git push`
+1. Back up v8 folder, unzip v9, copy `.git` over
+2. `git add . && git commit -m "v9: voice recording for drawings" && git push`
 3. Hard refresh (Ctrl+Shift+R)
 
-### Step 3: Test (no new features, just regression checks)
+### Step 3: Test
 
-- [ ] Multiplayer game still works end-to-end (your existing v7 test case)
-- [ ] When playing, watch the connection status indicator — should say "Connected" (green)
-- [ ] Friends page: get a new code → verify it actually changes (Gap 3)
-- [ ] Parent dashboard → tap "mark all seen" → red dot on home disappears after switching back (Gap 5)
-- [ ] Gallery: save artwork with sticker selected → no dashed outline in the saved PNG (Gap 15)
+**Most important test — do this on the iPad Payton actually uses:**
+
+1. Home → any free lesson → complete the lesson → see reward screen
+2. Mic button should appear under the sticker celebration
+3. Tap mic → iPad will prompt for microphone permission — say Allow
+4. Talk for 5 seconds → tap stop → preview plays back
+5. Tap "Keep it!" → should save
+6. Go to Gallery → lesson artwork tile should have a 🎤 badge
+7. Tap the tile → lightbox opens → audio player appears below the image → play it
+
+**If microphone permission fails on iPad:**
+- Go to iPad Settings → Safari → Camera & Microphone → Allow
+- Or make sure you're on HTTPS (which Vercel provides)
+- Recording will NOT work on http:// or localhost without HTTPS
+
+**Other tests:**
+- Free Draw → save → tap "🎤 Add voice note" → record → verify tile gets 🎤 badge
+- Parent dashboard → verify voice note count appears under kid's stats
+- Share an artwork (👥 in lightbox) → view from a friend account → verify they see "▶ Hear it"
+
+---
+
+## Known rough edges
+
+- **Very long voice notes** — capped at 60 seconds. If you want longer, change `maxSeconds` prop in the lesson/draw pages.
+- **No transcription** — recordings are pure audio. Not a mistake; a feature. If you wanted transcription later, needs an external API (Whisper, Deepgram) with cost.
+- **No background removal of voice noise** — whatever's in the room when Payton records is what gets recorded. Fine for home use.
+- **Audio file size** — about 100-200KB per 30-second recording. Supabase free tier has 1GB storage; you'd hit the ceiling at ~5000 voice notes, which is fine.
+- **Safari sometimes loses permission** — if iPad Safari forgets microphone permission, kids will see the "Can't hear you!" error and need to hit "Try again." Normal browser behavior.
+- **Recording while in Free Draw** — the big success banner with the voice button can get overlooked if kids immediately tap "View gallery." That's by design; they can always add a voice note later by opening the artwork in gallery, which... actually, I didn't wire THAT up. You can only add a voice note at save time, not retroactively. That's a real limitation worth noting.
+- **Voice notes survive friendship removal** — if Payton shared art and a friend removed her, the friend can no longer access the voice note because storage RLS checks current friendship status. Correct behavior.
+- **Export PNG doesn't include audio** — obviously. Downloaded artwork files are image-only. The audio lives only in the app.
+
+---
+
+## What's NOT in this pass
+
+Pass D-1 is voice recording only. Not yet:
+- Pass D-2: Stripe premium tier (next)
+- Pass D-3: Polish (sticker flicker deep fix, SVG cleanups)
+- Pass D-4: Final gap audit + packaging
+
+Still deployable and useful standalone — voice notes are independent of the other Pass D work.
 
 ---
 
 ## What should feel different
 
 **For Payton:**
-- Her guesses in the game no longer appear twice
-- If she closes her friend's tab by accident, game ends cleanly instead of hanging
-- Save button on a sticker-selected canvas no longer has a weird flicker
+- A magical new thing: she can talk to her drawings and hear herself back
+- This is the single highest-delight feature I've built for her. A 7-year-old narrating "THIS IS A BUNNY AND HE HAS GLITTERY EARS" and playing it back is memorable
 
-**For you (parent):**
-- New friend red-dot badge goes away when it should
-- Tier labels read "Bonus" not "Premium" so if you show another parent the app, they won't ask why you're paying for it
-- Dashboard "mark seen" doesn't accidentally hide new arrivals
+**For you:**
+- Gallery becomes a little scrapbook with her voice attached
+- Parent dashboard shows how much she's using it
+- Voice notes are a reason to revisit the gallery (in a way static art isn't)
 
-**Nothing else changes.** Same features, same lessons, same 16 avatars, same 15 tools.
+**For friends:**
+- Friends see and hear the story behind shared drawings. Much warmer than silent image share.
 
 ---
 
-## Still not fixed / future
+## One honest concern
 
-- Multiplayer with 3+ players
-- Chat beyond emojis (considered out of scope for kid safety)
-- Stripe / real premium gating (Pass D)
-- Voice/audio for companion
-- Printable PDF export
+Voice recording can surface privacy things that didn't exist before. A kid might record something personal (family in the background, etc.) and not realize it's shared when they share the artwork. I wired the share toggle correctly — voice notes inherit the `is_shared` flag from the artwork — but worth knowing: **when Payton taps "Share with friends" on an artwork, any voice note attached gets shared too.** There's no separate "share voice but not art" or vice versa.
 
-When you're ready, Pass D or further content expansion is the next step. Let Payton use v8 a bit first — the real multiplayer experience (with a real friend on a real network) is where you'll find issues I can't predict.
+If this matters, the mitigation is: remove the voice note (via the 🎤 Remove voice button in the lightbox) before sharing. Or teach Payton: "Only share drawings without recordings, or check the recording first." This is a teaching moment with her, not a code fix.

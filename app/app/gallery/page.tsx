@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Button from '@/components/Button';
 import Companion from '@/components/Companion';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import VoicePlayer from '@/components/VoicePlayer';
 import { useKidStore } from '@/lib/store';
 import { createClient } from '@/lib/supabase/client';
 import type { Artwork } from '@/lib/types';
@@ -13,6 +14,7 @@ import { formatRelativeDate } from '@/lib/utils';
 
 interface GalleryItem extends Artwork {
   signed_url?: string;
+  voice_signed_url?: string;
 }
 
 // Signed URL validity — we refresh liberally to avoid 404s on page reload.
@@ -47,10 +49,17 @@ export default function GalleryPage() {
       // Batch signed URLs - fetch all at once using parallel requests.
       const withUrls: GalleryItem[] = await Promise.all(
         (artworks as Artwork[]).map(async (a) => {
-          const { data } = await supabase.storage
+          const { data: artData } = await supabase.storage
             .from('artwork')
             .createSignedUrl(a.storage_path, URL_TTL_SECONDS);
-          return { ...a, signed_url: data?.signedUrl };
+          let voiceUrl: string | undefined;
+          if (a.voice_note_path) {
+            const { data: voiceData } = await supabase.storage
+              .from('voice-notes')
+              .createSignedUrl(a.voice_note_path, URL_TTL_SECONDS);
+            voiceUrl = voiceData?.signedUrl;
+          }
+          return { ...a, signed_url: artData?.signedUrl, voice_signed_url: voiceUrl };
         })
       );
       if (!cancelled) {
@@ -84,6 +93,25 @@ export default function GalleryPage() {
     await supabase
       .from('artworks')
       .update({ is_shared: next })
+      .eq('id', item.id);
+  }
+
+  async function deleteVoiceNote(item: GalleryItem) {
+    if (!item.voice_note_path) return;
+    if (!confirm('Remove the voice note from this drawing?')) return;
+    const supabase = createClient();
+    // Optimistic
+    setItems((prev) =>
+      prev.map((i) =>
+        i.id === item.id
+          ? { ...i, voice_note_path: null, voice_signed_url: undefined, voice_note_duration_seconds: null }
+          : i
+      )
+    );
+    await supabase.storage.from('voice-notes').remove([item.voice_note_path]);
+    await supabase
+      .from('artworks')
+      .update({ voice_note_path: null, voice_note_duration_seconds: null })
       .eq('id', item.id);
   }
 
@@ -166,6 +194,11 @@ export default function GalleryPage() {
                     👥
                   </div>
                 )}
+                {item.voice_note_path && (
+                  <div className="absolute bottom-[58px] right-2 bg-coral-500 text-white rounded-full w-8 h-8 flex items-center justify-center shadow-chunky z-10 text-sm">
+                    🎤
+                  </div>
+                )}
                 {item.signed_url ? (
                   /* eslint-disable-next-line @next/next/no-img-element */
                   <img
@@ -225,13 +258,20 @@ export default function GalleryPage() {
                   ✕
                 </button>
               </div>
-              <div className="flex-1 overflow-auto p-6 flex items-center justify-center bg-cream-100">
+              <div className="flex-1 overflow-auto p-6 flex flex-col items-center justify-center gap-4 bg-cream-100">
                 {items[lightboxIdx].signed_url && (
                   /* eslint-disable-next-line @next/next/no-img-element */
                   <img
                     src={items[lightboxIdx].signed_url}
                     alt={items[lightboxIdx].title || 'Artwork'}
-                    className="max-w-full max-h-[60vh] rounded-2xl shadow-float"
+                    className="max-w-full max-h-[55vh] rounded-2xl shadow-float"
+                  />
+                )}
+                {items[lightboxIdx].voice_signed_url && (
+                  <VoicePlayer
+                    src={items[lightboxIdx].voice_signed_url!}
+                    durationSec={items[lightboxIdx].voice_note_duration_seconds}
+                    variant="full"
                   />
                 )}
               </div>
@@ -257,6 +297,15 @@ export default function GalleryPage() {
                 >
                   💾 Download
                 </Button>
+                {items[lightboxIdx].voice_note_path && (
+                  <Button
+                    variant="ghost"
+                    size="md"
+                    onClick={() => deleteVoiceNote(items[lightboxIdx])}
+                  >
+                    🎤 Remove voice
+                  </Button>
+                )}
                 <Button
                   variant="ghost"
                   size="md"

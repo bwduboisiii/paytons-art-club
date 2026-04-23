@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import Button from '@/components/Button';
 import Companion from '@/components/Companion';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import VoicePlayer from '@/components/VoicePlayer';
 import { useKidStore } from '@/lib/store';
 import { createClient } from '@/lib/supabase/client';
 import type { Artwork, FriendInfo } from '@/lib/types';
@@ -67,6 +68,18 @@ export default function FriendDetailPage({ params }: { params: { id: string } })
           .createSignedUrls(paths, 60 * 60);
         const map: Record<string, string> = {};
         urlRows?.forEach((r: any) => { if (r.path && r.signedUrl) map[r.path] = r.signedUrl; });
+        // Also batch-fetch signed URLs for any voice notes
+        const voicePaths = art
+          .filter((a: any) => a.voice_note_path)
+          .map((a: any) => a.voice_note_path);
+        if (voicePaths.length) {
+          const { data: voiceRows } = await supabase.storage
+            .from('voice-notes')
+            .createSignedUrls(voicePaths, 60 * 60);
+          voiceRows?.forEach((r: any) => {
+            if (r.path && r.signedUrl) map[`voice:${r.path}`] = r.signedUrl;
+          });
+        }
         setSignedUrls(map);
       }
       setLoading(false);
@@ -122,7 +135,14 @@ export default function FriendDetailPage({ params }: { params: { id: string } })
                 <p className="font-display font-bold text-sm truncate">
                   {a.title || 'Untitled'}
                 </p>
-                <p className="text-xs text-ink-500">{formatRelativeDate(a.created_at)}</p>
+                <p className="text-xs text-ink-500 mb-2">{formatRelativeDate(a.created_at)}</p>
+                {a.voice_note_path && signedUrls[`voice:${a.voice_note_path}`] && (
+                  <VoicePlayer
+                    src={signedUrls[`voice:${a.voice_note_path}`]}
+                    durationSec={a.voice_note_duration_seconds}
+                    variant="compact"
+                  />
+                )}
               </div>
             ))}
           </div>

@@ -10,6 +10,7 @@ import ToolPickerVertical from '@/components/ToolPickerVertical';
 import BrushSizer from '@/components/BrushSizer';
 import FloatingBuddy from '@/components/FloatingBuddy';
 import StickerTray from '@/components/StickerTray';
+import VoiceRecorder from '@/components/VoiceRecorder';
 import { useKidStore } from '@/lib/store';
 import { createClient } from '@/lib/supabase/client';
 import { safeUUID, MAX_ARTWORK_BYTES } from '@/lib/utils';
@@ -29,6 +30,8 @@ export default function FreeDrawPage() {
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [savedId, setSavedId] = useState<string | null>(null);
+  const [voiceRecorderOpen, setVoiceRecorderOpen] = useState(false);
+  const [voiceSaved, setVoiceSaved] = useState(false);
   const [title, setTitle] = useState('My Masterpiece');
   const [buddyMood, setBuddyMood] = useState<'happy' | 'cheering' | 'thinking' | 'idle'>('happy');
 
@@ -82,6 +85,22 @@ export default function FreeDrawPage() {
     finally { setSaving(false); }
   }
 
+  async function handleVoiceNoteSave(blob: Blob, durationSec: number) {
+    if (!activeKid || !savedId) return;
+    const supabase = createClient();
+    const ext = blob.type.includes('mp4') ? 'm4a' : 'webm';
+    const path = `${activeKid.id}/${safeUUID()}.${ext}`;
+    const { error: uploadErr } = await supabase.storage
+      .from('voice-notes').upload(path, blob, { contentType: blob.type });
+    if (uploadErr) throw uploadErr;
+    await supabase.from('artworks').update({
+      voice_note_path: path,
+      voice_note_duration_seconds: durationSec,
+    }).eq('id', savedId);
+    setVoiceRecorderOpen(false);
+    setVoiceSaved(true);
+  }
+
   return (
     <main className="h-screen overflow-hidden flex flex-col">
       {showStickerTray && (
@@ -121,8 +140,36 @@ export default function FreeDrawPage() {
         <div className="shrink-0 px-6 py-2 bg-coral-300/30 text-coral-600 text-sm text-center">{saveError}</div>
       )}
       {savedId && (
-        <div className="shrink-0 px-6 py-2 bg-meadow-300/30 text-meadow-500 text-sm text-center font-display font-bold">
-          Saved! ✨ <button onClick={() => router.push('/app/gallery')} className="underline">View</button>
+        <div className="shrink-0 px-6 py-2 bg-meadow-300/30 text-meadow-500 text-sm text-center font-display font-bold flex items-center justify-center gap-2 flex-wrap">
+          {voiceSaved ? (
+            <>✓ Saved with voice note! ✨</>
+          ) : (
+            <>
+              Saved! ✨
+              <button onClick={() => setVoiceRecorderOpen(true)} className="underline">
+                🎤 Add voice note
+              </button>
+            </>
+          )}
+          <button onClick={() => router.push('/app/gallery')} className="underline">
+            View
+          </button>
+        </div>
+      )}
+
+      {voiceRecorderOpen && (
+        <div
+          className="fixed inset-0 z-50 bg-ink-900/50 backdrop-blur-sm flex items-center justify-center p-4"
+          onClick={() => setVoiceRecorderOpen(false)}
+        >
+          <div onClick={(e) => e.stopPropagation()} className="w-full max-w-md">
+            <VoiceRecorder
+              prompt="Tell me about your drawing!"
+              onSave={handleVoiceNoteSave}
+              onSkip={() => setVoiceRecorderOpen(false)}
+              maxSeconds={60}
+            />
+          </div>
         </div>
       )}
 

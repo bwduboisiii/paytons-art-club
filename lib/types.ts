@@ -40,6 +40,8 @@ export interface Artwork {
   id: string; kid_id: string; lesson_id: string | null; title: string | null;
   storage_path: string; thumbnail_path: string | null; is_favorite: boolean;
   is_shared?: boolean;
+  voice_note_path?: string | null;
+  voice_note_duration_seconds?: number | null;
   created_at: string;
 }
 

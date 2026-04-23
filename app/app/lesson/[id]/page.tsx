@@ -11,6 +11,7 @@ import BrushSizer from '@/components/BrushSizer';
 import ToolPickerVertical from '@/components/ToolPickerVertical';
 import FloatingBuddy from '@/components/FloatingBuddy';
 import StickerTray from '@/components/StickerTray';
+import VoiceRecorder from '@/components/VoiceRecorder';
 import Confetti from '@/components/Confetti';
 import DrawingCanvas, { type DrawingCanvasHandle } from '@/components/DrawingCanvas';
 import { getLesson } from '@/lib/lessons';
@@ -40,6 +41,9 @@ export default function LessonPage({ params }: { params: { id: string } }) {
   const [saveError, setSaveError] = useState<string | null>(null);
   const [showExitConfirm, setShowExitConfirm] = useState(false);
   const [showStickerTray, setShowStickerTray] = useState(false);
+  const [savedArtworkId, setSavedArtworkId] = useState<string | null>(null);
+  const [voiceNoteSaved, setVoiceNoteSaved] = useState(false);
+  const [voiceSkipped, setVoiceSkipped] = useState(false);
   const startTime = useRef(Date.now());
   const [canvasSize, setCanvasSize] = useState({ width: 800, height: 600 });
   const [buddyMood, setBuddyMood] = useState<'happy' | 'cheering' | 'thinking' | 'idle'>('happy');
@@ -109,10 +113,11 @@ export default function LessonPage({ params }: { params: { id: string } }) {
       const filename = `${activeKid.id}/${safeUUID()}.png`;
       const { error: uploadErr } = await supabase.storage.from('artwork').upload(filename, blob, { contentType: 'image/png' });
       if (uploadErr) throw uploadErr;
-      await supabase.from('artworks').insert({
+      const { data: artwork } = await supabase.from('artworks').insert({
         kid_id: activeKid.id, lesson_id: lesson.id,
         title: lesson.title, storage_path: filename,
-      });
+      }).select().single();
+      if (artwork) setSavedArtworkId((artwork as any).id);
       const duration = Math.floor((Date.now() - startTime.current) / 1000);
       await supabase.from('lesson_completions').insert({
         kid_id: activeKid.id, lesson_id: lesson.id,
@@ -125,6 +130,21 @@ export default function LessonPage({ params }: { params: { id: string } }) {
       );
     } catch (e: any) { setSaveError(e?.message || 'Could not save.'); }
     finally { setSaving(false); setPhase('reward'); }
+  }
+
+  async function handleVoiceNoteSave(blob: Blob, durationSec: number) {
+    if (!activeKid || !savedArtworkId) return;
+    const supabase = createClient();
+    const ext = blob.type.includes('mp4') ? 'm4a' : 'webm';
+    const path = `${activeKid.id}/${safeUUID()}.${ext}`;
+    const { error: uploadErr } = await supabase.storage
+      .from('voice-notes').upload(path, blob, { contentType: blob.type });
+    if (uploadErr) throw uploadErr;
+    await supabase.from('artworks').update({
+      voice_note_path: path,
+      voice_note_duration_seconds: durationSec,
+    }).eq('id', savedArtworkId);
+    setVoiceNoteSaved(true);
   }
 
   const referencePaths = currentStep?.reference_paths || [];
@@ -269,26 +289,44 @@ export default function LessonPage({ params }: { params: { id: string } }) {
 
         {phase === 'reward' && (
           <motion.div key="reward" initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-            className="flex-1 flex items-center justify-center px-6 relative">
+            className="flex-1 flex items-center justify-center px-6 relative overflow-y-auto">
             <Confetti count={60} />
             <motion.div initial={{ scale: 0.3, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
               transition={{ type: 'spring', damping: 12, delay: 0.2 }}
-              className="card-cozy p-8 md:p-12 max-w-xl text-center relative z-10">
-              <div className="flex justify-center mb-4">
-                <Companion character={(activeKid?.avatar_key as any) || 'bunny'} mood="cheering" size={140} />
+              className="card-cozy p-6 md:p-10 max-w-xl text-center relative z-10 w-full my-6">
+              <div className="flex justify-center mb-3">
+                <Companion character={(activeKid?.avatar_key as any) || 'bunny'} mood="cheering" size={120} />
               </div>
-              <h1 className="heading-1 mb-3">🎉 You did it!</h1>
-              <p className="text-xl text-ink-700 mb-2">
+              <h1 className="heading-1 mb-2">🎉 You did it!</h1>
+              <p className="text-lg text-ink-700 mb-2">
                 You drew a wonderful <strong>{lesson.title}</strong>!
               </p>
-              <div className="my-6 inline-block">
-                <div className="bg-sparkle-300 rounded-full p-6 shadow-chunky animate-pop-in">
-                  <div className="text-6xl">⭐</div>
+              <div className="my-4 inline-block">
+                <div className="bg-sparkle-300 rounded-full p-4 shadow-chunky animate-pop-in">
+                  <div className="text-5xl">⭐</div>
                 </div>
-                <p className="font-display font-bold mt-2 text-ink-900">New sticker unlocked!</p>
+                <p className="font-display font-bold mt-1 text-ink-900">New sticker unlocked!</p>
               </div>
-              {saveError && <p className="text-coral-600 text-sm mb-4">(Heads up: {saveError})</p>}
-              <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              {saveError && <p className="text-coral-600 text-sm mb-3">(Heads up: {saveError})</p>}
+
+              {/* Voice recording step */}
+              {savedArtworkId && !voiceNoteSaved && !voiceSkipped && (
+                <div className="my-4">
+                  <VoiceRecorder
+                    prompt="Want to tell me about your drawing?"
+                    onSave={handleVoiceNoteSave}
+                    onSkip={() => setVoiceSkipped(true)}
+                    maxSeconds={60}
+                  />
+                </div>
+              )}
+              {voiceNoteSaved && (
+                <p className="font-display font-bold text-meadow-500 my-3">
+                  ✓ Your voice note is saved! 🎤
+                </p>
+              )}
+
+              <div className="flex flex-col sm:flex-row gap-3 justify-center mt-4">
                 <Link href="/app/gallery"><Button variant="secondary" size="lg">See My Art 🖼️</Button></Link>
                 <Link href={`/app/world/${lesson.world_id}`}><Button variant="primary" size="lg">More Drawing ✏️</Button></Link>
               </div>
