@@ -105,6 +105,23 @@ export default function FriendsPage() {
       </header>
 
       <section className="px-6 md:px-12 py-4 max-w-3xl mx-auto">
+        {/* Play game CTA */}
+        <Link href="/app/game" className="block mb-6">
+          <div className="card-cozy card-cozy-hover p-5 bg-gradient-to-r from-meadow-300 to-sky-300 relative overflow-hidden">
+            <div className="absolute top-2 right-3 text-4xl opacity-40">🎮</div>
+            <div className="flex items-center gap-3">
+              <div className="text-4xl">✏️</div>
+              <div className="flex-1">
+                <h2 className="heading-3">Draw & Guess Game</h2>
+                <p className="text-ink-700 text-sm">
+                  Play in real-time with a friend!
+                </p>
+              </div>
+              <span className="text-coral-600 font-bold text-lg">→</span>
+            </div>
+          </div>
+        </Link>
+
         {/* My friend code card */}
         <div className="card-cozy p-6 mb-6 bg-gradient-to-br from-sparkle-300 to-sparkle-400">
           <p className="text-sm font-bold uppercase tracking-wide text-ink-700 mb-2">

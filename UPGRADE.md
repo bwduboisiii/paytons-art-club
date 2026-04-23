@@ -1,105 +1,126 @@
-# Payton's Art Club — v6 / Pass B: Friends System
+# Payton's Art Club — v7 / Pass C: Multiplayer Draw & Guess Game 🎮
 
 ## What's new
 
-### Kid-facing
-- **My Friends screen** at `/app/friends`
-  - Your own 6-character friend code displayed prominently — tap for a big shareable modal
-  - "Add a friend" input — type a 6-char code, instantly friended
-  - Friends list with avatar + name + link to their shared art
-  - Remove friend button on each row
-  - "Get a new code" option if current code got shared with the wrong person
-- **Friend detail page** at `/app/friends/[id]` — shows what artworks they've shared with friends
-- **Home screen** — new 👯 Friends button in the nav
-- **Gallery lightbox** — new "Share with friends" toggle button. A small 👥 badge appears on grid tiles that are shared
+### 🎨 Draw & Guess multiplayer game
+Kids can now play a real-time pictionary-style game with their friends.
 
-### Parent-facing
-- **Parent dashboard** now shows each kid's friends list inline on their card
-- **NEW badges** on friendships the parent hasn't seen yet (persists across sessions until acknowledged)
-- **Home screen Parent button** has a red dot when there are new friendships to review
-- **"Mark all seen"** link at the top of the Kids section clears all NEW badges at once
-- **Remove friend** (✕) button on each friend row — parent can un-friend on behalf of their kid anytime
-- **Friend code** is now shown on each kid's parent card (you can read it aloud to Payton if she forgets hers)
+- **Create a room**: Gets a 4-letter room code (like `WOLF`). Share with a friend.
+- **Friend joins**: They enter the code on the game screen.
+- **Gameplay**:
+  - One kid is the drawer, picks one of 3 words, has 60 seconds to draw it
+  - The other kid guesses in a chat panel
+  - Correct guess = both players score points
+  - Drawers rotate each round
+  - Play as many rounds as you want
+- **Fuzzy guess matching** — "unicorn" matches "unicorns" matches "a unicorn"
+- **Quick-reaction emojis** (👍 🎉 😂 🤔 ❤️ ⭐) in the chat panel
+- **Live score** updates at the top
 
-### How friendships work (Path A — auto-add)
+### Where to find it
+- New **🎮 Play Game** button on the home nav
+- New **Draw & Guess Game** banner at the top of the Friends page
+- Both go to `/app/game`, which lets you Create a room or Join by code
 
-1. Each kid gets a unique 6-character code auto-generated on creation. Existing kids get one the moment you run the migration SQL.
-2. Kid A tells Kid B their code (verbally, in person).
-3. Kid B types the code into the Add Friend input → **instantly friended**.
-4. Both kids see each other in their friend lists.
-5. Both parents see the new friendship with a **NEW** badge until they tap "mark all seen".
-6. Parents can remove any friendship, anytime, with one tap.
-
-### What friends can see about each other
-- Name + avatar
-- Artworks the kid has **explicitly shared** by toggling the share button in the gallery lightbox
-- Nothing else. No age, no parent info, no last-seen, no real-time activity, no un-shared artwork.
-
-Kids have to opt-in *per artwork* to share. New art is private by default.
+### 60 kid-safe words
+Organized by difficulty (easy / medium / hard). Drawer gets 3 random easy words to pick from. Includes common animals, objects, and compound words like "pirate ship" and "ice cream cone."
 
 ---
 
 ## How to apply
 
-### Step 1: Run the Friends schema SQL
+### Step 1: Run the Game schema SQL
 
 1. Supabase → SQL Editor → **New query**
-2. Paste the contents of `supabase/friends_schema.sql`
+2. Paste the contents of `supabase/game_schema.sql`
 3. Click **Run**
-4. Should say "Success" — it's idempotent, safe to re-run if anything flakes
+4. Should say "Success" — idempotent, safe to re-run
 
-This creates: the `friendships` table, adds `friend_code` column to kids, adds `is_shared` column to artworks, backfills existing kids with friend codes, adds RPCs `add_friend_by_code` and `remove_friend`, and sets up RLS policies so friends can only see shared art.
+This creates: the `game_rooms` table with RLS, and two RPCs (`join_game_room`, `leave_game_room`).
 
-### Step 2: Swap folders
+### Step 2: Enable Realtime on the game_rooms table
 
-1. Back up v5 folder, unzip v6, copy `.git` over
-2. `git add . && git commit -m "v6: friends system - codes, add/remove, shared art" && git push`
+This is **critical** and separate from running the SQL. Without this, kids won't see each other's moves.
+
+1. Supabase → **Database** → **Replication** (or **Realtime** in newer UI)
+2. Find the `game_rooms` table
+3. Toggle "Realtime" **ON** for it
+4. Make sure `UPDATE` events are enabled
+
+### Step 3: Swap folders
+
+1. Back up v6 folder, unzip v7, copy `.git` over
+2. `git add . && git commit -m "v7: multiplayer draw & guess game" && git push`
 3. Hard refresh (Ctrl+Shift+R)
 
-### Step 3: Test
+### Step 4: Test
 
-- [ ] Home → 👯 Friends → you should see Payton's 6-character code
-- [ ] Create a second test kid (onboarding) to simulate a friend
-- [ ] Switch to test kid → Friends screen → add by code → verify both kids now see each other
-- [ ] Open gallery on either kid → pick artwork → tap "Share with friends" → 👥 badge appears
-- [ ] Other kid's friend detail page → that shared artwork is visible
-- [ ] Parent dashboard → both kids show the friend with a NEW badge
-- [ ] Tap "mark all seen" → NEW badges disappear
-- [ ] Home screen Parent button: red dot disappears
+**This test requires two devices or two browsers.** Open one in regular browser, another in Incognito to simulate two users.
 
----
-
-## Known rough edges / honest caveats
-
-- **No abuse reporting.** If a friend becomes weird, parent un-friends. No flag/report flow yet.
-- **No push notifications.** Parent sees new friends next time they open the app (red dot + NEW badges). Notifications would be their own pass.
-- **Friend codes don't expire.** If Payton gives her code away, it works forever unless regenerated. Regenerate fixes this but it's manual.
-- **Shared art stays shared even if friend is removed.** Only the friendship row is deleted. To fully hide, toggle "Share with friends" off on each artwork.
-- **Friend code space**: 6 chars from 31 characters (alphabet minus 0/O/1/I/L) = ~887 million combinations. Collisions are ~impossible, but the RPC handles them.
-- **URL-guessing isn't a risk**: useEffect on the friend detail page verifies friendship exists before loading, and RLS blocks unauthorized storage reads.
+1. Sign up a second parent account in Incognito, create a kid
+2. Real Payton account (device 1): Home → 🎮 Play Game → Create room → note the 4-letter code
+3. Other kid (device 2): Home → 🎮 Play Game → enter the code → Join
+4. Device 1 sees "friend joined!" → tap Start game
+5. Drawer picks a word, starts drawing — other device should see strokes appear in real-time
+6. Guesser types a guess; if correct, round ends, both scores update
+7. Host taps "Next round" → roles rotate
 
 ---
 
-## Deferred (future passes)
+## Known rough edges (I flagged these up-front)
 
-- **Multiplayer "guess what I'm drawing"** game with friends (Pass C)
-- **Stripe** for premium world purchase (Pass D)
-- **Parent push notifications** for new friendships
-- **Friend code cooldown** after regeneration
-- **Abuse reporting flow**
-- **Custom friend names** ("call this friend 'Emma from soccer'")
+- **No reconnection**: If either player's wifi drops, the game doesn't gracefully recover. They'll need to leave and restart.
+- **Room codes expire at browser close**: Host closes the tab → room is abandoned. Guest can still see the stale room code in DB but the host isn't there to respond. Run `cleanup_old_game_rooms()` manually in Supabase to remove stale rooms.
+- **No stroke replay for late joiners**: If a guesser joins mid-round, they only see strokes drawn after they subscribed, not from the beginning. First round feels weird if join timing is bad.
+- **Latency on bad networks**: Strokes batched at 20Hz so you'll see 50ms delay at best. On slow wifi, strokes can arrive out of order (rare) or bunch up (common). Recovery is automatic but looks janky.
+- **Drawer's canvas is the source of truth for correct-guess judgment**. If drawer's browser hiccups, the guess-checking might lag. In practice works fine.
+- **Only two players**: Game is designed for exactly 2. Third player can't join a full room.
+- **No voice chat / no text chat** outside the guess panel. Kids can send emojis, nothing more.
+- **No undo in game canvas**: Simplified from Free Draw on purpose — undo would need to be multicast, add latency.
+- **Game canvas uses only 8 colors + marker/eraser**, not all 15 tools. Realtime bandwidth for 15 tool types would be much higher and kids don't need paintbrush for pictionary.
+- **"Host" role is sticky**: Only host can start rounds. If host leaves, the game ends.
 
 ---
 
-## Safety summary
+## Safety notes
 
-You chose **Path A** (auto-add, parent sees after). Your accepted surface area:
+- No discovery: Games are strictly **friends-only**. No matchmaking, no "join random room."
+- Room codes are ephemeral (~2 hours max before cleanup).
+- Chat is locked to a tight set of kid-safe features: typed guesses (checked for word match) + reaction emojis only.
+- No image sharing, no voice, no free-form messaging.
+- Parent dashboard doesn't currently show game activity — that's a pass-D feature if desired.
 
-- Kids can friend anyone whose code they enter — no parent approval gate.
-- Once friended, they see friend's name/avatar and any artwork the friend marked as shared.
-- Parents see all friendships in the dashboard with NEW badges, can remove any at any time.
-- Home screen Parent button shows a red dot whenever there are unseen friendships.
-- Anyone who knows a kid's code can add them as a friend. **Treat codes like a phone number** — share only with people you know in real life.
-- Friend codes can be regenerated at any time by the kid (old code stops working instantly).
+---
 
-If real-world usage reveals this is too loose, I can tighten to Path B (mutual-accept) in a future pass without data loss.
+## If something breaks
+
+**"Connecting..." stays forever** → You didn't enable Realtime on the table. Go back to Step 2.
+
+**Guesser sees drawer's strokes but drawer doesn't see guesses** → The `self: false` broadcast config means you don't receive your own events. Open the guesser's console and look for errors. Most likely the channel subscription is failing.
+
+**"Room not found" when joining** → Code is case-sensitive in the UI but the SQL normalizes with `upper()`. If this happens, try again — the room might have just expired (>2h old).
+
+**Strokes appear slowly / stutter** → Real network latency. On shared home wifi this should be <100ms. On mobile data it can spike to 1-2s. Not fixable in app code.
+
+---
+
+## Deferred to future passes
+
+- **Stripe** for premium worlds (Pass D)
+- **Game polish**: reconnection, stroke replay, word difficulty selector, custom word lists
+- **Parent push notifications** for new game invites
+- **Saving completed games to gallery** (a "frozen" canvas from the last drawing)
+- **3+ player lobbies**
+- **Spectator mode**
+
+---
+
+## My honest take
+
+I've built the game end-to-end but **I genuinely cannot verify it works** without two real devices and two real accounts on two real networks. Realtime multiplayer is the one feature where simulation in my head isn't enough.
+
+So: there's a real chance that when you and a friend try this, something will be subtly broken. That's not me being pessimistic — that's me being honest about what multiplayer networking is like. If it doesn't work, tell me exactly what happened (host saw, guest saw, in what order) and I can debug from logs.
+
+If it works the first time: 🎉
+
+If it doesn't: we iterate. That was baked into your "build it, accept rough edges" choice. I'm here for the iteration.

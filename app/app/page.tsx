@@ -148,6 +148,7 @@ export default function HomePage() {
               </div>
             </Link>
           )}
+          <Link href="/app/game"><Button variant="meadow" size="sm">🎮 Play Game</Button></Link>
           <Link href="/app/friends"><Button variant="secondary" size="sm">👯 Friends</Button></Link>
           <Link href="/app/gallery"><Button variant="secondary" size="sm">🖼️ Gallery</Button></Link>
           <Link href="/parent" className="relative">
