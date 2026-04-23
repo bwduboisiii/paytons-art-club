@@ -1,48 +1,34 @@
-# Payton's Art Club — v5 Upgrade (Layout Redesign)
+# Payton's Art Club — v5.1 (Buddy Fix)
 
-## What's new in this version
+## What's new
 
-### 🎨 Two-sidebar layout
-- **Left sidebar (narrow, 76px)**: All 15 tools stacked vertically, grouped by category (Draw / Effects / Shapes / Tools) with subtle dividers
-- **Right sidebar (narrow, 76px)**: Full color palette (50+ colors) stacked vertically, **scrollable**
-- **Center**: Canvas fills the remaining space, auto-sized to keep a nice 4:3 ratio
-- **Top**: Title + Save button
-- **Bottom**: Brush sizer, undo, clear, stickers button
+### The buddy no longer blocks the colors
+- On drawing & lesson pages, the buddy starts **collapsed** (peek tab on the right edge)
+- When expanded, the buddy sits **past the color sidebar** (not on top of it)
+- Tap the peek tab anytime to see buddy + speech bubble
+- Tap the × to go back to peek mode
 
-Before: all tools/colors crammed at the bottom, colors cut off past the right edge
-After: every tool and color is visible (or scrollable) without the canvas shrinking
+### The rest of v5 still applies
+Two-sidebar layout from v5 is intact: tools on left, colors on right, canvas center. This is a small fix on top of that.
 
-### Lesson page too
-- Same two-sidebar layout applied to lessons
-- Step instructions still show at the top
-- Progress dots still appear below the step banner
-- During "Add stickers" remix phase, the stickers button stays in the bottom row
+## Why collapsed by default on drawing screens?
 
-### What stayed the same
-- 15 drawing tools
-- Sticker tap-select with corner/rotation handles and two-finger pinch
-- 16 companion avatars
-- Tap-avatar-to-change-buddy modal
-- Daily lesson, tier system, 8 worlds, 31 lessons
+Because when you're actively drawing, every pixel of the canvas matters. A big buddy on the side of the screen is cute for 10 seconds, then it's in the way. Starting collapsed gives you maximum canvas. One tap brings buddy back when you want encouragement.
+
+On the lesson page, if the lesson step has a specific companion line to say (e.g. "Now draw the ears!"), the buddy stays expanded so the line is visible. For generic encouragement, buddy peeks.
 
 ## How to apply
 
-1. Back up v4 folder, unzip v5, copy `.git` over
-2. No new SQL this time — database schema is unchanged
-3. `git add . && git commit -m "v5: two-sidebar layout, full palette always visible" && git push`
-4. Hard refresh live site
+1. Unzip v5.1, swap folders, keep `.git`
+2. No SQL changes needed
+3. `git add . && git commit -m "v5.1: buddy doesn't block colors" && git push`
+4. Hard refresh
 
-## Test checklist
+## Test
 
-- [ ] Free Draw: left sidebar has 15 tools in 4 categorized groups
-- [ ] Free Draw: right sidebar scrolls through all 50+ colors
-- [ ] Free Draw: rainbow color-picker button at bottom of color column still opens custom picker
-- [ ] Lesson: same layout works, step instructions visible at top
-- [ ] On smaller screens: canvas shrinks proportionally, sidebars stay narrow
-- [ ] On iPad landscape: plenty of canvas room, all tools tappable with thumb
-
-## Known rough edges
-
-- **iPad portrait orientation**: with two 76px sidebars + buddy on the right, the canvas ends up ~600×450. That's fine but not huge. Landscape is much better.
-- **Super narrow phones (<500px wide)**: might feel tight. Not designed for phone-size use primarily.
-- **Color sidebar scrolling**: I used `overflow-y-auto` which should work on touch, but if it doesn't scroll smoothly on iPad, let me know — there's a fallback I can add.
+- [ ] Go to Free Draw — buddy should be a small coral tab on the far right edge
+- [ ] Tap the tab — buddy expands with speech bubble
+- [ ] Verify the expanded buddy sits LEFT of the color sidebar, not over it
+- [ ] Tap × on expanded buddy — back to peek
+- [ ] Start a lesson — during steps, buddy is expanded showing the lesson's line
+- [ ] On home screen and gallery — buddy doesn't appear (never did, no change there)

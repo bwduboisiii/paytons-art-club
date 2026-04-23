@@ -34,7 +34,8 @@ export default function FreeDrawPage() {
 
   useEffect(() => {
     function resize() {
-      const availW = window.innerWidth - SIDEBAR_W * 2 - 90 - 32;
+      // Reserved: 2 sidebars + collapsed buddy tab (~32px) + padding
+      const availW = window.innerWidth - SIDEBAR_W * 2 - 40 - 32;
       const availH = window.innerHeight - 80 - 72 - 32;
       const ratio = 4 / 3;
       let w = Math.min(availW, availH * ratio, 1100);
@@ -94,6 +95,8 @@ export default function FreeDrawPage() {
         <FloatingBuddy
           character={activeKid.avatar_key as any}
           mood={buddyMood}
+          defaultCollapsed
+          offsetRight={SIDEBAR_W + 16}
           encouragements={[
             'Wow! So creative!', 'I love this!', 'Try a new tool!',
             'Keep going!', 'Beautiful!', '✨ Magical! ✨',

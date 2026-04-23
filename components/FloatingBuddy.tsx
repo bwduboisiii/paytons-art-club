@@ -7,12 +7,20 @@ import type { CompanionKey } from '@/lib/types';
 
 interface Props {
   character: CompanionKey;
-  // Pool of things the buddy can say. Rotates randomly every ~8s.
   encouragements?: string[];
-  // Optional fixed message (e.g. current lesson step). Overrides the pool.
   message?: string;
-  // If true, buddy is playing a 'cheering' mood (e.g. on stroke complete).
   mood?: 'happy' | 'cheering' | 'thinking' | 'idle';
+  /**
+   * Pixels from right edge. Use this on drawing pages to push the buddy
+   * past the right-side color sidebar so it doesn't cover colors.
+   * Default 16 (1rem) matches the old `right-4` behavior.
+   */
+  offsetRight?: number;
+  /**
+   * Start in collapsed (peek tab) mode. Good default for drawing pages
+   * where screen space is precious.
+   */
+  defaultCollapsed?: boolean;
 }
 
 const DEFAULT_LINES = [
@@ -28,22 +36,18 @@ const DEFAULT_LINES = [
   'More, more!',
 ];
 
-/**
- * A cute companion that floats on the right side of the screen.
- * Can be collapsed to a peek tab. Rotates encouragement bubbles
- * periodically. Temporarily swaps in a provided message if given.
- */
 export default function FloatingBuddy({
   character,
   encouragements = DEFAULT_LINES,
   message,
   mood = 'happy',
+  offsetRight = 16,
+  defaultCollapsed = false,
 }: Props) {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(defaultCollapsed);
   const [lineIdx, setLineIdx] = useState(0);
   const [showBubble, setShowBubble] = useState(true);
 
-  // Rotate encouragement lines when no explicit message is provided
   useEffect(() => {
     if (message) return;
     const id = setInterval(() => {
@@ -56,14 +60,14 @@ export default function FloatingBuddy({
     return () => clearInterval(id);
   }, [encouragements, message]);
 
-  // When an explicit message arrives, always show the bubble
   useEffect(() => {
     if (message) setShowBubble(true);
   }, [message]);
 
   const currentLine = message || encouragements[lineIdx];
 
-  // Collapsed mode: tiny tab peeking from the right edge
+  // Collapsed mode: tiny tab peeking from the right edge (ignores offsetRight
+  // on purpose — tab always hugs the actual right edge so it stays easy to grab)
   if (collapsed) {
     return (
       <motion.button
@@ -87,10 +91,10 @@ export default function FloatingBuddy({
       initial={{ x: 120, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       transition={{ type: 'spring', damping: 18 }}
-      className="fixed right-4 top-1/2 -translate-y-1/2 z-40 pointer-events-none"
+      className="fixed top-1/2 -translate-y-1/2 z-40 pointer-events-none"
+      style={{ right: offsetRight }}
     >
       <div className="flex flex-col items-end gap-2 pointer-events-auto">
-        {/* Speech bubble */}
         <AnimatePresence mode="wait">
           {showBubble && currentLine && (
             <motion.div
@@ -104,15 +108,12 @@ export default function FloatingBuddy({
               <p className="text-sm font-display font-bold text-ink-900 leading-tight">
                 {currentLine}
               </p>
-              {/* tail pointing down-right toward the companion */}
               <div className="absolute -bottom-2 right-6 w-4 h-4 bg-cream-50 border-r-4 border-b-4 border-coral-300 rotate-45" />
             </motion.div>
           )}
         </AnimatePresence>
 
-        {/* Buddy + tiny collapse tab */}
         <div className="relative">
-          {/* subtle glow */}
           <div className="absolute inset-0 rounded-full bg-sparkle-300/40 blur-xl animate-sparkle" />
           <div className="relative bg-cream-50 rounded-full p-2 shadow-float border-4 border-sparkle-300">
             <Companion character={character} mood={mood} size={70} />

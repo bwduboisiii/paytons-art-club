@@ -46,7 +46,7 @@ export default function LessonPage({ params }: { params: { id: string } }) {
 
   useEffect(() => {
     function resize() {
-      const availW = window.innerWidth - SIDEBAR_W * 2 - 90 - 32;
+      const availW = window.innerWidth - SIDEBAR_W * 2 - 40 - 32;
       const availH = window.innerHeight - 120 - 72 - 32;
       const ratio = 4 / 3;
       let w = Math.min(availW, availH * ratio, 1100);
@@ -136,6 +136,8 @@ export default function LessonPage({ params }: { params: { id: string } }) {
         <FloatingBuddy
           character={activeKid.avatar_key as any}
           mood={buddyMood} message={buddyMessage}
+          defaultCollapsed={!buddyMessage}
+          offsetRight={SIDEBAR_W + 16}
         />
       )}
 
