@@ -1,0 +1,72 @@
+{
+  "id": "critter_cove_03",
+  "world_id": "critter_cove",
+  "order_index": 3,
+  "title": "Whiskers the Cat",
+  "subject": "cat",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": false,
+  "palette": ["#2A1B3D", "#FF8E80", "#FFD166", "#FFB3A7", "#8B7D9E", "#D67FBA"],
+  "completion_sticker": "cat_cozy",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "A round head",
+      "companion_line": "Round circle for Whiskers' head!",
+      "reference_paths": [
+        "M 400 340 m -130 0 a 130 120 0 1 0 260 0 a 130 120 0 1 0 -260 0"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Two pointy triangle ears",
+      "companion_line": "Pointy triangle ears, one on each side!",
+      "reference_paths": [
+        "M 400 340 m -130 0 a 130 120 0 1 0 260 0 a 130 120 0 1 0 -260 0",
+        "M 290 250 l 20 -80 l 60 40 z",
+        "M 510 250 l -20 -80 l -60 40 z"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Sleepy eyes and a little nose",
+      "companion_line": "Half-closed sleepy eyes and a tiny pink nose!",
+      "reference_paths": [
+        "M 400 340 m -130 0 a 130 120 0 1 0 260 0 a 130 120 0 1 0 -260 0",
+        "M 290 250 l 20 -80 l 60 40 z",
+        "M 510 250 l -20 -80 l -60 40 z",
+        "M 345 320 q 15 -10 30 0",
+        "M 425 320 q 15 -10 30 0",
+        "M 390 360 q 10 12 20 0 z"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Whiskers and a smile",
+      "companion_line": "Long whiskers on each side and a happy smile!",
+      "reference_paths": [
+        "M 400 340 m -130 0 a 130 120 0 1 0 260 0 a 130 120 0 1 0 -260 0",
+        "M 290 250 l 20 -80 l 60 40 z",
+        "M 510 250 l -20 -80 l -60 40 z",
+        "M 345 320 q 15 -10 30 0",
+        "M 425 320 q 15 -10 30 0",
+        "M 390 360 q 10 12 20 0 z",
+        "M 390 380 q 10 15 20 0",
+        "M 300 370 l -50 -10",
+        "M 300 380 l -55 5",
+        "M 500 370 l 50 -10",
+        "M 500 380 l 55 5"
+      ],
+      "show_ghost": true
+    }
+  ],
+  "remix_options": [
+    { "id": "bowtie", "label": "Fancy bow tie", "emoji": "🎀", "sticker_keys": ["bowtie"] },
+    { "id": "yarn", "label": "Ball of yarn", "emoji": "🧶", "sticker_keys": ["yarn_ball"] },
+    { "id": "fish", "label": "Tiny fish friend", "emoji": "🐟", "sticker_keys": ["fish_mini"] }
+  ]
+}

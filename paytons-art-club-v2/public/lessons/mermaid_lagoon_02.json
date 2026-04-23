@@ -1,0 +1,89 @@
+{
+  "id": "mermaid_lagoon_02",
+  "world_id": "mermaid_lagoon",
+  "order_index": 2,
+  "title": "Cute Seahorse",
+  "subject": "seahorse",
+  "guidance_level": "show_and_copy",
+  "estimated_minutes": 5,
+  "is_premium": false,
+  "palette": ["#2A1B3D", "#FFD166", "#FF8E80", "#8FB8E8", "#D67FBA", "#B7E4B7"],
+  "completion_sticker": "seahorse_sweet",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Draw a C-shaped body",
+      "companion_line": "A curvy C shape — that's the seahorse's body!",
+      "reference_paths": [
+        "M 420 200 q -100 50 -80 180 q 30 80 100 80"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Long snoot and crown",
+      "companion_line": "A long curvy nose and a pointy crown on top!",
+      "reference_paths": [
+        "M 420 200 q -100 50 -80 180 q 30 80 100 80",
+        "M 420 200 q 20 -10 40 -20 q -10 40 -30 50",
+        "M 410 195 l -5 -20 l 15 5 l -5 -25 l 15 15 l 0 -20 l 15 20"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Curly tail at the bottom",
+      "companion_line": "A curly spiral tail at the end!",
+      "reference_paths": [
+        "M 420 200 q -100 50 -80 180 q 30 80 100 80",
+        "M 420 200 q 20 -10 40 -20 q -10 40 -30 50",
+        "M 410 195 l -5 -20 l 15 5 l -5 -25 l 15 15 l 0 -20 l 15 20",
+        "M 440 460 q 60 20 50 -30 q -20 -30 -40 -10 q -10 15 10 20"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Belly bumps and fin",
+      "companion_line": "Little bumps along the belly and a cute fin on top!",
+      "reference_paths": [
+        "M 420 200 q -100 50 -80 180 q 30 80 100 80",
+        "M 420 200 q 20 -10 40 -20 q -10 40 -30 50",
+        "M 410 195 l -5 -20 l 15 5 l -5 -25 l 15 15 l 0 -20 l 15 20",
+        "M 440 460 q 60 20 50 -30 q -20 -30 -40 -10 q -10 15 10 20",
+        "M 370 260 q 10 -10 20 0",
+        "M 360 300 q 10 -10 20 0",
+        "M 355 340 q 10 -10 20 0",
+        "M 365 380 q 10 -10 20 0",
+        "M 385 420 q 10 -10 20 0",
+        "M 370 230 q -30 -30 -20 -60 q 20 -10 40 10"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s5",
+      "instruction": "Friendly face",
+      "companion_line": "A sparkly eye and a tiny smile!",
+      "reference_paths": [
+        "M 420 200 q -100 50 -80 180 q 30 80 100 80",
+        "M 420 200 q 20 -10 40 -20 q -10 40 -30 50",
+        "M 410 195 l -5 -20 l 15 5 l -5 -25 l 15 15 l 0 -20 l 15 20",
+        "M 440 460 q 60 20 50 -30 q -20 -30 -40 -10 q -10 15 10 20",
+        "M 370 260 q 10 -10 20 0",
+        "M 360 300 q 10 -10 20 0",
+        "M 355 340 q 10 -10 20 0",
+        "M 365 380 q 10 -10 20 0",
+        "M 385 420 q 10 -10 20 0",
+        "M 370 230 q -30 -30 -20 -60 q 20 -10 40 10",
+        "M 390 225 m -6 0 a 6 6 0 1 0 12 0 a 6 6 0 1 0 -12 0",
+        "M 392 223 m -2 0 a 2 2 0 1 0 4 0 a 2 2 0 1 0 -4 0"
+      ],
+      "show_ghost": true
+    }
+  ],
+  "remix_options": [
+    { "id": "coral", "label": "Coral", "emoji": "🪸", "sticker_keys": ["coral"] },
+    { "id": "star", "label": "Starfish", "emoji": "⭐", "sticker_keys": ["starfish"] },
+    { "id": "bubbles", "label": "Bubbles", "emoji": "🫧", "sticker_keys": ["bubble"] }
+  ]
+}

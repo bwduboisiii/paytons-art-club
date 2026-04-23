@@ -1,0 +1,92 @@
+{
+  "id": "critter_cove_08",
+  "world_id": "critter_cove",
+  "order_index": 8,
+  "title": "Roary the Dinosaur",
+  "subject": "dinosaur",
+  "guidance_level": "show_and_copy",
+  "estimated_minutes": 6,
+  "is_premium": false,
+  "palette": ["#2A1B3D", "#5FB85F", "#8BCE8B", "#FFD166", "#FF8E80", "#8FB8E8"],
+  "completion_sticker": "dino_roar",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Draw a round body",
+      "companion_line": "A big round belly — dinos are hungry!",
+      "reference_paths": [
+        "M 400 380 m -120 0 a 120 90 0 1 0 240 0 a 120 90 0 1 0 -240 0"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Long curvy neck and head",
+      "companion_line": "A long curving neck going up, with a round head!",
+      "reference_paths": [
+        "M 400 380 m -120 0 a 120 90 0 1 0 240 0 a 120 90 0 1 0 -240 0",
+        "M 280 330 q -40 -60 0 -120 q 30 -40 70 -20",
+        "M 280 210 m -50 0 a 50 40 0 1 0 100 0 a 50 40 0 1 0 -100 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Stubby legs",
+      "companion_line": "Four stubby strong legs holding up all that body!",
+      "reference_paths": [
+        "M 400 380 m -120 0 a 120 90 0 1 0 240 0 a 120 90 0 1 0 -240 0",
+        "M 280 330 q -40 -60 0 -120 q 30 -40 70 -20",
+        "M 280 210 m -50 0 a 50 40 0 1 0 100 0 a 50 40 0 1 0 -100 0",
+        "M 320 460 l 0 40 l 25 0 l 0 -30",
+        "M 380 470 l 0 30 l 25 0 l 0 -25",
+        "M 440 470 l 0 30 l 25 0 l 0 -25",
+        "M 500 460 l 0 40 l 25 0 l 0 -30"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Pointy tail and spikes",
+      "companion_line": "A big curly tail and triangle spikes along the back!",
+      "reference_paths": [
+        "M 400 380 m -120 0 a 120 90 0 1 0 240 0 a 120 90 0 1 0 -240 0",
+        "M 280 330 q -40 -60 0 -120 q 30 -40 70 -20",
+        "M 280 210 m -50 0 a 50 40 0 1 0 100 0 a 50 40 0 1 0 -100 0",
+        "M 320 460 l 0 40 l 25 0 l 0 -30",
+        "M 380 470 l 0 30 l 25 0 l 0 -25",
+        "M 440 470 l 0 30 l 25 0 l 0 -25",
+        "M 500 460 l 0 40 l 25 0 l 0 -30",
+        "M 510 370 q 60 20 80 70 q -20 30 -60 30 q 0 -40 -30 -60",
+        "M 400 290 l 15 -25 l 30 0 l 15 25",
+        "M 460 290 l 15 -25 l 30 0 l 15 25"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s5",
+      "instruction": "Friendly face",
+      "companion_line": "A big eye and a happy smile — this dino is a softie!",
+      "reference_paths": [
+        "M 400 380 m -120 0 a 120 90 0 1 0 240 0 a 120 90 0 1 0 -240 0",
+        "M 280 330 q -40 -60 0 -120 q 30 -40 70 -20",
+        "M 280 210 m -50 0 a 50 40 0 1 0 100 0 a 50 40 0 1 0 -100 0",
+        "M 320 460 l 0 40 l 25 0 l 0 -30",
+        "M 380 470 l 0 30 l 25 0 l 0 -25",
+        "M 440 470 l 0 30 l 25 0 l 0 -25",
+        "M 500 460 l 0 40 l 25 0 l 0 -30",
+        "M 510 370 q 60 20 80 70 q -20 30 -60 30 q 0 -40 -30 -60",
+        "M 400 290 l 15 -25 l 30 0 l 15 25",
+        "M 460 290 l 15 -25 l 30 0 l 15 25",
+        "M 270 200 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 240 225 q 10 10 20 0"
+      ],
+      "show_ghost": true
+    }
+  ],
+  "remix_options": [
+    { "id": "volcano", "label": "Volcano", "emoji": "🌋", "sticker_keys": ["volcano"] },
+    { "id": "leaves", "label": "Leafy snacks", "emoji": "🌿", "sticker_keys": ["leaf"] },
+    { "id": "tree", "label": "Big tree", "emoji": "🌳", "sticker_keys": ["tree"] }
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "id": "sparkle_kingdom_04",
+  "world_id": "sparkle_kingdom",
+  "order_index": 4,
+  "title": "Pretty Flower",
+  "subject": "flower",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": false,
+  "palette": ["#2A1B3D", "#FF8E80", "#D67FBA", "#FFD166", "#5FB85F", "#8FB8E8"],
+  "completion_sticker": "flower_bloom",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Draw a center circle",
+      "companion_line": "Start with a round yellow center!",
+      "reference_paths": [
+        "M 400 320 m -30 0 a 30 30 0 1 0 60 0 a 30 30 0 1 0 -60 0"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Five round petals",
+      "companion_line": "Five big round petals all around, like a star!",
+      "reference_paths": [
+        "M 400 320 m -30 0 a 30 30 0 1 0 60 0 a 30 30 0 1 0 -60 0",
+        "M 400 230 m -35 0 a 35 40 0 1 0 70 0 a 35 40 0 1 0 -70 0",
+        "M 485 290 m -35 0 a 35 40 0 1 0 70 0 a 35 40 0 1 0 -70 0",
+        "M 450 380 m -35 0 a 35 40 0 1 0 70 0 a 35 40 0 1 0 -70 0",
+        "M 350 380 m -35 0 a 35 40 0 1 0 70 0 a 35 40 0 1 0 -70 0",
+        "M 315 290 m -35 0 a 35 40 0 1 0 70 0 a 35 40 0 1 0 -70 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Stem going down",
+      "companion_line": "A curvy green stem going all the way down!",
+      "reference_paths": [
+        "M 400 320 m -30 0 a 30 30 0 1 0 60 0 a 30 30 0 1 0 -60 0",
+        "M 400 230 m -35 0 a 35 40 0 1 0 70 0 a 35 40 0 1 0 -70 0",
+        "M 485 290 m -35 0 a 35 40 0 1 0 70 0 a 35 40 0 1 0 -70 0",
+        "M 450 380 m -35 0 a 35 40 0 1 0 70 0 a 35 40 0 1 0 -70 0",
+        "M 350 380 m -35 0 a 35 40 0 1 0 70 0 a 35 40 0 1 0 -70 0",
+        "M 315 290 m -35 0 a 35 40 0 1 0 70 0 a 35 40 0 1 0 -70 0",
+        "M 400 420 q -10 60 5 100 q -5 30 -5 60"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Two leaves and a smile",
+      "companion_line": "Two leaves on the stem, and a happy face in the center!",
+      "reference_paths": [
+        "M 400 320 m -30 0 a 30 30 0 1 0 60 0 a 30 30 0 1 0 -60 0",
+        "M 400 230 m -35 0 a 35 40 0 1 0 70 0 a 35 40 0 1 0 -70 0",
+        "M 485 290 m -35 0 a 35 40 0 1 0 70 0 a 35 40 0 1 0 -70 0",
+        "M 450 380 m -35 0 a 35 40 0 1 0 70 0 a 35 40 0 1 0 -70 0",
+        "M 350 380 m -35 0 a 35 40 0 1 0 70 0 a 35 40 0 1 0 -70 0",
+        "M 315 290 m -35 0 a 35 40 0 1 0 70 0 a 35 40 0 1 0 -70 0",
+        "M 400 420 q -10 60 5 100 q -5 30 -5 60",
+        "M 395 470 q -40 -10 -60 10 q 20 30 55 10",
+        "M 405 510 q 40 -10 60 10 q -20 30 -55 10",
+        "M 390 315 m -4 0 a 4 4 0 1 0 8 0 a 4 4 0 1 0 -8 0",
+        "M 410 315 m -4 0 a 4 4 0 1 0 8 0 a 4 4 0 1 0 -8 0",
+        "M 390 330 q 10 8 20 0"
+      ],
+      "show_ghost": true
+    }
+  ],
+  "remix_options": [
+    { "id": "butterfly", "label": "Butterfly friend", "emoji": "🦋", "sticker_keys": ["butterfly"] },
+    { "id": "bee", "label": "Buzzy bee", "emoji": "🐝", "sticker_keys": ["bee"] },
+    { "id": "sun", "label": "Sunshine", "emoji": "☀️", "sticker_keys": ["sun"] }
+  ]
+}

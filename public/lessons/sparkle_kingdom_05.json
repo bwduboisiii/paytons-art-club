@@ -1,0 +1,68 @@
+{
+  "id": "sparkle_kingdom_05",
+  "world_id": "sparkle_kingdom",
+  "order_index": 5,
+  "title": "Magic Rainbow",
+  "subject": "rainbow",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": false,
+  "palette": ["#FF6B5B", "#FF9500", "#FFD166", "#5FB85F", "#8FB8E8", "#B85CA0"],
+  "completion_sticker": "rainbow_magic",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Red arch on top",
+      "companion_line": "Start with a big red curve — the top of the rainbow!",
+      "reference_paths": [
+        "M 200 400 q 200 -250 400 0"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Orange arch",
+      "companion_line": "Now orange, just below the red!",
+      "reference_paths": [
+        "M 200 400 q 200 -250 400 0",
+        "M 220 400 q 180 -215 360 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Yellow, green, blue, purple",
+      "companion_line": "Keep adding colors — each one a little smaller!",
+      "reference_paths": [
+        "M 200 400 q 200 -250 400 0",
+        "M 220 400 q 180 -215 360 0",
+        "M 240 400 q 160 -180 320 0",
+        "M 260 400 q 140 -145 280 0",
+        "M 280 400 q 120 -110 240 0",
+        "M 300 400 q 100 -75 200 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Two fluffy clouds at the ends",
+      "companion_line": "Clouds at the bottom of each side of the rainbow!",
+      "reference_paths": [
+        "M 200 400 q 200 -250 400 0",
+        "M 220 400 q 180 -215 360 0",
+        "M 240 400 q 160 -180 320 0",
+        "M 260 400 q 140 -145 280 0",
+        "M 280 400 q 120 -110 240 0",
+        "M 300 400 q 100 -75 200 0",
+        "M 150 400 q 0 -30 30 -30 q 10 -20 35 -10 q 20 -15 40 5 q 15 10 5 30 z",
+        "M 580 400 q 0 -30 30 -30 q 10 -20 35 -10 q 20 -15 40 5 q 15 10 5 30 z"
+      ],
+      "show_ghost": true
+    }
+  ],
+  "remix_options": [
+    { "id": "stars", "label": "Twinkly stars", "emoji": "⭐", "sticker_keys": ["star"] },
+    { "id": "sun", "label": "Happy sun", "emoji": "☀️", "sticker_keys": ["sun"] },
+    { "id": "hearts", "label": "Love hearts", "emoji": "💖", "sticker_keys": ["heart"] }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "id": "critter_cove_01",
+  "world_id": "critter_cove",
+  "order_index": 1,
+  "title": "Hoppy the Bunny",
+  "subject": "bunny",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": false,
+  "palette": ["#2A1B3D", "#FF8E80", "#FFD166", "#8FB8E8", "#8BCE8B", "#D67FBA"],
+  "completion_sticker": "bunny_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Draw a big round head",
+      "companion_line": "Let's start with a big round circle — that's Hoppy's head!",
+      "reference_paths": [
+        "M 400 320 m -120 0 a 120 120 0 1 0 240 0 a 120 120 0 1 0 -240 0"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Add two tall bunny ears",
+      "companion_line": "Now two tall ears on top! Long and pointy.",
+      "reference_paths": [
+        "M 400 320 m -120 0 a 120 120 0 1 0 240 0 a 120 120 0 1 0 -240 0",
+        "M 340 210 q -20 -100 10 -150 q 25 30 20 130",
+        "M 460 210 q 20 -100 -10 -150 q -25 30 -20 130"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Two sparkly eyes",
+      "companion_line": "Two little dot eyes — make them sparkle!",
+      "reference_paths": [
+        "M 400 320 m -120 0 a 120 120 0 1 0 240 0 a 120 120 0 1 0 -240 0",
+        "M 340 210 q -20 -100 10 -150 q 25 30 20 130",
+        "M 460 210 q 20 -100 -10 -150 q -25 30 -20 130",
+        "M 360 300 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 440 300 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Tiny nose and a smile",
+      "companion_line": "A tiny triangle nose and a happy smile!",
+      "reference_paths": [
+        "M 400 320 m -120 0 a 120 120 0 1 0 240 0 a 120 120 0 1 0 -240 0",
+        "M 340 210 q -20 -100 10 -150 q 25 30 20 130",
+        "M 460 210 q 20 -100 -10 -150 q -25 30 -20 130",
+        "M 360 300 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 440 300 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 390 340 l 10 -12 l 10 12 z",
+        "M 380 360 q 20 20 40 0"
+      ],
+      "show_ghost": true
+    }
+  ],
+  "remix_options": [
+    { "id": "bow", "label": "Add a bow", "emoji": "🎀", "sticker_keys": ["bow_pink"] },
+    { "id": "flower", "label": "Flower friend", "emoji": "🌸", "sticker_keys": ["flower_daisy"] },
+    { "id": "hat", "label": "Silly hat", "emoji": "🎩", "sticker_keys": ["hat_party"] }
+  ]
+}

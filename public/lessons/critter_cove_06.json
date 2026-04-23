@@ -1,0 +1,69 @@
+{
+  "id": "critter_cove_06",
+  "world_id": "critter_cove",
+  "order_index": 6,
+  "title": "Pupper the Dog",
+  "subject": "dog",
+  "guidance_level": "show_and_copy",
+  "estimated_minutes": 5,
+  "is_premium": false,
+  "palette": ["#2A1B3D", "#D4A574", "#8B4513", "#FFB3A7", "#FFD166", "#FFFBF4"],
+  "completion_sticker": "dog_happy",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Round fluffy head",
+      "companion_line": "Start with a round head — a friendly circle!",
+      "reference_paths": [
+        "M 400 330 m -120 0 a 120 110 0 1 0 240 0 a 120 110 0 1 0 -240 0"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Two floppy ears",
+      "companion_line": "Two long floppy ears hanging down the sides!",
+      "reference_paths": [
+        "M 400 330 m -120 0 a 120 110 0 1 0 240 0 a 120 110 0 1 0 -240 0",
+        "M 280 280 q -30 40 -20 90 q 30 10 50 -20 z",
+        "M 520 280 q 30 40 20 90 q -30 10 -50 -20 z"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Big eyes and a nose",
+      "companion_line": "Sparkly eyes and a heart-shaped nose!",
+      "reference_paths": [
+        "M 400 330 m -120 0 a 120 110 0 1 0 240 0 a 120 110 0 1 0 -240 0",
+        "M 280 280 q -30 40 -20 90 q 30 10 50 -20 z",
+        "M 520 280 q 30 40 20 90 q -30 10 -50 -20 z",
+        "M 360 310 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 440 310 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 390 370 q -5 -10 10 -10 q 15 0 10 10 q 0 10 -10 15 q -10 -5 -10 -15 z"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Tongue and a little spot",
+      "companion_line": "A pink tongue hanging out, and a cute spot!",
+      "reference_paths": [
+        "M 400 330 m -120 0 a 120 110 0 1 0 240 0 a 120 110 0 1 0 -240 0",
+        "M 280 280 q -30 40 -20 90 q 30 10 50 -20 z",
+        "M 520 280 q 30 40 20 90 q -30 10 -50 -20 z",
+        "M 360 310 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 440 310 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 390 370 q -5 -10 10 -10 q 15 0 10 10 q 0 10 -10 15 q -10 -5 -10 -15 z",
+        "M 380 400 q 20 30 40 0 q 0 20 -20 30 q -20 -10 -20 -30 z",
+        "M 320 360 m -20 0 a 20 15 0 1 0 40 0 a 20 15 0 1 0 -40 0"
+      ],
+      "show_ghost": true
+    }
+  ],
+  "remix_options": [
+    { "id": "bone", "label": "Tasty bone", "emoji": "🦴", "sticker_keys": ["bone"] },
+    { "id": "ball", "label": "Play ball", "emoji": "🎾", "sticker_keys": ["ball"] },
+    { "id": "heart", "label": "Love hearts", "emoji": "💕", "sticker_keys": ["heart"] }
+  ]
+}
