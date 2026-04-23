@@ -1,7 +1,3 @@
-// ============================================================
-// Payton's Art Club - Core Types
-// ============================================================
-
 import type { DrawingToolId } from './drawingTools';
 
 export type GuidanceLevel =
@@ -10,7 +6,16 @@ export type GuidanceLevel =
   | 'show_and_copy'
   | 'free_prompt';
 
-export type CompanionKey = 'bunny' | 'kitty' | 'fox' | 'owl';
+// Expanded companion roster - 8 options now.
+export type CompanionKey =
+  | 'bunny'
+  | 'kitty'
+  | 'fox'
+  | 'owl'
+  | 'panda'
+  | 'bear'
+  | 'unicorn'
+  | 'dragon';
 
 export interface World {
   id: string;
@@ -20,6 +25,9 @@ export interface World {
   icon: string;
   unlocked: boolean;
   lessons: string[];
+  // NEW: tier system. 'free' = always available. 'premium' = gated by
+  // parent purchase (UI flagged, Stripe wiring comes later).
+  tier: 'free' | 'premium';
 }
 
 export interface LessonStep {
@@ -82,10 +90,6 @@ export interface LessonCompletion {
   remix_applied: boolean;
 }
 
-// ============================================================
-// Drawing
-// ============================================================
-
 export interface Stroke {
   points: Array<{ x: number; y: number; pressure?: number }>;
   color: string;
@@ -95,8 +99,6 @@ export interface Stroke {
 
 export interface PlacedSticker {
   key: string;
-  // If src is present it's an image sticker (uploaded or URL).
-  // If absent, key is treated as an emoji glyph.
   src?: string;
   x: number;
   y: number;
@@ -109,16 +111,11 @@ export interface CanvasState {
   stickers: PlacedSticker[];
 }
 
-// ============================================================
-// Custom stickers (user-uploaded)
-// ============================================================
-
 export interface CustomSticker {
   id: string;
   kid_id: string;
   name: string;
   storage_path: string;
   created_at: string;
-  // Populated client-side after fetch
   signed_url?: string;
 }

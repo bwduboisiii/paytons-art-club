@@ -1,0 +1,114 @@
+{
+  "id": "food_friends_02",
+  "world_id": "food_friends",
+  "order_index": 2,
+  "title": "Pia the Pizza",
+  "subject": "pizza",
+  "guidance_level": "show_and_copy",
+  "estimated_minutes": 5,
+  "is_premium": false,
+  "palette": [
+    "#2A1B3D",
+    "#FFD166",
+    "#FF6B5B",
+    "#FFFBF4",
+    "#5FB85F",
+    "#D4A574"
+  ],
+  "completion_sticker": "pizza_yummy",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Big triangle slice",
+      "companion_line": "A tall pizza slice triangle!",
+      "reference_paths": [
+        "M 400 200 L 250 500 L 550 500 Z"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Crust along the bottom",
+      "companion_line": "A curvy crust on the bottom edge!",
+      "reference_paths": [
+        "M 400 200 L 250 500 L 550 500 Z",
+        "M 255 495 q 70 20 140 0 q 70 20 145 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Round pepperoni",
+      "companion_line": "Three round red circles!",
+      "reference_paths": [
+        "M 400 200 L 250 500 L 550 500 Z",
+        "M 255 495 q 70 20 140 0 q 70 20 145 0",
+        "M 340 340 m -15 0 a 15 15 0 1 0 30 0 a 15 15 0 1 0 -30 0",
+        "M 420 400 m -15 0 a 15 15 0 1 0 30 0 a 15 15 0 1 0 -30 0",
+        "M 380 280 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Cheese drips",
+      "companion_line": "Yummy cheese dripping down!",
+      "reference_paths": [
+        "M 400 200 L 250 500 L 550 500 Z",
+        "M 255 495 q 70 20 140 0 q 70 20 145 0",
+        "M 340 340 m -15 0 a 15 15 0 1 0 30 0 a 15 15 0 1 0 -30 0",
+        "M 420 400 m -15 0 a 15 15 0 1 0 30 0 a 15 15 0 1 0 -30 0",
+        "M 380 280 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 350 430 l 0 -30 l 20 10 l 0 30",
+        "M 440 460 l 0 -30 l 20 10 l 0 30",
+        "M 420 350 l 0 -30 l 20 10 l 0 30"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s5",
+      "instruction": "Smiley face",
+      "companion_line": "Two eyes and a happy cheesy smile!",
+      "reference_paths": [
+        "M 400 200 L 250 500 L 550 500 Z",
+        "M 255 495 q 70 20 140 0 q 70 20 145 0",
+        "M 340 340 m -15 0 a 15 15 0 1 0 30 0 a 15 15 0 1 0 -30 0",
+        "M 420 400 m -15 0 a 15 15 0 1 0 30 0 a 15 15 0 1 0 -30 0",
+        "M 380 280 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 350 430 l 0 -30 l 20 10 l 0 30",
+        "M 440 460 l 0 -30 l 20 10 l 0 30",
+        "M 420 350 l 0 -30 l 20 10 l 0 30",
+        "M 370 430 m -5 0 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0",
+        "M 420 430 m -5 0 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0",
+        "M 390 460 q 15 10 30 0"
+      ],
+      "show_ghost": true
+    }
+  ],
+  "remix_options": [
+    {
+      "id": "olive",
+      "label": "Olives",
+      "emoji": "\ud83e\uded2",
+      "sticker_keys": [
+        "olive"
+      ]
+    },
+    {
+      "id": "mushroom",
+      "label": "Mushrooms",
+      "emoji": "\ud83c\udf44",
+      "sticker_keys": [
+        "mushroom"
+      ]
+    },
+    {
+      "id": "heart",
+      "label": "Love",
+      "emoji": "\ud83d\udc95",
+      "sticker_keys": [
+        "heart"
+      ]
+    }
+  ]
+}

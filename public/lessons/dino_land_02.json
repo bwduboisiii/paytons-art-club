@@ -1,0 +1,98 @@
+{
+  "id": "dino_land_02",
+  "world_id": "dino_land",
+  "order_index": 2,
+  "title": "Trixie the Triceratops",
+  "subject": "triceratops",
+  "guidance_level": "show_and_copy",
+  "estimated_minutes": 6,
+  "is_premium": false,
+  "palette": [
+    "#2A1B3D",
+    "#8FB8E8",
+    "#6B98D6",
+    "#FFD166",
+    "#B7E4B7",
+    "#FFF4E0"
+  ],
+  "completion_sticker": "triceratops_trio",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Round dino body",
+      "companion_line": "A sturdy round body!",
+      "reference_paths": [
+        "M 400 360 m -110 0 a 110 90 0 1 0 220 0 a 110 90 0 1 0 -220 0"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Big frill behind head",
+      "companion_line": "A big bony frill on each side!",
+      "reference_paths": [
+        "M 400 360 m -110 0 a 110 90 0 1 0 220 0 a 110 90 0 1 0 -220 0",
+        "M 290 340 q -40 30 -50 80 q 50 20 90 -10",
+        "M 510 340 q 40 30 50 80 q -50 20 -90 -10"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Three horns!",
+      "companion_line": "Two horns on top, one on the nose!",
+      "reference_paths": [
+        "M 400 360 m -110 0 a 110 90 0 1 0 220 0 a 110 90 0 1 0 -220 0",
+        "M 290 340 q -40 30 -50 80 q 50 20 90 -10",
+        "M 510 340 q 40 30 50 80 q -50 20 -90 -10",
+        "M 360 290 l -10 -40 l 20 10 z",
+        "M 440 290 l 10 -40 l -20 10 z",
+        "M 400 270 l 0 -60 l 15 20 l -15 -20 l -15 20 l 15 -20"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Sweet face",
+      "companion_line": "Two big eyes and a happy smile!",
+      "reference_paths": [
+        "M 400 360 m -110 0 a 110 90 0 1 0 220 0 a 110 90 0 1 0 -220 0",
+        "M 290 340 q -40 30 -50 80 q 50 20 90 -10",
+        "M 510 340 q 40 30 50 80 q -50 20 -90 -10",
+        "M 360 290 l -10 -40 l 20 10 z",
+        "M 440 290 l 10 -40 l -20 10 z",
+        "M 400 270 l 0 -60 l 15 20 l -15 -20 l -15 20 l 15 -20",
+        "M 360 360 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 440 360 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 380 400 q 20 15 40 0"
+      ],
+      "show_ghost": true
+    }
+  ],
+  "remix_options": [
+    {
+      "id": "leaf",
+      "label": "Leaves",
+      "emoji": "\ud83c\udf3f",
+      "sticker_keys": [
+        "leaf"
+      ]
+    },
+    {
+      "id": "flower",
+      "label": "Flowers",
+      "emoji": "\ud83c\udf3a",
+      "sticker_keys": [
+        "flower"
+      ]
+    },
+    {
+      "id": "rock",
+      "label": "Rock",
+      "emoji": "\ud83e\udea8",
+      "sticker_keys": [
+        "rock"
+      ]
+    }
+  ]
+}

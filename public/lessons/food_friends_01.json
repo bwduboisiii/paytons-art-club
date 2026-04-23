@@ -1,0 +1,116 @@
+{
+  "id": "food_friends_01",
+  "world_id": "food_friends",
+  "order_index": 1,
+  "title": "Appy the Apple",
+  "subject": "apple",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": false,
+  "palette": [
+    "#2A1B3D",
+    "#FF6B5B",
+    "#5FB85F",
+    "#FFD166",
+    "#FFFBF4",
+    "#FFB3A7"
+  ],
+  "completion_sticker": "apple_crunch",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Round apple body",
+      "companion_line": "A round apple shape!",
+      "reference_paths": [
+        "M 400 360 m -120 0 a 120 100 0 1 0 240 0 a 120 100 0 1 0 -240 0"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Little dip at the top",
+      "companion_line": "A gentle curve at the top!",
+      "reference_paths": [
+        "M 400 360 m -120 0 a 120 100 0 1 0 240 0 a 120 100 0 1 0 -240 0",
+        "M 290 320 q 50 -60 110 -60 q 60 0 110 60"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Leaves coming out",
+      "companion_line": "Two little leaves on top!",
+      "reference_paths": [
+        "M 400 360 m -120 0 a 120 100 0 1 0 240 0 a 120 100 0 1 0 -240 0",
+        "M 290 320 q 50 -60 110 -60 q 60 0 110 60",
+        "M 320 260 q 30 -30 60 -20",
+        "M 370 250 q 30 -20 50 -10",
+        "M 430 240 q 30 -15 50 0",
+        "M 480 260 q 20 -10 40 5"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Sparkly eyes and a smile",
+      "companion_line": "Big eyes and a happy grin!",
+      "reference_paths": [
+        "M 400 360 m -120 0 a 120 100 0 1 0 240 0 a 120 100 0 1 0 -240 0",
+        "M 290 320 q 50 -60 110 -60 q 60 0 110 60",
+        "M 320 260 q 30 -30 60 -20",
+        "M 370 250 q 30 -20 50 -10",
+        "M 430 240 q 30 -15 50 0",
+        "M 480 260 q 20 -10 40 5",
+        "M 360 360 m -10 0 a 10 12 0 1 0 20 0 a 10 12 0 1 0 -20 0",
+        "M 440 360 m -10 0 a 10 12 0 1 0 20 0 a 10 12 0 1 0 -20 0",
+        "M 370 420 q 30 40 60 0 q -30 20 -60 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s5",
+      "instruction": "Rosy cheeks",
+      "companion_line": "Pink cheeks on each side!",
+      "reference_paths": [
+        "M 400 360 m -120 0 a 120 100 0 1 0 240 0 a 120 100 0 1 0 -240 0",
+        "M 290 320 q 50 -60 110 -60 q 60 0 110 60",
+        "M 320 260 q 30 -30 60 -20",
+        "M 370 250 q 30 -20 50 -10",
+        "M 430 240 q 30 -15 50 0",
+        "M 480 260 q 20 -10 40 5",
+        "M 360 360 m -10 0 a 10 12 0 1 0 20 0 a 10 12 0 1 0 -20 0",
+        "M 440 360 m -10 0 a 10 12 0 1 0 20 0 a 10 12 0 1 0 -20 0",
+        "M 370 420 q 30 40 60 0 q -30 20 -60 0",
+        "M 340 440 m -15 0 a 15 8 0 1 0 30 0 a 15 8 0 1 0 -30 0",
+        "M 460 440 m -15 0 a 15 8 0 1 0 30 0 a 15 8 0 1 0 -30 0"
+      ],
+      "show_ghost": true
+    }
+  ],
+  "remix_options": [
+    {
+      "id": "worm",
+      "label": "Worm friend",
+      "emoji": "\ud83d\udc1b",
+      "sticker_keys": [
+        "worm"
+      ]
+    },
+    {
+      "id": "star",
+      "label": "Sparkle",
+      "emoji": "\u2b50",
+      "sticker_keys": [
+        "star"
+      ]
+    },
+    {
+      "id": "heart",
+      "label": "Heart",
+      "emoji": "\ud83d\udc96",
+      "sticker_keys": [
+        "heart"
+      ]
+    }
+  ]
+}

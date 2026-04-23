@@ -1,0 +1,98 @@
+{
+  "id": "fairy_garden_03",
+  "world_id": "fairy_garden",
+  "order_index": 3,
+  "title": "Wishful Wand",
+  "subject": "wand",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": false,
+  "palette": [
+    "#2A1B3D",
+    "#FFD166",
+    "#F5B82E",
+    "#E8A5D1",
+    "#B8D4F5",
+    "#FFFBF4"
+  ],
+  "completion_sticker": "wand_wishes",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Star on top",
+      "companion_line": "A sparkly star shape!",
+      "reference_paths": [
+        "M 400 200 l -20 0 l 0 0 l 40 40 l 0 -20 l -20 -20 z",
+        "M 400 210 l -25 -25 l 25 -25 l 25 25 z"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Long handle",
+      "companion_line": "A straight wand stick going down!",
+      "reference_paths": [
+        "M 400 200 l -20 0 l 0 0 l 40 40 l 0 -20 l -20 -20 z",
+        "M 400 210 l -25 -25 l 25 -25 l 25 25 z",
+        "M 400 210 l 0 280",
+        "M 397 485 l -40 40 l 80 0 z"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Big sparkle above",
+      "companion_line": "A shining star burst above it!",
+      "reference_paths": [
+        "M 400 200 l -20 0 l 0 0 l 40 40 l 0 -20 l -20 -20 z",
+        "M 400 210 l -25 -25 l 25 -25 l 25 25 z",
+        "M 400 210 l 0 280",
+        "M 397 485 l -40 40 l 80 0 z",
+        "M 400 180 l 3 -15 l 15 -3 l -15 -3 l -3 -15 l -3 15 l -15 3 l 15 3 z"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Lots of tiny sparkles!",
+      "companion_line": "Little sparkle stars around!",
+      "reference_paths": [
+        "M 400 200 l -20 0 l 0 0 l 40 40 l 0 -20 l -20 -20 z",
+        "M 400 210 l -25 -25 l 25 -25 l 25 25 z",
+        "M 400 210 l 0 280",
+        "M 397 485 l -40 40 l 80 0 z",
+        "M 400 180 l 3 -15 l 15 -3 l -15 -3 l -3 -15 l -3 15 l -15 3 l 15 3 z",
+        "M 470 250 l 3 -10 l 10 -3 l -10 -3 l -3 -10 l -3 10 l -10 3 l 10 3 z",
+        "M 330 350 l 3 -10 l 10 -3 l -10 -3 l -3 -10 l -3 10 l -10 3 l 10 3 z",
+        "M 460 400 l 3 -10 l 10 -3 l -10 -3 l -3 -10 l -3 10 l -10 3 l 10 3 z"
+      ],
+      "show_ghost": true
+    }
+  ],
+  "remix_options": [
+    {
+      "id": "glitter",
+      "label": "Glitter",
+      "emoji": "\u2728",
+      "sticker_keys": [
+        "glitter"
+      ]
+    },
+    {
+      "id": "heart",
+      "label": "Hearts",
+      "emoji": "\ud83d\udc96",
+      "sticker_keys": [
+        "heart"
+      ]
+    },
+    {
+      "id": "moon",
+      "label": "Moon",
+      "emoji": "\ud83c\udf19",
+      "sticker_keys": [
+        "moon"
+      ]
+    }
+  ]
+}

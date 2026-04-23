@@ -14,6 +14,10 @@ const COMPANIONS: { key: CompanionKey; name: string }[] = [
   { key: 'kitty', name: 'Whiskers' },
   { key: 'fox', name: 'Rusty' },
   { key: 'owl', name: 'Hoot' },
+  { key: 'panda', name: 'Bamboo' },
+  { key: 'bear', name: 'Honey' },
+  { key: 'unicorn', name: 'Sparkle' },
+  { key: 'dragon', name: 'Ember' },
 ];
 
 export default function OnboardingPage() {
@@ -27,15 +31,11 @@ export default function OnboardingPage() {
   const [error, setError] = useState<string | null>(null);
   const [sessionChecked, setSessionChecked] = useState(false);
 
-  // Verify there's an active session on mount. If not, redirect to login
-  // instead of letting the kid fill out onboarding only to fail on save.
   useEffect(() => {
     let cancelled = false;
     (async () => {
       const supabase = createClient();
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+      const { data: { user } } = await supabase.auth.getUser();
       if (cancelled) return;
       if (!user) {
         router.replace('/login?next=/onboarding');
@@ -43,30 +43,21 @@ export default function OnboardingPage() {
       }
       setSessionChecked(true);
     })();
-    return () => {
-      cancelled = true;
-    };
+    return () => { cancelled = true; };
   }, [router]);
 
   async function finish() {
     setSaving(true);
     setError(null);
     const supabase = createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    const { data: { user } } = await supabase.auth.getUser();
     if (!user) {
       router.replace('/login?next=/onboarding');
       return;
     }
     const { data, error } = await supabase
       .from('kids')
-      .insert({
-        parent_id: user.id,
-        name: name.trim(),
-        age,
-        avatar_key: companion,
-      })
+      .insert({ parent_id: user.id, name: name.trim(), age, avatar_key: companion })
       .select()
       .single();
     if (error) {
@@ -88,7 +79,7 @@ export default function OnboardingPage() {
 
   return (
     <main className="min-h-screen flex items-center justify-center px-6 py-12">
-      <div className="w-full max-w-2xl">
+      <div className="w-full max-w-3xl">
         <div className="card-cozy p-8 md:p-12">
           {step === 'name' && (
             <>
@@ -150,29 +141,15 @@ export default function OnboardingPage() {
                 })}
               </div>
               <div className="flex justify-between mt-8">
-                <Button
-                  variant="ghost"
-                  size="md"
-                  onClick={() => setStep('name')}
-                >
-                  ← Back
-                </Button>
-                <Button
-                  variant="primary"
-                  size="lg"
-                  onClick={() => setStep('companion')}
-                >
-                  Next →
-                </Button>
+                <Button variant="ghost" size="md" onClick={() => setStep('name')}>← Back</Button>
+                <Button variant="primary" size="lg" onClick={() => setStep('companion')}>Next →</Button>
               </div>
             </>
           )}
 
           {step === 'companion' && (
             <>
-              <h1 className="heading-1 text-center mb-3">
-                Pick a drawing buddy!
-              </h1>
+              <h1 className="heading-1 text-center mb-3">Pick a drawing buddy!</h1>
               <p className="text-center text-ink-700 mb-8 text-lg">
                 Your companion will cheer you on in every lesson.
               </p>
@@ -191,11 +168,9 @@ export default function OnboardingPage() {
                     <Companion
                       character={c.key}
                       mood={companion === c.key ? 'happy' : 'idle'}
-                      size={100}
+                      size={90}
                     />
-                    <p className="font-display font-bold text-center mt-2">
-                      {c.name}
-                    </p>
+                    <p className="font-display font-bold text-center mt-2">{c.name}</p>
                   </button>
                 ))}
               </div>
@@ -205,19 +180,8 @@ export default function OnboardingPage() {
                 </p>
               )}
               <div className="flex justify-between mt-8">
-                <Button
-                  variant="ghost"
-                  size="md"
-                  onClick={() => setStep('age')}
-                >
-                  ← Back
-                </Button>
-                <Button
-                  variant="primary"
-                  size="lg"
-                  onClick={finish}
-                  disabled={saving}
-                >
+                <Button variant="ghost" size="md" onClick={() => setStep('age')}>← Back</Button>
+                <Button variant="primary" size="lg" onClick={finish} disabled={saving}>
                   {saving ? 'Saving...' : "Let's Draw! 🎨"}
                 </Button>
               </div>

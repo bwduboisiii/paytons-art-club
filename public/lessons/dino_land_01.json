@@ -1,0 +1,106 @@
+{
+  "id": "dino_land_01",
+  "world_id": "dino_land",
+  "order_index": 1,
+  "title": "Rexy the T-Rex",
+  "subject": "trex",
+  "guidance_level": "show_and_copy",
+  "estimated_minutes": 6,
+  "is_premium": false,
+  "palette": [
+    "#2A1B3D",
+    "#5FB85F",
+    "#8BCE8B",
+    "#FFD166",
+    "#FF8E80",
+    "#FFF4E0"
+  ],
+  "completion_sticker": "trex_roar",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Round dino head",
+      "companion_line": "A big round roaring head!",
+      "reference_paths": [
+        "M 400 360 m -110 0 a 110 110 0 1 0 220 0 a 110 110 0 1 0 -220 0"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Spikes on top",
+      "companion_line": "Triangle spikes along the top!",
+      "reference_paths": [
+        "M 400 360 m -110 0 a 110 110 0 1 0 220 0 a 110 110 0 1 0 -220 0",
+        "M 360 280 q 0 -60 40 -60 q 40 0 40 60 z",
+        "M 370 250 l 10 -25 l 10 25",
+        "M 390 245 l 10 -25 l 10 25",
+        "M 410 250 l 10 -25 l 10 25"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Eyes and nostrils",
+      "companion_line": "Glowing eyes and tiny nose holes!",
+      "reference_paths": [
+        "M 400 360 m -110 0 a 110 110 0 1 0 220 0 a 110 110 0 1 0 -220 0",
+        "M 360 280 q 0 -60 40 -60 q 40 0 40 60 z",
+        "M 370 250 l 10 -25 l 10 25",
+        "M 390 245 l 10 -25 l 10 25",
+        "M 410 250 l 10 -25 l 10 25",
+        "M 360 340 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 440 340 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 390 380 l 5 -10 l 15 0 l 5 10"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Big toothy mouth",
+      "companion_line": "A huge open mouth full of teeth!",
+      "reference_paths": [
+        "M 400 360 m -110 0 a 110 110 0 1 0 220 0 a 110 110 0 1 0 -220 0",
+        "M 360 280 q 0 -60 40 -60 q 40 0 40 60 z",
+        "M 370 250 l 10 -25 l 10 25",
+        "M 390 245 l 10 -25 l 10 25",
+        "M 410 250 l 10 -25 l 10 25",
+        "M 360 340 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 440 340 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 390 380 l 5 -10 l 15 0 l 5 10",
+        "M 330 400 q 20 30 70 30 q 50 0 70 -30",
+        "M 340 400 l 5 20 l 10 -20",
+        "M 370 412 l 5 18 l 10 -18",
+        "M 425 412 l 5 18 l 10 -18",
+        "M 455 400 l 5 20 l 10 -20"
+      ],
+      "show_ghost": true
+    }
+  ],
+  "remix_options": [
+    {
+      "id": "volcano",
+      "label": "Volcano",
+      "emoji": "\ud83c\udf0b",
+      "sticker_keys": [
+        "volcano"
+      ]
+    },
+    {
+      "id": "bone",
+      "label": "Bones",
+      "emoji": "\ud83e\uddb4",
+      "sticker_keys": [
+        "bone"
+      ]
+    },
+    {
+      "id": "fire",
+      "label": "Fire",
+      "emoji": "\ud83d\udd25",
+      "sticker_keys": [
+        "fire"
+      ]
+    }
+  ]
+}

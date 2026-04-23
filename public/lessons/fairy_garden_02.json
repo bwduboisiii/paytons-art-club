@@ -1,0 +1,97 @@
+{
+  "id": "fairy_garden_02",
+  "world_id": "fairy_garden",
+  "order_index": 2,
+  "title": "Toadstool the Mushroom",
+  "subject": "mushroom",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": false,
+  "palette": [
+    "#2A1B3D",
+    "#FF6B5B",
+    "#FFFBF4",
+    "#FFD166",
+    "#8BCE8B",
+    "#E8A5D1"
+  ],
+  "completion_sticker": "mushroom_magical",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Chunky stem",
+      "companion_line": "A thick round stem!",
+      "reference_paths": [
+        "M 400 430 l -30 0 l 0 50 l 60 0 l 0 -50 z"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Big cap on top",
+      "companion_line": "A big curvy cap like an umbrella!",
+      "reference_paths": [
+        "M 400 430 l -30 0 l 0 50 l 60 0 l 0 -50 z",
+        "M 400 430 q -120 -20 -140 -80 q 0 -60 140 -60 q 140 0 140 60 q -20 60 -140 80 z"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "White spots on the cap",
+      "companion_line": "Round white spots scattered on top!",
+      "reference_paths": [
+        "M 400 430 l -30 0 l 0 50 l 60 0 l 0 -50 z",
+        "M 400 430 q -120 -20 -140 -80 q 0 -60 140 -60 q 140 0 140 60 q -20 60 -140 80 z",
+        "M 330 310 m -25 0 a 25 15 0 1 0 50 0 a 25 15 0 1 0 -50 0",
+        "M 420 320 m -30 0 a 30 15 0 1 0 60 0 a 30 15 0 1 0 -60 0",
+        "M 490 330 m -20 0 a 20 12 0 1 0 40 0 a 20 12 0 1 0 -40 0",
+        "M 380 360 m -20 0 a 20 12 0 1 0 40 0 a 20 12 0 1 0 -40 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Happy face",
+      "companion_line": "Tiny eyes and a big smile!",
+      "reference_paths": [
+        "M 400 430 l -30 0 l 0 50 l 60 0 l 0 -50 z",
+        "M 400 430 q -120 -20 -140 -80 q 0 -60 140 -60 q 140 0 140 60 q -20 60 -140 80 z",
+        "M 330 310 m -25 0 a 25 15 0 1 0 50 0 a 25 15 0 1 0 -50 0",
+        "M 420 320 m -30 0 a 30 15 0 1 0 60 0 a 30 15 0 1 0 -60 0",
+        "M 490 330 m -20 0 a 20 12 0 1 0 40 0 a 20 12 0 1 0 -40 0",
+        "M 380 360 m -20 0 a 20 12 0 1 0 40 0 a 20 12 0 1 0 -40 0",
+        "M 380 450 m -4 0 a 4 4 0 1 0 8 0 a 4 4 0 1 0 -8 0",
+        "M 420 450 m -4 0 a 4 4 0 1 0 8 0 a 4 4 0 1 0 -8 0",
+        "M 385 465 q 15 10 30 0"
+      ],
+      "show_ghost": true
+    }
+  ],
+  "remix_options": [
+    {
+      "id": "grass",
+      "label": "Grass",
+      "emoji": "\ud83c\udf3f",
+      "sticker_keys": [
+        "grass"
+      ]
+    },
+    {
+      "id": "snail",
+      "label": "Snail",
+      "emoji": "\ud83d\udc0c",
+      "sticker_keys": [
+        "snail"
+      ]
+    },
+    {
+      "id": "bug",
+      "label": "Bug",
+      "emoji": "\ud83d\udc1e",
+      "sticker_keys": [
+        "bug"
+      ]
+    }
+  ]
+}

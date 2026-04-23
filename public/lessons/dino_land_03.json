@@ -1,0 +1,115 @@
+{
+  "id": "dino_land_03",
+  "world_id": "dino_land",
+  "order_index": 3,
+  "title": "Stella the Stegosaurus",
+  "subject": "stegosaurus",
+  "guidance_level": "show_and_copy",
+  "estimated_minutes": 6,
+  "is_premium": false,
+  "palette": [
+    "#2A1B3D",
+    "#D67FBA",
+    "#E8A5D1",
+    "#FFD166",
+    "#FF8E80",
+    "#B7E4B7"
+  ],
+  "completion_sticker": "stegosaurus_star",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Long low body",
+      "companion_line": "A long and low body shape!",
+      "reference_paths": [
+        "M 400 380 m -130 0 a 130 70 0 1 0 260 0 a 130 70 0 1 0 -260 0"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Small head on a neck",
+      "companion_line": "Small head reaching forward!",
+      "reference_paths": [
+        "M 400 380 m -130 0 a 130 70 0 1 0 260 0 a 130 70 0 1 0 -260 0",
+        "M 290 380 q -40 -20 -50 -50 q 40 -10 60 20"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Curly spiked tail",
+      "companion_line": "A long tail swooping back!",
+      "reference_paths": [
+        "M 400 380 m -130 0 a 130 70 0 1 0 260 0 a 130 70 0 1 0 -260 0",
+        "M 290 380 q -40 -20 -50 -50 q 40 -10 60 20",
+        "M 500 380 q 50 -40 100 -30 q 10 40 -30 60 q -30 -10 -40 -40"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Plates along the back",
+      "companion_line": "Big triangle plates in a row!",
+      "reference_paths": [
+        "M 400 380 m -130 0 a 130 70 0 1 0 260 0 a 130 70 0 1 0 -260 0",
+        "M 290 380 q -40 -20 -50 -50 q 40 -10 60 20",
+        "M 500 380 q 50 -40 100 -30 q 10 40 -30 60 q -30 -10 -40 -40",
+        "M 310 330 l 10 -40 l 20 40 z",
+        "M 350 320 l 10 -50 l 20 50 z",
+        "M 400 315 l 10 -55 l 20 55 z",
+        "M 450 320 l 10 -50 l 20 50 z",
+        "M 490 330 l 10 -40 l 20 40 z"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s5",
+      "instruction": "Legs and face",
+      "companion_line": "Four sturdy legs and a sweet face!",
+      "reference_paths": [
+        "M 400 380 m -130 0 a 130 70 0 1 0 260 0 a 130 70 0 1 0 -260 0",
+        "M 290 380 q -40 -20 -50 -50 q 40 -10 60 20",
+        "M 500 380 q 50 -40 100 -30 q 10 40 -30 60 q -30 -10 -40 -40",
+        "M 310 330 l 10 -40 l 20 40 z",
+        "M 350 320 l 10 -50 l 20 50 z",
+        "M 400 315 l 10 -55 l 20 55 z",
+        "M 450 320 l 10 -50 l 20 50 z",
+        "M 490 330 l 10 -40 l 20 40 z",
+        "M 300 390 l 0 40 l 25 0 l 0 -20",
+        "M 350 400 l 0 40 l 25 0 l 0 -25",
+        "M 420 400 l 0 40 l 25 0 l 0 -25",
+        "M 480 390 l 0 40 l 25 0 l 0 -20",
+        "M 270 370 m -5 0 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0",
+        "M 245 385 q 10 5 20 0"
+      ],
+      "show_ghost": true
+    }
+  ],
+  "remix_options": [
+    {
+      "id": "mountain",
+      "label": "Mountain",
+      "emoji": "\u26f0\ufe0f",
+      "sticker_keys": [
+        "mountain"
+      ]
+    },
+    {
+      "id": "sun",
+      "label": "Sun",
+      "emoji": "\u2600\ufe0f",
+      "sticker_keys": [
+        "sun"
+      ]
+    },
+    {
+      "id": "cloud",
+      "label": "Cloud",
+      "emoji": "\u2601\ufe0f",
+      "sticker_keys": [
+        "cloud"
+      ]
+    }
+  ]
+}

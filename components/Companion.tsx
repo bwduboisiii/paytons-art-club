@@ -71,6 +71,81 @@ const CHARACTERS: Record<CompanionKey, (fill: string) => JSX.Element> = {
       <path d="M40 75 Q50 78 60 75" stroke="#2A1B3D" strokeWidth="1.5" fill="none" strokeLinecap="round" />
     </g>
   ),
+  panda: (fill) => (
+    <g>
+      {/* Panda: white body + black ears/eye patches */}
+      <circle cx="32" cy="28" r="10" fill="#2A1B3D" />
+      <circle cx="68" cy="28" r="10" fill="#2A1B3D" />
+      <circle cx="50" cy="55" r="30" fill={fill} />
+      <ellipse cx="38" cy="52" rx="8" ry="10" fill="#2A1B3D" />
+      <ellipse cx="62" cy="52" rx="8" ry="10" fill="#2A1B3D" />
+      <circle cx="38" cy="52" r="3" fill="white" />
+      <circle cx="62" cy="52" r="3" fill="white" />
+      <ellipse cx="50" cy="65" rx="5" ry="3" fill="#2A1B3D" />
+      <path d="M43 72 Q50 76 57 72" stroke="#2A1B3D" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+    </g>
+  ),
+  bear: (fill) => (
+    <g>
+      <circle cx="30" cy="30" r="10" fill={fill} />
+      <circle cx="70" cy="30" r="10" fill={fill} />
+      <circle cx="30" cy="30" r="5" fill="#FFB3A7" />
+      <circle cx="70" cy="30" r="5" fill="#FFB3A7" />
+      <circle cx="50" cy="55" r="30" fill={fill} />
+      <ellipse cx="50" cy="68" rx="18" ry="12" fill="#FFF4E0" />
+      <circle cx="42" cy="52" r="3" fill="#2A1B3D" />
+      <circle cx="58" cy="52" r="3" fill="#2A1B3D" />
+      <ellipse cx="50" cy="66" rx="4" ry="3" fill="#2A1B3D" />
+      <path d="M44 72 Q50 76 56 72" stroke="#2A1B3D" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+    </g>
+  ),
+  unicorn: (fill) => (
+    <g>
+      {/* Horn */}
+      <polygon points="48,10 52,10 50,30" fill="#FFD166" />
+      <line x1="49" y1="15" x2="51" y2="15" stroke="#F5B82E" strokeWidth="1" />
+      <line x1="49" y1="20" x2="51" y2="20" stroke="#F5B82E" strokeWidth="1" />
+      <line x1="49" y1="25" x2="51" y2="25" stroke="#F5B82E" strokeWidth="1" />
+      {/* Ears */}
+      <polygon points="36,28 32,18 42,26" fill={fill} />
+      <polygon points="64,28 68,18 58,26" fill={fill} />
+      <circle cx="50" cy="55" r="28" fill={fill} />
+      <circle cx="35" cy="62" r="5" fill="#E8A5D1" opacity="0.7" />
+      <circle cx="65" cy="62" r="5" fill="#E8A5D1" opacity="0.7" />
+      {/* Mane wisp */}
+      <path d="M32 40 Q24 50 30 65 Q36 58 34 48 Z" fill="#E8A5D1" opacity="0.8" />
+      <path d="M26 52 Q20 60 26 72 Q32 66 30 58 Z" fill="#B8D4F5" opacity="0.8" />
+      <circle cx="42" cy="54" r="3" fill="#2A1B3D" />
+      <circle cx="58" cy="54" r="3" fill="#2A1B3D" />
+      <circle cx="43" cy="53" r="1" fill="white" />
+      <circle cx="59" cy="53" r="1" fill="white" />
+      <path d="M46 68 Q50 72 54 68" stroke="#2A1B3D" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+    </g>
+  ),
+  dragon: (fill) => (
+    <g>
+      {/* Horns */}
+      <polygon points="34,18 30,8 40,14" fill="#8B4513" />
+      <polygon points="66,18 70,8 60,14" fill="#8B4513" />
+      {/* Head */}
+      <ellipse cx="50" cy="55" rx="30" ry="30" fill={fill} />
+      {/* Belly patch */}
+      <ellipse cx="50" cy="70" rx="20" ry="10" fill="#FFE59A" opacity="0.7" />
+      {/* Scales hint */}
+      <path d="M42 72 Q45 68 48 72" stroke="#8B4513" strokeWidth="1" fill="none" opacity="0.4" />
+      <path d="M52 72 Q55 68 58 72" stroke="#8B4513" strokeWidth="1" fill="none" opacity="0.4" />
+      {/* Eyes */}
+      <circle cx="42" cy="52" r="4" fill="white" />
+      <circle cx="58" cy="52" r="4" fill="white" />
+      <circle cx="42" cy="52" r="2" fill="#2A1B3D" />
+      <circle cx="58" cy="52" r="2" fill="#2A1B3D" />
+      {/* Snout */}
+      <ellipse cx="50" cy="63" rx="8" ry="5" fill="#FFE59A" opacity="0.6" />
+      <circle cx="47" cy="63" r="1" fill="#2A1B3D" />
+      <circle cx="53" cy="63" r="1" fill="#2A1B3D" />
+      <path d="M44 70 Q50 74 56 70" stroke="#2A1B3D" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+    </g>
+  ),
 };
 
 const FILLS: Record<CompanionKey, string> = {
@@ -78,6 +153,10 @@ const FILLS: Record<CompanionKey, string> = {
   kitty: '#E8A5D1',
   fox: '#FF8E80',
   owl: '#B8D4F5',
+  panda: '#FFFBF4',
+  bear: '#D4A574',
+  unicorn: '#FFF4E0',
+  dragon: '#8BCE8B',
 };
 
 export default function Companion({
@@ -85,8 +164,8 @@ export default function Companion({
   mood = 'idle',
   size = 120,
 }: Props) {
-  const renderChar = CHARACTERS[character];
-  const fill = FILLS[character];
+  const renderChar = CHARACTERS[character] || CHARACTERS.bunny;
+  const fill = FILLS[character] || FILLS.bunny;
 
   const variants: Record<string, any> = {
     idle: { y: [0, -6, 0], rotate: [0, 1, 0] },

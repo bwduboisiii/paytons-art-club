@@ -1,107 +1,113 @@
-# Payton's Art Club — v2 Upgrade Guide
+# Payton's Art Club — v3 Upgrade (Pass A)
 
-## What's new in this version
+## What's new in v3 (this upgrade)
 
-### 🎨 Drawing experience
-- **7 drawing tools**: marker, pencil, crayon, highlighter, spray, glitter, eraser — each with its own distinct look and feel
-- **Expanded colors**: preset palette with brights, pastels, earth tones, and inclusive skin tones, plus a full rainbow picker for any color
-- **Floating buddy**: cute animated companion on the right side during drawing, with rotating encouragements and a collapsible tab
+### 🎨 4 brand new lesson worlds
+- **Dino Land** 🦕 (premium) — T-Rex, Triceratops, Stegosaurus
+- **Fairy Garden** 🧚 (premium) — Fairy, Mushroom, Magic Wand
+- **Food Friends** 🍰 (premium) — Apple, Pizza, Ice Cream
+- **Vehicle Village** 🚗 (premium) — Car, Plane, Sailboat
 
-### 🖼️ Free draw mode
-- Blank canvas mode at `/app/draw`
-- All tools and colors available
-- Saves to the main gallery just like lesson drawings
-- CTA banner on the home screen
+### 📚 Lesson content
+- **14 new lessons** on top of the existing 17 — total of **31 lessons** across 8 worlds
+- Added to existing worlds too: **Zippy the Alien** (Star Hop), **Starry Starfish** (Mermaid Lagoon)
 
-### 🎁 Sticker library
-- 6 categories × 24 stickers = **144 preset stickers** (animals, nature, food, magic, space, faces)
-- **Custom sticker upload** — kids can upload their own PNG/JPG/GIF stickers (up to 2 MB)
-- Available in both free-draw and the remix phase of lessons
+### ⭐ Free vs. Premium tier system
+- Home screen now has a "Free worlds" section and a "More adventures" premium section
+- Premium worlds are clearly badged with a ⭐ Premium tag
+- Currently **all worlds are fully playable** — the tier flag is UI-only for now
+- Stripe/payment wiring is marked for a future pass (so parents aren't charged yet)
 
-### 📚 More lessons
-- **7 new lessons** added (Pupper the Dog, Fluttery Butterfly, Roary the Dinosaur, Pretty Flower, Magic Rainbow, Friendly Mermaid, Cute Seahorse)
-- **Mermaid Lagoon unlocked** as a real world (was "Coming Soon")
-- Total lesson count: **17 across 4 worlds**
+### 📅 Daily Lesson
+- Big banner at the top of the home screen showing the day's featured lesson
+- Rotates automatically every day (same for all users, deterministic by date)
+- Only picks from free lessons so kids never hit a paywall on the daily
+- Shows a green "Done!" state when today's daily is completed
+
+### 👯 8 avatar choices (was 4)
+- Original 4: Bunny 🐰, Kitty 😺, Fox 🦊, Owl 🦉
+- **New 4**: Panda 🐼, Bear 🐻, Unicorn 🦄, Dragon 🐲
+- Shown during onboarding and in the parent dashboard
+
+### 🛠️ Carried forward from v2
+- 7 drawing tools, floating buddy, free-draw mode, 144 preset stickers, custom sticker upload, error boundary, multi-kid switcher, gallery lightbox — all still there
 
 ---
 
-## How to apply this upgrade
+## What's NOT in this pass (coming in future passes)
 
-Same pattern as before: unzip, copy over your existing folder, keep the `.git` folder, push.
+You asked for social/multiplayer/paid features. They're substantial builds:
 
-### Step 1: Back up and unzip
+- **Friend system** → Pass B
+- **Guess-what-I'm-drawing multiplayer** → Pass C
+- **Stripe purchase for premium worlds** → Pass D
 
-1. In File Explorer: rename your current `paytons-art-club` folder to `paytons-art-club-v1-backup` (keep as safety net)
-2. Unzip `paytons-art-club-v2.zip`
-3. Rename the extracted folder to `paytons-art-club`
+Each of those needs its own focused session to do right. What you have here is a fully working app with much more content; you can deploy it and let Payton use it immediately while the rest gets built.
 
-### Step 2: Restore your git history
+---
 
-With **Hidden items** visible in File Explorer:
+## How to apply
 
-1. Copy the `.git` folder from `paytons-art-club-v1-backup`
-2. Paste it into the new `paytons-art-club`
+### Step 1: Fix the sticker bucket (if you haven't yet)
 
-### Step 3: Run the new database migration
+Your earlier error was from re-running `schema.sql`. That's already applied. You need `schema_additions.sql` instead:
 
-**This is required before deploying** — new features reference new database tables.
-
-1. Go to Supabase → SQL Editor → New query
-2. Paste the contents of `supabase/schema_additions.sql`
+1. Supabase → SQL Editor → **New query**
+2. Paste contents of `supabase/schema_additions.sql`
 3. Click Run
-4. Should say "Success"
+4. Verify in Supabase → Storage that you now see **two buckets**: `artwork` and `custom-stickers`
 
-Then run the updated seed to register the new lessons:
-1. New query
-2. Paste `supabase/seed.sql`
+### Step 2: Run the updated seed SQL (registers new lessons)
+
+1. Supabase → SQL Editor → **New query**
+2. Paste contents of `supabase/seed.sql`
 3. Run
+4. This uses `on conflict do update` so it's safe to re-run — it upserts existing rows and adds the 14 new ones.
 
-### Step 4: Push to GitHub
+### Step 3: Swap folders, keep `.git`
+
+1. File Explorer — rename current `paytons-art-club` to `paytons-art-club-v2-backup`
+2. Unzip `paytons-art-club-v3.zip`, rename extracted folder to `paytons-art-club`
+3. With Hidden items visible, copy `.git` folder from backup → new folder
+
+### Step 4: Push
 
 ```
 cd C:\Users\Benja\projects\paytons-art-club
 git add .
-git commit -m "v2: 7 drawing tools, floating buddy, free draw, custom stickers, 7 new lessons, mermaid lagoon"
+git commit -m "v3: 4 new worlds, 14 lessons, daily lesson, 8 avatars, tier system"
 git push
 ```
 
-Vercel auto-deploys.
-
 ### Step 5: Test
 
-Hard refresh (**Ctrl+Shift+R**) and try:
+Ctrl+Shift+R hard refresh, and try:
 
-1. Home screen — should show the new **Free Draw Mode** banner at the top
-2. Click any lesson — try the new tool picker row (marker, pencil, crayon, highlighter, spray, glitter, eraser)
-3. Notice the cute buddy floating on the right side — click the × to collapse, click the tab to reveal again
-4. Tap the 🎨 button in the color row to see the expanded palette
-5. Tap the rainbow button to pop open a full color picker
-6. In the remix step, tap "+ More Stickers" → browse categories → try **Mine** tab to upload your own
-7. Back to home → click **Free Draw Mode** → blank canvas with full toolbox
-8. Check the worlds list — **Mermaid Lagoon** should now be unlocked!
+1. **Home** — new banner shows **today's daily lesson** at the top
+2. Scroll down — **Free worlds** section (4 worlds) then **More adventures** (4 premium-badged worlds)
+3. Click **Dino Land** → try Rexy the T-Rex
+4. Click **Fairy Garden** → Dewdrop the Fairy
+5. Go to Parent → "Add another kid" → onboarding → see **8 avatar options** now instead of 4
+6. If you already completed today's daily, the banner turns green with a ✓
 
 ---
 
-## Troubleshooting
+## Known rough edges
 
-**"Column 'custom_stickers' does not exist"** — you didn't run `schema_additions.sql`. Go back to Step 3.
-
-**Floating buddy doesn't appear** — buddy only shows during the drawing and remix phases, and on free-draw. Not on intro or reward screens.
-
-**Sticker upload fails** — check Supabase → Storage → confirm the `custom-stickers` bucket exists (schema_additions.sql creates it automatically; if missing, re-run that SQL).
-
-**New lessons don't show up** — if the lesson list shows old lessons only: did you push to GitHub? Vercel only rebuilds on push.
-
-**"coming soon" still shows on Mermaid Lagoon** — hard refresh your browser (Ctrl+Shift+R). The world config is cached until fresh JavaScript loads.
+- **Premium tier is visual only right now**. The ⭐ badge shows but kids can still play every world. Once Stripe is added, worlds tagged premium will actually gate until the parent unlocks them. Plan accordingly if you're showing this to others.
+- **Dragon avatar is new art** — might need iteration on the face if Payton doesn't love it, easy to adjust.
+- **Daily lesson resets at local midnight** based on the user's device clock, not a server clock. Two users in different time zones see different dailies — fine for family use, would matter if the app gets bigger.
+- **15 new lesson drawings** were generated with more utilitarian SVG paths than the first 10 hand-tuned ones. Quality is still solid but some shapes (especially dinosaurs and vehicles) may look geometric. Easy to hand-tune any that bug you — just edit the JSON files directly.
 
 ---
 
-## What's still coming (Pass 3, if you want)
+## Next pass preview
 
-- More lessons to reach 20+ total (still need ~6 more across worlds)
-- More Mermaid Lagoon lessons (currently 2; could add 3 more)
-- Audio/voice-over for companion dialogue
-- Printable PDF export
-- Server-side account deletion (Supabase Edge Function)
+**Pass B (Friends system)** will add:
+- Kid profile gets a unique 6-character friend code
+- "My Friends" screen
+- Send/receive friend requests via code (no search — safer for kids)
+- Requires parent approval on both sides before a friendship is created
+- Strict RLS so kids can only see what their mutual friends explicitly share
 
-Just ask "continue" when you're ready.
+Just say "continue" when you're ready. Or tell me what you want Pass B to be — maybe you want multiplayer first.

@@ -1,0 +1,100 @@
+{
+  "id": "vehicle_village_01",
+  "world_id": "vehicle_village",
+  "order_index": 1,
+  "title": "Zoomy the Car",
+  "subject": "car",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": false,
+  "palette": [
+    "#2A1B3D",
+    "#FF6B5B",
+    "#8FB8E8",
+    "#FFD166",
+    "#FFFBF4",
+    "#6B98D6"
+  ],
+  "completion_sticker": "car_zoom",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Car body",
+      "companion_line": "The main body of the car!",
+      "reference_paths": [
+        "M 250 380 L 250 300 Q 250 260 290 260 L 400 260 L 440 300 L 550 300 L 550 380 Z"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Two windows",
+      "companion_line": "A windshield and side window!",
+      "reference_paths": [
+        "M 250 380 L 250 300 Q 250 260 290 260 L 400 260 L 440 300 L 550 300 L 550 380 Z",
+        "M 310 265 L 300 295 L 395 295 L 395 265 Z",
+        "M 410 265 L 420 290 L 490 290 L 485 265 Z"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Four round wheels",
+      "companion_line": "Two wheels you can see from the side!",
+      "reference_paths": [
+        "M 250 380 L 250 300 Q 250 260 290 260 L 400 260 L 440 300 L 550 300 L 550 380 Z",
+        "M 310 265 L 300 295 L 395 295 L 395 265 Z",
+        "M 410 265 L 420 290 L 490 290 L 485 265 Z",
+        "M 320 380 m -30 0 a 30 30 0 1 0 60 0 a 30 30 0 1 0 -60 0",
+        "M 320 380 m -15 0 a 15 15 0 1 0 30 0 a 15 15 0 1 0 -30 0",
+        "M 480 380 m -30 0 a 30 30 0 1 0 60 0 a 30 30 0 1 0 -60 0",
+        "M 480 380 m -15 0 a 15 15 0 1 0 30 0 a 15 15 0 1 0 -30 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Headlights and smile",
+      "companion_line": "Round headlights and a happy bumper!",
+      "reference_paths": [
+        "M 250 380 L 250 300 Q 250 260 290 260 L 400 260 L 440 300 L 550 300 L 550 380 Z",
+        "M 310 265 L 300 295 L 395 295 L 395 265 Z",
+        "M 410 265 L 420 290 L 490 290 L 485 265 Z",
+        "M 320 380 m -30 0 a 30 30 0 1 0 60 0 a 30 30 0 1 0 -60 0",
+        "M 320 380 m -15 0 a 15 15 0 1 0 30 0 a 15 15 0 1 0 -30 0",
+        "M 480 380 m -30 0 a 30 30 0 1 0 60 0 a 30 30 0 1 0 -60 0",
+        "M 480 380 m -15 0 a 15 15 0 1 0 30 0 a 15 15 0 1 0 -30 0",
+        "M 265 320 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 535 320 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 395 345 q 10 10 20 0"
+      ],
+      "show_ghost": true
+    }
+  ],
+  "remix_options": [
+    {
+      "id": "road",
+      "label": "Road",
+      "emoji": "\ud83d\udee3\ufe0f",
+      "sticker_keys": [
+        "road"
+      ]
+    },
+    {
+      "id": "star",
+      "label": "Stars",
+      "emoji": "\u2b50",
+      "sticker_keys": [
+        "star"
+      ]
+    },
+    {
+      "id": "cloud",
+      "label": "Cloud",
+      "emoji": "\u2601\ufe0f",
+      "sticker_keys": [
+        "cloud"
+      ]
+    }
+  ]
+}

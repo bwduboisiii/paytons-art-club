@@ -1,0 +1,124 @@
+{
+  "id": "fairy_garden_01",
+  "world_id": "fairy_garden",
+  "order_index": 1,
+  "title": "Dewdrop the Fairy",
+  "subject": "fairy",
+  "guidance_level": "show_and_copy",
+  "estimated_minutes": 6,
+  "is_premium": false,
+  "palette": [
+    "#2A1B3D",
+    "#E8A5D1",
+    "#D67FBA",
+    "#FFD166",
+    "#B8D4F5",
+    "#FFB3A7"
+  ],
+  "completion_sticker": "fairy_dewdrop",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Pretty round head",
+      "companion_line": "A round head for our fairy friend!",
+      "reference_paths": [
+        "M 400 300 m -50 0 a 50 55 0 1 0 100 0 a 50 55 0 1 0 -100 0"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Long flowy hair",
+      "companion_line": "Long swooshy hair down each side!",
+      "reference_paths": [
+        "M 400 300 m -50 0 a 50 55 0 1 0 100 0 a 50 55 0 1 0 -100 0",
+        "M 340 290 q -30 20 -15 70 q -20 -5 -10 30 q 20 0 30 20",
+        "M 460 290 q 30 20 15 70 q 20 -5 10 30 q -20 0 -30 20"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Tiny body and face",
+      "companion_line": "A little body and a sparkly smile!",
+      "reference_paths": [
+        "M 400 300 m -50 0 a 50 55 0 1 0 100 0 a 50 55 0 1 0 -100 0",
+        "M 340 290 q -30 20 -15 70 q -20 -5 -10 30 q 20 0 30 20",
+        "M 460 290 q 30 20 15 70 q 20 -5 10 30 q -20 0 -30 20",
+        "M 350 350 q 50 35 100 0 q 0 60 -50 70 q -50 -10 -50 -70",
+        "M 385 300 m -4 0 a 4 4 0 1 0 8 0 a 4 4 0 1 0 -8 0",
+        "M 415 300 m -4 0 a 4 4 0 1 0 8 0 a 4 4 0 1 0 -8 0",
+        "M 390 315 q 10 8 20 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Sparkly wings",
+      "companion_line": "Two shimmery wings on the back!",
+      "reference_paths": [
+        "M 400 300 m -50 0 a 50 55 0 1 0 100 0 a 50 55 0 1 0 -100 0",
+        "M 340 290 q -30 20 -15 70 q -20 -5 -10 30 q 20 0 30 20",
+        "M 460 290 q 30 20 15 70 q 20 -5 10 30 q -20 0 -30 20",
+        "M 350 350 q 50 35 100 0 q 0 60 -50 70 q -50 -10 -50 -70",
+        "M 385 300 m -4 0 a 4 4 0 1 0 8 0 a 4 4 0 1 0 -8 0",
+        "M 415 300 m -4 0 a 4 4 0 1 0 8 0 a 4 4 0 1 0 -8 0",
+        "M 390 315 q 10 8 20 0",
+        "M 320 330 q -80 -20 -100 40 q 60 20 100 -10 z",
+        "M 480 330 q 80 -20 100 40 q -60 20 -100 -10 z",
+        "M 330 340 q -40 -10 -50 20 q 30 10 50 -5",
+        "M 470 340 q 40 -10 50 20 q -30 10 -50 -5"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s5",
+      "instruction": "Magical dress and crown",
+      "companion_line": "A twirly dress and a flower crown!",
+      "reference_paths": [
+        "M 400 300 m -50 0 a 50 55 0 1 0 100 0 a 50 55 0 1 0 -100 0",
+        "M 340 290 q -30 20 -15 70 q -20 -5 -10 30 q 20 0 30 20",
+        "M 460 290 q 30 20 15 70 q 20 -5 10 30 q -20 0 -30 20",
+        "M 350 350 q 50 35 100 0 q 0 60 -50 70 q -50 -10 -50 -70",
+        "M 385 300 m -4 0 a 4 4 0 1 0 8 0 a 4 4 0 1 0 -8 0",
+        "M 415 300 m -4 0 a 4 4 0 1 0 8 0 a 4 4 0 1 0 -8 0",
+        "M 390 315 q 10 8 20 0",
+        "M 320 330 q -80 -20 -100 40 q 60 20 100 -10 z",
+        "M 480 330 q 80 -20 100 40 q -60 20 -100 -10 z",
+        "M 330 340 q -40 -10 -50 20 q 30 10 50 -5",
+        "M 470 340 q 40 -10 50 20 q -30 10 -50 -5",
+        "M 380 420 q 0 40 20 60 q -20 0 -40 -20",
+        "M 420 420 q 0 40 -20 60 q 20 0 40 -20",
+        "M 350 250 l 0 -25 l 10 10 l 5 -20 l 10 15 l 5 -10",
+        "M 430 250 l 0 -25 l -10 10 l -5 -20 l -10 15 l -5 -10"
+      ],
+      "show_ghost": true
+    }
+  ],
+  "remix_options": [
+    {
+      "id": "flower",
+      "label": "Flower",
+      "emoji": "\ud83c\udf38",
+      "sticker_keys": [
+        "flower"
+      ]
+    },
+    {
+      "id": "sparkle",
+      "label": "Sparkles",
+      "emoji": "\u2728",
+      "sticker_keys": [
+        "sparkle"
+      ]
+    },
+    {
+      "id": "star",
+      "label": "Stars",
+      "emoji": "\u2b50",
+      "sticker_keys": [
+        "star"
+      ]
+    }
+  ]
+}

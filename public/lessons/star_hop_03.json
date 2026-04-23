@@ -1,0 +1,118 @@
+{
+  "id": "star_hop_03",
+  "world_id": "star_hop",
+  "order_index": 3,
+  "title": "Zippy the Alien",
+  "subject": "alien",
+  "guidance_level": "show_and_copy",
+  "estimated_minutes": 5,
+  "is_premium": false,
+  "palette": [
+    "#2A1B3D",
+    "#8BCE8B",
+    "#D67FBA",
+    "#FFD166",
+    "#8FB8E8",
+    "#FFB3A7"
+  ],
+  "completion_sticker": "alien_zippy",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Big alien head",
+      "companion_line": "A big round alien head!",
+      "reference_paths": [
+        "M 400 320 m -80 0 a 80 70 0 1 0 160 0 a 80 70 0 1 0 -160 0"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Two wiggly antennae",
+      "companion_line": "Two boingy antennae with bulbs!",
+      "reference_paths": [
+        "M 400 320 m -80 0 a 80 70 0 1 0 160 0 a 80 70 0 1 0 -160 0",
+        "M 400 250 l -15 -50 l 5 10 l 10 -30",
+        "M 400 250 l 15 -50 l -5 10 l -10 -30",
+        "M 385 200 m -4 0 a 4 4 0 1 0 8 0 a 4 4 0 1 0 -8 0",
+        "M 415 200 m -4 0 a 4 4 0 1 0 8 0 a 4 4 0 1 0 -8 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Huge eyes",
+      "companion_line": "Big oval eyes to see the universe!",
+      "reference_paths": [
+        "M 400 320 m -80 0 a 80 70 0 1 0 160 0 a 80 70 0 1 0 -160 0",
+        "M 400 250 l -15 -50 l 5 10 l 10 -30",
+        "M 400 250 l 15 -50 l -5 10 l -10 -30",
+        "M 385 200 m -4 0 a 4 4 0 1 0 8 0 a 4 4 0 1 0 -8 0",
+        "M 415 200 m -4 0 a 4 4 0 1 0 8 0 a 4 4 0 1 0 -8 0",
+        "M 360 310 m -18 0 a 18 25 0 1 0 36 0 a 18 25 0 1 0 -36 0",
+        "M 440 310 m -18 0 a 18 25 0 1 0 36 0 a 18 25 0 1 0 -36 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Little smile",
+      "companion_line": "A tiny happy smile!",
+      "reference_paths": [
+        "M 400 320 m -80 0 a 80 70 0 1 0 160 0 a 80 70 0 1 0 -160 0",
+        "M 400 250 l -15 -50 l 5 10 l 10 -30",
+        "M 400 250 l 15 -50 l -5 10 l -10 -30",
+        "M 385 200 m -4 0 a 4 4 0 1 0 8 0 a 4 4 0 1 0 -8 0",
+        "M 415 200 m -4 0 a 4 4 0 1 0 8 0 a 4 4 0 1 0 -8 0",
+        "M 360 310 m -18 0 a 18 25 0 1 0 36 0 a 18 25 0 1 0 -36 0",
+        "M 440 310 m -18 0 a 18 25 0 1 0 36 0 a 18 25 0 1 0 -36 0",
+        "M 380 360 q 20 30 40 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s5",
+      "instruction": "Two little legs",
+      "companion_line": "Short legs to walk around!",
+      "reference_paths": [
+        "M 400 320 m -80 0 a 80 70 0 1 0 160 0 a 80 70 0 1 0 -160 0",
+        "M 400 250 l -15 -50 l 5 10 l 10 -30",
+        "M 400 250 l 15 -50 l -5 10 l -10 -30",
+        "M 385 200 m -4 0 a 4 4 0 1 0 8 0 a 4 4 0 1 0 -8 0",
+        "M 415 200 m -4 0 a 4 4 0 1 0 8 0 a 4 4 0 1 0 -8 0",
+        "M 360 310 m -18 0 a 18 25 0 1 0 36 0 a 18 25 0 1 0 -36 0",
+        "M 440 310 m -18 0 a 18 25 0 1 0 36 0 a 18 25 0 1 0 -36 0",
+        "M 380 360 q 20 30 40 0",
+        "M 350 400 l 0 60 l 20 0 l 0 -50",
+        "M 430 400 l 0 60 l 20 0 l 0 -50"
+      ],
+      "show_ghost": true
+    }
+  ],
+  "remix_options": [
+    {
+      "id": "planet",
+      "label": "Planet",
+      "emoji": "\ud83e\ude90",
+      "sticker_keys": [
+        "planet"
+      ]
+    },
+    {
+      "id": "star",
+      "label": "Stars",
+      "emoji": "\u2b50",
+      "sticker_keys": [
+        "star"
+      ]
+    },
+    {
+      "id": "ufo",
+      "label": "UFO",
+      "emoji": "\ud83d\udef8",
+      "sticker_keys": [
+        "ufo"
+      ]
+    }
+  ]
+}

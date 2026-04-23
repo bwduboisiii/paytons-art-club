@@ -1,0 +1,105 @@
+{
+  "id": "vehicle_village_03",
+  "world_id": "vehicle_village",
+  "order_index": 3,
+  "title": "Salty the Sailboat",
+  "subject": "sailboat",
+  "guidance_level": "show_and_copy",
+  "estimated_minutes": 5,
+  "is_premium": false,
+  "palette": [
+    "#2A1B3D",
+    "#8FB8E8",
+    "#FFFBF4",
+    "#D4A574",
+    "#FFD166",
+    "#6B98D6"
+  ],
+  "completion_sticker": "sailboat_sail",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Curved boat hull",
+      "companion_line": "The boat shape at the bottom!",
+      "reference_paths": [
+        "M 240 420 L 560 420 L 520 480 L 280 480 Z"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Tall mast",
+      "companion_line": "A tall mast going up the middle!",
+      "reference_paths": [
+        "M 240 420 L 560 420 L 520 480 L 280 480 Z",
+        "M 400 420 L 400 200"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Big sail on the right",
+      "companion_line": "A big triangle sail!",
+      "reference_paths": [
+        "M 240 420 L 560 420 L 520 480 L 280 480 Z",
+        "M 400 420 L 400 200",
+        "M 400 210 L 540 400 L 410 400 Z"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Smaller sail on the left",
+      "companion_line": "A smaller triangle sail!",
+      "reference_paths": [
+        "M 240 420 L 560 420 L 520 480 L 280 480 Z",
+        "M 400 420 L 400 200",
+        "M 400 210 L 540 400 L 410 400 Z",
+        "M 400 210 L 280 400 L 395 400 Z"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s5",
+      "instruction": "Wavy water and a face",
+      "companion_line": "Wavy ocean and a smiling boat!",
+      "reference_paths": [
+        "M 240 420 L 560 420 L 520 480 L 280 480 Z",
+        "M 400 420 L 400 200",
+        "M 400 210 L 540 400 L 410 400 Z",
+        "M 400 210 L 280 400 L 395 400 Z",
+        "M 200 490 q 30 -10 60 0 q 30 10 60 0 q 30 -10 60 0 q 30 10 60 0 q 30 -10 60 0 q 30 10 60 0",
+        "M 200 510 q 30 -10 60 0 q 30 10 60 0 q 30 -10 60 0 q 30 10 60 0",
+        "M 380 450 m -5 0 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0",
+        "M 420 450 m -5 0 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0"
+      ],
+      "show_ghost": true
+    }
+  ],
+  "remix_options": [
+    {
+      "id": "fish",
+      "label": "Fish",
+      "emoji": "\ud83d\udc1f",
+      "sticker_keys": [
+        "fish"
+      ]
+    },
+    {
+      "id": "sun",
+      "label": "Sun",
+      "emoji": "\u2600\ufe0f",
+      "sticker_keys": [
+        "sun"
+      ]
+    },
+    {
+      "id": "wave",
+      "label": "Wave",
+      "emoji": "\ud83c\udf0a",
+      "sticker_keys": [
+        "wave"
+      ]
+    }
+  ]
+}

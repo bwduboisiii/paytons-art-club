@@ -1,0 +1,97 @@
+{
+  "id": "vehicle_village_02",
+  "world_id": "vehicle_village",
+  "order_index": 2,
+  "title": "Flappy the Plane",
+  "subject": "plane",
+  "guidance_level": "show_and_copy",
+  "estimated_minutes": 5,
+  "is_premium": false,
+  "palette": [
+    "#2A1B3D",
+    "#8FB8E8",
+    "#FFFBF4",
+    "#FFD166",
+    "#FF6B5B",
+    "#B8D4F5"
+  ],
+  "completion_sticker": "plane_flight",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Long plane body",
+      "companion_line": "A long cigar shape for the body!",
+      "reference_paths": [
+        "M 250 350 L 550 340 L 560 370 L 250 380 Z"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Two wings",
+      "companion_line": "Big wings on top and bottom!",
+      "reference_paths": [
+        "M 250 350 L 550 340 L 560 370 L 250 380 Z",
+        "M 350 345 L 320 270 L 400 300 Z",
+        "M 420 310 L 440 270 L 470 330 Z"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Tail fins",
+      "companion_line": "Tail fins at the back!",
+      "reference_paths": [
+        "M 250 350 L 550 340 L 560 370 L 250 380 Z",
+        "M 350 345 L 320 270 L 400 300 Z",
+        "M 420 310 L 440 270 L 470 330 Z",
+        "M 470 340 L 560 340 L 580 300 L 560 340",
+        "M 470 380 L 580 380 L 580 420"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Windows and window!",
+      "companion_line": "Row of windows and a friendly cockpit!",
+      "reference_paths": [
+        "M 250 350 L 550 340 L 560 370 L 250 380 Z",
+        "M 350 345 L 320 270 L 400 300 Z",
+        "M 420 310 L 440 270 L 470 330 Z",
+        "M 470 340 L 560 340 L 580 300 L 560 340",
+        "M 470 380 L 580 380 L 580 420",
+        "M 280 360 m -5 0 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0",
+        "M 310 360 m -5 0 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0",
+        "M 340 360 m -5 0 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0",
+        "M 400 350 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0"
+      ],
+      "show_ghost": true
+    }
+  ],
+  "remix_options": [
+    {
+      "id": "cloud",
+      "label": "Clouds",
+      "emoji": "\u2601\ufe0f",
+      "sticker_keys": [
+        "cloud"
+      ]
+    },
+    {
+      "id": "sun",
+      "label": "Sun",
+      "emoji": "\u2600\ufe0f",
+      "sticker_keys": [
+        "sun"
+      ]
+    },
+    {
+      "id": "bird",
+      "label": "Bird",
+      "emoji": "\ud83d\udc26",
+      "sticker_keys": [
+        "bird"
+      ]
+    }
+  ]
+}

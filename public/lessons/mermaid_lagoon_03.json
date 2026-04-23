@@ -1,0 +1,97 @@
+{
+  "id": "mermaid_lagoon_03",
+  "world_id": "mermaid_lagoon",
+  "order_index": 3,
+  "title": "Starry Starfish",
+  "subject": "starfish",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": false,
+  "palette": [
+    "#2A1B3D",
+    "#FFD166",
+    "#FF8E80",
+    "#F5B82E",
+    "#E8A5D1",
+    "#B8D4F5"
+  ],
+  "completion_sticker": "starfish_sparkly",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Five-point star",
+      "companion_line": "A big five-point star shape!",
+      "reference_paths": [
+        "M 400 260 L 440 360 L 540 380 L 460 440 L 480 540 L 400 490 L 320 540 L 340 440 L 260 380 L 360 360 Z"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Smaller star inside",
+      "companion_line": "A smaller star inside the big one!",
+      "reference_paths": [
+        "M 400 260 L 440 360 L 540 380 L 460 440 L 480 540 L 400 490 L 320 540 L 340 440 L 260 380 L 360 360 Z",
+        "M 400 290 L 425 355 L 490 370 L 440 415 L 455 480 L 400 445 L 345 480 L 360 415 L 310 370 L 375 355 Z"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Cute face",
+      "companion_line": "Two eyes and a happy smile!",
+      "reference_paths": [
+        "M 400 260 L 440 360 L 540 380 L 460 440 L 480 540 L 400 490 L 320 540 L 340 440 L 260 380 L 360 360 Z",
+        "M 400 290 L 425 355 L 490 370 L 440 415 L 455 480 L 400 445 L 345 480 L 360 415 L 310 370 L 375 355 Z",
+        "M 380 390 m -5 0 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0",
+        "M 420 390 m -5 0 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0",
+        "M 385 410 q 15 10 30 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Little dots on arms",
+      "companion_line": "Tiny dots all over the star!",
+      "reference_paths": [
+        "M 400 260 L 440 360 L 540 380 L 460 440 L 480 540 L 400 490 L 320 540 L 340 440 L 260 380 L 360 360 Z",
+        "M 400 290 L 425 355 L 490 370 L 440 415 L 455 480 L 400 445 L 345 480 L 360 415 L 310 370 L 375 355 Z",
+        "M 380 390 m -5 0 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0",
+        "M 420 390 m -5 0 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0",
+        "M 385 410 q 15 10 30 0",
+        "M 370 380 m -3 0 a 3 3 0 1 0 6 0 a 3 3 0 1 0 -6 0",
+        "M 430 380 m -3 0 a 3 3 0 1 0 6 0 a 3 3 0 1 0 -6 0",
+        "M 350 440 m -3 0 a 3 3 0 1 0 6 0 a 3 3 0 1 0 -6 0",
+        "M 450 440 m -3 0 a 3 3 0 1 0 6 0 a 3 3 0 1 0 -6 0",
+        "M 400 430 m -3 0 a 3 3 0 1 0 6 0 a 3 3 0 1 0 -6 0"
+      ],
+      "show_ghost": true
+    }
+  ],
+  "remix_options": [
+    {
+      "id": "shell",
+      "label": "Shells",
+      "emoji": "\ud83d\udc1a",
+      "sticker_keys": [
+        "shell"
+      ]
+    },
+    {
+      "id": "bubble",
+      "label": "Bubbles",
+      "emoji": "\ud83e\udee7",
+      "sticker_keys": [
+        "bubble"
+      ]
+    },
+    {
+      "id": "sparkle",
+      "label": "Sparkles",
+      "emoji": "\u2728",
+      "sticker_keys": [
+        "sparkle"
+      ]
+    }
+  ]
+}
