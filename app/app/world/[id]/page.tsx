@@ -6,9 +6,11 @@ import { useRouter } from 'next/navigation';
 import Button from '@/components/Button';
 import Companion from '@/components/Companion';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import PremiumUpsell from '@/components/PremiumUpsell';
 import { getWorld } from '@/lib/worlds';
 import { getLessonsForWorld } from '@/lib/lessons';
 import { useKidStore } from '@/lib/store';
+import { useEntitlement, hasEffectivePremium } from '@/lib/useEntitlement';
 import { createClient } from '@/lib/supabase/client';
 import clsx from 'clsx';
 
@@ -20,6 +22,12 @@ export default function WorldPage({ params }: { params: { id: string } }) {
   const lessons = world ? getLessonsForWorld(world.id) : [];
   const [completed, setCompleted] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
+  const { entitlement, loading: entitlementLoading } = useEntitlement();
+
+  // Gate: if this is a premium world and Stripe is configured + kid doesn't have
+  // entitlement, show upsell instead of world content.
+  const needsPremium = world?.tier === 'premium';
+  const hasAccess = !needsPremium || hasEffectivePremium(entitlement);
 
   useEffect(() => {
     let cancelled = false;
@@ -52,6 +60,22 @@ export default function WorldPage({ params }: { params: { id: string } }) {
           <Button variant="primary">Back to Home</Button>
         </Link>
       </main>
+    );
+  }
+
+  // Show loading state while checking entitlement for premium worlds
+  if (needsPremium && entitlementLoading) {
+    return <LoadingSpinner label="Checking..." />;
+  }
+
+  // Show upsell for locked premium worlds
+  if (!hasAccess) {
+    return (
+      <PremiumUpsell
+        worldName={world.name}
+        worldIcon={world.icon}
+        hasActiveTrial={entitlement.hasActiveTrial}
+      />
     );
   }
 

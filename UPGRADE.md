@@ -1,119 +1,168 @@
-# Payton's Art Club — v9 / Pass D-1: Voice Recording 🎤
+# Payton's Art Club — v10 / Pass D-2: Stripe Premium Tier 💳
 
 ## What's new
 
-### 🎤 Voice recording for drawings
+### For kids
+- **Lock icons on bonus worlds** when the parent hasn't subscribed. Dino Land, Fairy Garden, Food Friends, and Vehicle Village now show 🔒 Unlock instead of ⭐ Bonus.
+- **Kid-friendly upsell screen** when they try to enter a locked world: *"{World name} is a bonus world! Ask a grown-up to unlock."* — with a big button that takes them to the parent dashboard.
 
-Kids can now record a short voice note (up to 60 seconds) about their drawing. Saved alongside the artwork, playable from the gallery.
+### For parents
+- **Subscription section on parent dashboard** with three states:
+  - **Not subscribed**: "Start free trial" button (7-day trial, then $4.99/month)
+  - **Active / Trialing**: Shows status + renewal/trial-end date + "Manage subscription" button (opens Stripe billing portal)
+  - **Past due**: Flags payment issue but keeps premium access (Stripe's normal grace period)
+- **Automatic status updates** via Stripe webhook — when someone subscribes/cancels/upgrades, the app reflects it within seconds.
+- **Success and cancel banners** after returning from Stripe checkout.
 
-**Where it appears:**
-- **After a lesson** — on the reward screen, after the "New sticker unlocked!" celebration, a mic appears: *"Want to tell me about your drawing?"* with a skip option
-- **In Free Draw** — after saving, the success banner includes an **"🎤 Add voice note"** button; tap to open the recorder modal
-- **In Gallery** — any artwork with a voice note gets a 🎤 badge on its tile. In the lightbox, a full audio player appears below the image with delete option
-- **In Friend's gallery** — friends who view shared art also see the voice note (compact "▶ Hear it" button)
-- **Parent dashboard** — kid cards now show "🎤 N voice" alongside lesson and artwork counts
-
-**How recording works:**
-- Tap the big coral mic button
-- Browser asks for microphone permission (one-time)
-- 60-second countdown with live progress bar
-- Tap stop (or let it auto-stop)
-- Preview your recording → "Keep it!" or "Try again" or skip
-- Saves to private storage bucket
-
-**Browser support:**
-- ✅ Chrome, Safari, Firefox on iPad and desktop
-- ⚠️  Very old iOS (< 14.3) — recorder shows a clear error and lets kids skip
-- Permission denied → clear error message telling kids to look for the pop-up
+### Graceful degradation 🎁
+**If you don't configure Stripe, nothing breaks.** The premium gating is silently disabled — all worlds stay free, no upsell screens, no subscription section on the parent dashboard. The app behaves exactly like v9 until you actually set up Stripe. **You can deploy v10 safely today and add Stripe later.**
 
 ---
 
 ## How to apply
 
-### Step 1: Run the voice schema SQL
+### Step 1: Run the Stripe schema SQL
 
 1. Supabase → SQL Editor → **New query**
-2. Paste contents of `supabase/voice_schema.sql`
+2. Paste contents of `supabase/stripe_schema.sql`
 3. Click **Run**
 4. Should say "Success"
 
-This adds:
-- `voice_note_path` and `voice_note_duration_seconds` columns to `artworks`
-- A `voice-notes` storage bucket (private)
-- RLS policies so parents can read/write/delete their own kids' voice notes, and friends can read voice notes only on artworks the kid has marked shared
+This creates: `parents` table with RLS, `my_entitlement` view, signup trigger, backfills existing users.
 
-### Step 2: Swap folders
+### Step 2: Deploy the code (Stripe-free mode)
 
-1. Back up v8 folder, unzip v9, copy `.git` over
-2. `git add . && git commit -m "v9: voice recording for drawings" && git push`
-3. Hard refresh (Ctrl+Shift+R)
+At this point you can already ship v10. Stripe is not required.
 
-### Step 3: Test
+1. Back up v9 folder, unzip v10, copy `.git` over
+2. `git add . && git commit -m "v10: stripe premium tier (graceful degradation)" && git push`
+3. Vercel will auto-deploy in 2-3 minutes
+4. Hard refresh live site
 
-**Most important test — do this on the iPad Payton actually uses:**
+**After this step, everything works exactly like v9.** Free mode, all worlds accessible, no upsells.
 
-1. Home → any free lesson → complete the lesson → see reward screen
-2. Mic button should appear under the sticker celebration
-3. Tap mic → iPad will prompt for microphone permission — say Allow
-4. Talk for 5 seconds → tap stop → preview plays back
-5. Tap "Keep it!" → should save
-6. Go to Gallery → lesson artwork tile should have a 🎤 badge
-7. Tap the tile → lightbox opens → audio player appears below the image → play it
+### Step 3 (OPTIONAL): Set up Stripe
 
-**If microphone permission fails on iPad:**
-- Go to iPad Settings → Safari → Camera & Microphone → Allow
-- Or make sure you're on HTTPS (which Vercel provides)
-- Recording will NOT work on http:// or localhost without HTTPS
+Do this only if you actually want to start charging for premium. Skip if Payton is the only user.
 
-**Other tests:**
-- Free Draw → save → tap "🎤 Add voice note" → record → verify tile gets 🎤 badge
-- Parent dashboard → verify voice note count appears under kid's stats
-- Share an artwork (👥 in lightbox) → view from a friend account → verify they see "▶ Hear it"
+#### 3a. Create a Stripe account
+
+1. Go to https://stripe.com → Sign up
+2. Use test mode initially (toggle in dashboard top-right). Test mode lets you use fake card numbers.
+
+#### 3b. Create the product + price
+
+1. Stripe Dashboard → **Products** → **Add product**
+2. Name: "Payton's Art Club Premium"
+3. Pricing: Recurring, $4.99 USD, billed monthly
+4. Save. Copy the **Price ID** (starts with `price_...`) — you'll need it
+
+#### 3c. Get your API keys
+
+1. Stripe Dashboard → **Developers** → **API keys**
+2. Copy:
+   - **Publishable key** (starts with `pk_test_...` or `pk_live_...`)
+   - **Secret key** (starts with `sk_test_...` or `sk_live_...`)
+
+#### 3d. Add environment variables to Vercel
+
+1. Vercel → your project → Settings → **Environment Variables**
+2. Add these:
+
+```
+NEXT_PUBLIC_STRIPE_PUBLIC_KEY=pk_test_...
+STRIPE_SECRET_KEY=sk_test_...
+STRIPE_PRICE_ID=price_...
+SUPABASE_SERVICE_ROLE_KEY=<from Supabase settings → API → service_role>
+NEXT_PUBLIC_SITE_URL=https://your-site.vercel.app
+```
+
+3. Apply to: Production (and Preview if you want trial there too)
+4. Redeploy the project so env vars take effect
+
+#### 3e. Set up the webhook
+
+This is the critical step for subscriptions to actually activate. Without the webhook, users can pay but their `has_premium` flag never flips.
+
+1. Stripe Dashboard → **Developers** → **Webhooks** → **Add endpoint**
+2. **Endpoint URL**: `https://your-site.vercel.app/api/stripe/webhook`
+3. **Events to listen for** (click "Select events" and add these):
+   - `checkout.session.completed`
+   - `customer.subscription.created`
+   - `customer.subscription.updated`
+   - `customer.subscription.deleted`
+   - `invoice.payment_failed`
+4. Click **Add endpoint**
+5. On the endpoint detail page, find **Signing secret** → Reveal → Copy it (starts with `whsec_...`)
+6. Add to Vercel env vars: `STRIPE_WEBHOOK_SECRET=whsec_...`
+7. Redeploy so the webhook handler can verify signatures
+
+#### 3f. Test the full flow
+
+Using Stripe **test mode**:
+
+1. Go to your live parent dashboard
+2. Scroll to subscription section → "Start free trial"
+3. Stripe Checkout opens
+4. Use Stripe test card: **4242 4242 4242 4242**, any future expiry, any CVC, any zip
+5. Complete checkout — should redirect back with "🎉 Subscription started!" banner
+6. Wait ~5 seconds, refresh the page — subscription section should show "⭐ Premium active"
+7. Go to home → premium worlds should no longer say 🔒 Unlock
+8. Click a premium world → should load lessons (not the upsell)
+
+If the banner shows but premium doesn't activate: webhook issue. Stripe Dashboard → Developers → Webhooks → click your endpoint → look at recent deliveries. If all 4xx/5xx: check your STRIPE_WEBHOOK_SECRET is correct and redeployed.
+
+#### 3g. Going live
+
+When ready to charge real money:
+
+1. Stripe Dashboard → toggle from Test to Live mode
+2. Re-create your product + price in Live mode (test-mode products don't carry over)
+3. Replace env vars in Vercel with `pk_live_...` and `sk_live_...` keys
+4. Re-create the webhook endpoint in Live mode with a new signing secret
+5. Redeploy
 
 ---
 
-## Known rough edges
+## Known limitations / rough edges
 
-- **Very long voice notes** — capped at 60 seconds. If you want longer, change `maxSeconds` prop in the lesson/draw pages.
-- **No transcription** — recordings are pure audio. Not a mistake; a feature. If you wanted transcription later, needs an external API (Whisper, Deepgram) with cost.
-- **No background removal of voice noise** — whatever's in the room when Payton records is what gets recorded. Fine for home use.
-- **Audio file size** — about 100-200KB per 30-second recording. Supabase free tier has 1GB storage; you'd hit the ceiling at ~5000 voice notes, which is fine.
-- **Safari sometimes loses permission** — if iPad Safari forgets microphone permission, kids will see the "Can't hear you!" error and need to hit "Try again." Normal browser behavior.
-- **Recording while in Free Draw** — the big success banner with the voice button can get overlooked if kids immediately tap "View gallery." That's by design; they can always add a voice note later by opening the artwork in gallery, which... actually, I didn't wire THAT up. You can only add a voice note at save time, not retroactively. That's a real limitation worth noting.
-- **Voice notes survive friendship removal** — if Payton shared art and a friend removed her, the friend can no longer access the voice note because storage RLS checks current friendship status. Correct behavior.
-- **Export PNG doesn't include audio** — obviously. Downloaded artwork files are image-only. The audio lives only in the app.
+- **App Store compliance**: If you ever wrap this as an iOS/Android app, Apple/Google require their in-app purchase (30% cut). This Stripe setup only works for the web version. If you plan to publish to app stores, plan separately for IAP.
+- **Stripe Tax**: I enabled automatic tax collection. Depending on your jurisdiction, Stripe may charge a small additional fee (~0.5%) for tax handling.
+- **No usage-based pricing**: Flat $4.99/month. If you want tiered or usage-based pricing later, Stripe supports it but needs schema changes.
+- **Webhook race**: On first subscribe, there's a brief window (~1-5s) between Stripe Checkout redirecting back and the webhook firing. During that window, the parent dashboard may still show "Start free trial." The UI auto-refreshes on focus/visibility change — usually resolves itself.
+- **Shared family access**: Premium is stored on the parent row, so all kids under that parent get access together. If two parents share the app (different auth accounts), they each need their own subscription. There's no "family sharing" flow.
+- **No proration preview**: If you change the price later, existing subscribers' changes happen through Stripe's standard proration. I don't surface it in-app.
+- **No invoicing UI**: Parents see status + portal link. For invoice downloads, they go through the Stripe portal.
+
+---
+
+## What happens if you DON'T set up Stripe
+
+Nothing. Exactly like v9. The `stripeConfigured` flag is derived from `NEXT_PUBLIC_STRIPE_PUBLIC_KEY` being present. If it's empty, `hasEffectivePremium()` returns `true` for everyone, every world is accessible, and the subscription section on the parent dashboard is hidden entirely.
+
+You can deploy v10 today, decide in a month whether to sell access, and flip it on by adding env vars. No code changes.
 
 ---
 
 ## What's NOT in this pass
 
-Pass D-1 is voice recording only. Not yet:
-- Pass D-2: Stripe premium tier (next)
-- Pass D-3: Polish (sticker flicker deep fix, SVG cleanups)
-- Pass D-4: Final gap audit + packaging
+- **Pass D-3: Polish** (sticker flicker deep fix, SVG lesson cleanups, multiplayer stress notes)
+- **Pass D-4: Final gap audit + packaging**
 
-Still deployable and useful standalone — voice notes are independent of the other Pass D work.
+Both independent from Stripe. Can ship in either order.
 
 ---
 
-## What should feel different
+## Bigger picture
 
-**For Payton:**
-- A magical new thing: she can talk to her drawings and hear herself back
-- This is the single highest-delight feature I've built for her. A 7-year-old narrating "THIS IS A BUNNY AND HE HAS GLITTERY EARS" and playing it back is memorable
+With v10, Payton's Art Club is now a real SaaS product if you want it to be:
+- Custom drawing engine + 31 lessons + 15 tools + 16 avatars
+- Multi-kid profiles + parent dashboard + math-gated parent zone
+- Friend system with codes and shared galleries
+- Real-time multiplayer draw-and-guess game
+- Voice recording attached to artwork
+- Subscription-based premium tier with 7-day trial
 
-**For you:**
-- Gallery becomes a little scrapbook with her voice attached
-- Parent dashboard shows how much she's using it
-- Voice notes are a reason to revisit the gallery (in a way static art isn't)
+That's a shippable product. If you want to share it with other families, the infrastructure is there. If Payton remains the only user, none of this costs you anything — Supabase free tier covers you until thousands of users, and Stripe only charges fees on real transactions.
 
-**For friends:**
-- Friends see and hear the story behind shared drawings. Much warmer than silent image share.
-
----
-
-## One honest concern
-
-Voice recording can surface privacy things that didn't exist before. A kid might record something personal (family in the background, etc.) and not realize it's shared when they share the artwork. I wired the share toggle correctly — voice notes inherit the `is_shared` flag from the artwork — but worth knowing: **when Payton taps "Share with friends" on an artwork, any voice note attached gets shared too.** There's no separate "share voice but not art" or vice versa.
-
-If this matters, the mitigation is: remove the voice note (via the 🎤 Remove voice button in the lightbox) before sharing. Or teach Payton: "Only share drawings without recordings, or check the recording first." This is a teaching moment with her, not a code fix.
+Good work. Whatever you decide to do with this, you built something real.

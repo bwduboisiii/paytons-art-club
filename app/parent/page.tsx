@@ -2,14 +2,16 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Button from '@/components/Button';
 import Companion from '@/components/Companion';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { createClient } from '@/lib/supabase/client';
 import { useKidStore } from '@/lib/store';
 import { removeFriend, markFriendshipsSeen } from '@/lib/friends';
+import { useEntitlement } from '@/lib/useEntitlement';
 import type { Kid, FriendInfo } from '@/lib/types';
+import clsx from 'clsx';
 
 function ParentGate({ onPass }: { onPass: () => void }) {
   const [a] = useState(() => 3 + Math.floor(Math.random() * 7));
@@ -76,8 +78,146 @@ function ParentGate({ onPass }: { onPass: () => void }) {
   );
 }
 
+function SubscriptionSection() {
+  const { entitlement, loading, refresh } = useEntitlement();
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  // If Stripe isn't configured on this environment, hide the whole card —
+  // there's nothing to subscribe to.
+  if (!entitlement.stripeConfigured) {
+    return null;
+  }
+
+  if (loading) {
+    return (
+      <div className="card-cozy p-6 mb-6">
+        <p className="text-ink-500">Loading subscription info...</p>
+      </div>
+    );
+  }
+
+  async function startCheckout() {
+    setBusy(true);
+    setError(null);
+    try {
+      const res = await fetch('/api/stripe/checkout', { method: 'POST' });
+      const json = await res.json();
+      if (!res.ok || !json.url) {
+        throw new Error(json.error || 'Checkout failed');
+      }
+      window.location.href = json.url;
+    } catch (e: any) {
+      setError(e?.message || 'Could not start checkout');
+      setBusy(false);
+    }
+  }
+
+  async function openPortal() {
+    setBusy(true);
+    setError(null);
+    try {
+      const res = await fetch('/api/stripe/portal', { method: 'POST' });
+      const json = await res.json();
+      if (!res.ok || !json.url) {
+        throw new Error(json.error || 'Could not open billing portal');
+      }
+      window.location.href = json.url;
+    } catch (e: any) {
+      setError(e?.message || 'Could not open billing portal');
+      setBusy(false);
+    }
+  }
+
+  // Not subscribed — show upsell
+  if (!entitlement.hasPremium) {
+    return (
+      <div className="card-cozy p-6 mb-6 bg-gradient-to-br from-sparkle-300/30 to-coral-300/30">
+        <h3 className="heading-3 mb-2">⭐ Unlock all bonus worlds</h3>
+        <p className="text-ink-700 mb-4">
+          Get access to Dino Land, Fairy Garden, Food Friends, and Vehicle
+          Village. Start with a <strong>7-day free trial</strong>, then
+          $4.99/month. Cancel anytime.
+        </p>
+        <Button variant="primary" size="lg" onClick={startCheckout} disabled={busy}>
+          {busy ? 'Starting...' : 'Start free trial →'}
+        </Button>
+        {error && (
+          <p className="text-coral-600 text-sm mt-3 bg-coral-300/20 rounded-xl p-2">
+            {error}
+          </p>
+        )}
+      </div>
+    );
+  }
+
+  // Subscribed — show status + manage
+  const statusLabel =
+    entitlement.subscriptionStatus === 'trialing'
+      ? 'Free trial'
+      : entitlement.subscriptionStatus === 'active'
+      ? 'Active'
+      : entitlement.subscriptionStatus === 'past_due'
+      ? 'Payment issue'
+      : entitlement.subscriptionStatus === 'canceled'
+      ? 'Cancelled'
+      : entitlement.subscriptionStatus || 'Active';
+
+  const endDate = entitlement.hasActiveTrial
+    ? entitlement.trialEnd
+    : entitlement.currentPeriodEnd;
+
+  return (
+    <div className="card-cozy p-6 mb-6 bg-meadow-300/30">
+      <div className="flex items-start gap-3 flex-wrap">
+        <div className="flex-1 min-w-[220px]">
+          <h3 className="heading-3 mb-1">⭐ Premium active</h3>
+          <p className="text-ink-700 text-sm">
+            Status: <strong>{statusLabel}</strong>
+            {endDate && (
+              <>
+                {' · '}
+                {entitlement.hasActiveTrial ? 'Trial ends' : 'Renews'}{' '}
+                {new Date(endDate).toLocaleDateString()}
+              </>
+            )}
+          </p>
+        </div>
+        <Button variant="secondary" size="md" onClick={openPortal} disabled={busy}>
+          Manage subscription
+        </Button>
+      </div>
+      {error && (
+        <p className="text-coral-600 text-sm mt-3 bg-coral-300/20 rounded-xl p-2">
+          {error}
+        </p>
+      )}
+    </div>
+  );
+}
+
 export default function ParentPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const checkoutStatus = searchParams?.get('checkout');
+  const [checkoutBanner, setCheckoutBanner] = useState<string | null>(
+    checkoutStatus === 'success'
+      ? '🎉 Subscription started! It may take a moment to activate.'
+      : checkoutStatus === 'cancelled'
+      ? 'Checkout was cancelled. No charges were made.'
+      : null
+  );
+
+  // Clear banner from URL once shown, and auto-dismiss after 6s
+  useEffect(() => {
+    if (!checkoutStatus) return;
+    const t = setTimeout(() => {
+      setCheckoutBanner(null);
+      // Remove the query param from URL without reloading
+      window.history.replaceState({}, '', '/parent');
+    }, 6000);
+    return () => clearTimeout(t);
+  }, [checkoutStatus]);
   const { activeKid, setActiveKid, clear } = useKidStore();
   const [unlocked, setUnlocked] = useState(false);
   const [kids, setKids] = useState<Kid[]>([]);
@@ -331,6 +471,18 @@ export default function ParentPage() {
       </header>
 
       <section className="px-6 md:px-12 py-8 max-w-4xl mx-auto">
+        {checkoutBanner && (
+          <div
+            className={clsx(
+              'card-cozy p-4 mb-6 font-display font-bold text-center',
+              checkoutStatus === 'success'
+                ? 'bg-meadow-300/50 text-meadow-500'
+                : 'bg-cream-200'
+            )}
+          >
+            {checkoutBanner}
+          </div>
+        )}
         <div className="card-cozy p-6 mb-6">
           <h2 className="heading-2 mb-1">Hi, {parentEmail}</h2>
           <p className="text-ink-700">Manage your family's account here.</p>
@@ -458,10 +610,12 @@ export default function ParentPage() {
           </Link>
         </div>
 
+        <SubscriptionSection />
+
         <div className="card-cozy p-6 bg-cream-100/60 mb-6">
           <h3 className="heading-3 mb-2">About Payton's Art Club</h3>
           <ul className="text-ink-700 space-y-1 text-sm">
-            <li>• No ads, no in-app purchases, no third-party tracking.</li>
+            <li>• No ads, no third-party tracking.</li>
             <li>• Artwork is stored privately; only you can see it.</li>
             <li>• You can delete individual kids or your whole account below.</li>
           </ul>

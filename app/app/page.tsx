@@ -12,6 +12,7 @@ import { WORLDS, getFreeWorlds, getPremiumWorlds } from '@/lib/worlds';
 import { getDailyLesson } from '@/lib/lessons';
 import { useKidStore } from '@/lib/store';
 import { countUnseenFriendships } from '@/lib/friends';
+import { useEntitlement, hasEffectivePremium } from '@/lib/useEntitlement';
 import { createClient } from '@/lib/supabase/client';
 import type { Kid, World } from '@/lib/types';
 import clsx from 'clsx';
@@ -21,7 +22,15 @@ const WORLD_COLOR_CLASSES: Record<string, string> = {
   coral: 'bg-coral-400', sparkle: 'bg-sparkle-400',
 };
 
-function WorldCard({ world, onClick }: { world: World; onClick: () => void }) {
+function WorldCard({
+  world,
+  onClick,
+  needsPremiumUnlock,
+}: {
+  world: World;
+  onClick: () => void;
+  needsPremiumUnlock?: boolean;
+}) {
   const colorClass = WORLD_COLOR_CLASSES[world.color] || 'bg-meadow-400';
   const locked = !world.unlocked;
   return (
@@ -35,7 +44,7 @@ function WorldCard({ world, onClick }: { world: World; onClick: () => void }) {
     >
       {world.tier === 'premium' && (
         <div className="absolute top-3 right-3 bg-sparkle-400 text-ink-900 text-xs font-bold px-2 py-1 rounded-full shadow-chunky">
-          ⭐ Bonus
+          {needsPremiumUnlock ? '🔒 Unlock' : '⭐ Bonus'}
         </div>
       )}
       <div className={clsx('absolute -top-6 -right-6 w-32 h-32 rounded-blob opacity-30', colorClass)} />
@@ -58,6 +67,7 @@ function WorldCard({ world, onClick }: { world: World; onClick: () => void }) {
 export default function HomePage() {
   const router = useRouter();
   const { activeKid, setActiveKid } = useKidStore();
+  const { entitlement } = useEntitlement();
   const [kids, setKids] = useState<Kid[]>([]);
   const [loading, setLoading] = useState(true);
   const [showBuddyModal, setShowBuddyModal] = useState(false);
@@ -235,7 +245,12 @@ export default function HomePage() {
         </p>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {premiumWorlds.map((w) => (
-            <WorldCard key={w.id} world={w} onClick={() => router.push(`/app/world/${w.id}`)} />
+            <WorldCard
+              key={w.id}
+              world={w}
+              onClick={() => router.push(`/app/world/${w.id}`)}
+              needsPremiumUnlock={!hasEffectivePremium(entitlement)}
+            />
           ))}
         </div>
       </section>
