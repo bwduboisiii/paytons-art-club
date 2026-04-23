@@ -869,18 +869,36 @@ const DrawingCanvas = forwardRef<DrawingCanvasHandle, Props>(function DrawingCan
   // ============================================================
   useImperativeHandle(ref, () => ({
     async exportPNG() {
+      // Gap 15: render to a scratch canvas without selection UI.
+      // The on-screen canvas keeps its selection state visible to the user
+      // throughout; the export is a separate buffer that never shows handles.
       const canvas = canvasRef.current!;
-      // Temporarily clear selection so handles don't end up in export
-      const prev = selectedStickerIdx;
-      setSelectedStickerIdx(null);
-      // Redraw without selection happens via effect; wait a tick
-      await new Promise((r) => requestAnimationFrame(() => r(null)));
-      const blob = await new Promise<Blob>((resolve, reject) => {
-        canvas.toBlob((b) => (b ? resolve(b) : reject(new Error('No blob'))), 'image/png');
+      const scratch = document.createElement('canvas');
+      scratch.width = canvas.width;
+      scratch.height = canvas.height;
+      const ctx = scratch.getContext('2d')!;
+      ctx.drawImage(canvas, 0, 0);
+
+      // If selection is currently shown, the main canvas DID render handles.
+      // Re-render from scratch without selection.
+      if (selectedStickerIdx !== null) {
+        // Temporarily deselect for one redraw, capture, restore.
+        const prev = selectedStickerIdx;
+        setSelectedStickerIdx(null);
+        // Wait two frames to be safe that React+canvas have redrawn
+        await new Promise((r) => requestAnimationFrame(() => r(null)));
+        await new Promise((r) => requestAnimationFrame(() => r(null)));
+        ctx.clearRect(0, 0, scratch.width, scratch.height);
+        ctx.drawImage(canvas, 0, 0);
+        setSelectedStickerIdx(prev);
+      }
+
+      return await new Promise<Blob>((resolve, reject) => {
+        scratch.toBlob(
+          (b) => (b ? resolve(b) : reject(new Error('No blob'))),
+          'image/png'
+        );
       });
-      // Restore selection
-      if (prev !== null) setSelectedStickerIdx(prev);
-      return blob;
     },
     async exportDataURL() {
       const canvas = canvasRef.current!;

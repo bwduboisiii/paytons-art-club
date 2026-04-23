@@ -81,10 +81,10 @@ export function getLessonsForWorld(worldId: string): Lesson[] {
 /**
  * Daily lesson: picks one lesson per calendar day, deterministic.
  * Always picks from FREE worlds so kids don't hit a paywall on the daily.
- * Uses date-based hash so everyone sees the same daily lesson each day.
+ * Gap 13: Uses UTC date so the daily is consistent across timezones and
+ * (somewhat) resilient to device-local clock errors.
  */
 export function getDailyLesson(): Lesson {
-  // Curated list of "daily-friendly" lesson ids — all free, all fun
   const dailyPool = [
     'critter_cove_01', 'critter_cove_02', 'critter_cove_03',
     'critter_cove_04', 'critter_cove_05', 'critter_cove_06',
@@ -96,9 +96,11 @@ export function getDailyLesson(): Lesson {
   ];
 
   const today = new Date();
-  // YYYYMMDD as a simple day index
+  // UTC-based day index: consistent across timezones
   const dayNum =
-    today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+    today.getUTCFullYear() * 10000 +
+    (today.getUTCMonth() + 1) * 100 +
+    today.getUTCDate();
   const idx = dayNum % dailyPool.length;
   return LESSON_MAP[dailyPool[idx]] || LESSON_MAP.critter_cove_01;
 }

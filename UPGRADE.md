@@ -1,126 +1,92 @@
-# Payton's Art Club — v7 / Pass C: Multiplayer Draw & Guess Game 🎮
+# Payton's Art Club — v8: Gap Audit Fixes
 
-## What's new
+This is a **maintenance release**. No new features — just fixes for 16 of the 17 gaps I found during the audit. The app will look the same; it'll just break in fewer places.
 
-### 🎨 Draw & Guess multiplayer game
-Kids can now play a real-time pictionary-style game with their friends.
+## What's fixed
 
-- **Create a room**: Gets a 4-letter room code (like `WOLF`). Share with a friend.
-- **Friend joins**: They enter the code on the game screen.
-- **Gameplay**:
-  - One kid is the drawer, picks one of 3 words, has 60 seconds to draw it
-  - The other kid guesses in a chat panel
-  - Correct guess = both players score points
-  - Drawers rotate each round
-  - Play as many rounds as you want
-- **Fuzzy guess matching** — "unicorn" matches "unicorns" matches "a unicorn"
-- **Quick-reaction emojis** (👍 🎉 😂 🤔 ❤️ ⭐) in the chat panel
-- **Live score** updates at the top
+### 🔴 Critical (5 fixed)
 
-### Where to find it
-- New **🎮 Play Game** button on the home nav
-- New **Draw & Guess Game** banner at the top of the Friends page
-- Both go to `/app/game`, which lets you Create a room or Join by code
+1. **Guess duplication in multiplayer** — guesser no longer sees their guess twice (once wrong, once right). Now we update the existing optimistic guess in place.
+2. **Dead `submitGuess` function** — removed, since the play page uses `sendGuess`.
+3. **`regenerateFriendCode` silent failures** — now returns a proper result with error message. The Friends page shows an alert if regeneration fails instead of appearing to do nothing.
+4. **Friends list only saw one direction** — now queries both friendship directions and dedupes. Resilient to any orphaned rows if an RPC ever fails mid-transaction.
+5. **Home red-dot badge didn't refresh** — after visiting the parent dashboard and marking friendships seen, returning to home now refreshes the badge via visibility/focus listeners.
 
-### 60 kid-safe words
-Organized by difficulty (easy / medium / hard). Drawer gets 3 random easy words to pick from. Includes common animals, objects, and compound words like "pirate ship" and "ice cream cone."
+### 🟡 High (6 fixed)
+
+7. **Stale listFriends comments removed** (docstring cleanup).
+8. **Friend detail page checks both directions** — if only the reverse friendship row exists, the kid can still view their friend's art.
+9. **Abandoned game rooms** — added a heartbeat column + `beforeunload` broadcast. If the host closes their tab, the guest now sees "[Name] left the game" and can start a new game.
+10. **Self-echo defense on all game events** — every event handler now explicitly checks if the sender is us, and ignores. Prevents ghost events if Supabase's `self: false` ever misfires.
+11. **Word-pick timeout** — if the drawer takes longer than 2 minutes to pick a word, the round auto-cancels. Prevents the guesser from being stuck forever.
+14. **Parent mark-all-seen race condition** — now marks ONLY the friendships that were visible when the button was tapped. A new friendship arriving mid-view doesn't get silently hidden.
+
+### 🟢 Medium (3 fixed)
+
+12. **Tier badge wording** — changed "⭐ Premium" → "⭐ Bonus" and the section heading now says these are free while we're building. More honest until Stripe actually gates things.
+13. **Daily lesson uses UTC** — consistent across timezones; Payton won't see a different daily lesson than her friend in another city.
+15. **Canvas export no longer flashes selection** — export now renders to an off-screen scratch canvas. No more dashed-outline flicker on save.
+
+### ⚪ Low (1 fixed)
+
+17. **Reconnection for multiplayer** — if wifi drops during a game, the Realtime channel now retries with exponential backoff up to 5 times (1s → 2s → 4s → 8s → 15s). Connection status shows as "Reconnecting..." (yellow) or "Disconnected" (red) so kids know what's happening.
+
+### What I deferred
+
+- **Gap 6** (3+ player safety): added code comment; not applicable to current 2-player game
+- **Gap 16** (room code mixed-case): extremely low priority, client + SQL already normalize
 
 ---
 
 ## How to apply
 
-### Step 1: Run the Game schema SQL
+### Step 1: Run the v8 SQL migration
+
+This adds the `last_heartbeat` column to game_rooms and updates the cleanup function (for Gap 9).
 
 1. Supabase → SQL Editor → **New query**
-2. Paste the contents of `supabase/game_schema.sql`
+2. Paste contents of `supabase/v8_fixes.sql`
 3. Click **Run**
 4. Should say "Success" — idempotent, safe to re-run
 
-This creates: the `game_rooms` table with RLS, and two RPCs (`join_game_room`, `leave_game_room`).
+### Step 2: Swap folders
 
-### Step 2: Enable Realtime on the game_rooms table
-
-This is **critical** and separate from running the SQL. Without this, kids won't see each other's moves.
-
-1. Supabase → **Database** → **Replication** (or **Realtime** in newer UI)
-2. Find the `game_rooms` table
-3. Toggle "Realtime" **ON** for it
-4. Make sure `UPDATE` events are enabled
-
-### Step 3: Swap folders
-
-1. Back up v6 folder, unzip v7, copy `.git` over
-2. `git add . && git commit -m "v7: multiplayer draw & guess game" && git push`
+1. Back up v7 folder, unzip v8, copy `.git` over
+2. `git add . && git commit -m "v8: gap audit fixes" && git push`
 3. Hard refresh (Ctrl+Shift+R)
 
-### Step 4: Test
+### Step 3: Test (no new features, just regression checks)
 
-**This test requires two devices or two browsers.** Open one in regular browser, another in Incognito to simulate two users.
-
-1. Sign up a second parent account in Incognito, create a kid
-2. Real Payton account (device 1): Home → 🎮 Play Game → Create room → note the 4-letter code
-3. Other kid (device 2): Home → 🎮 Play Game → enter the code → Join
-4. Device 1 sees "friend joined!" → tap Start game
-5. Drawer picks a word, starts drawing — other device should see strokes appear in real-time
-6. Guesser types a guess; if correct, round ends, both scores update
-7. Host taps "Next round" → roles rotate
+- [ ] Multiplayer game still works end-to-end (your existing v7 test case)
+- [ ] When playing, watch the connection status indicator — should say "Connected" (green)
+- [ ] Friends page: get a new code → verify it actually changes (Gap 3)
+- [ ] Parent dashboard → tap "mark all seen" → red dot on home disappears after switching back (Gap 5)
+- [ ] Gallery: save artwork with sticker selected → no dashed outline in the saved PNG (Gap 15)
 
 ---
 
-## Known rough edges (I flagged these up-front)
+## What should feel different
 
-- **No reconnection**: If either player's wifi drops, the game doesn't gracefully recover. They'll need to leave and restart.
-- **Room codes expire at browser close**: Host closes the tab → room is abandoned. Guest can still see the stale room code in DB but the host isn't there to respond. Run `cleanup_old_game_rooms()` manually in Supabase to remove stale rooms.
-- **No stroke replay for late joiners**: If a guesser joins mid-round, they only see strokes drawn after they subscribed, not from the beginning. First round feels weird if join timing is bad.
-- **Latency on bad networks**: Strokes batched at 20Hz so you'll see 50ms delay at best. On slow wifi, strokes can arrive out of order (rare) or bunch up (common). Recovery is automatic but looks janky.
-- **Drawer's canvas is the source of truth for correct-guess judgment**. If drawer's browser hiccups, the guess-checking might lag. In practice works fine.
-- **Only two players**: Game is designed for exactly 2. Third player can't join a full room.
-- **No voice chat / no text chat** outside the guess panel. Kids can send emojis, nothing more.
-- **No undo in game canvas**: Simplified from Free Draw on purpose — undo would need to be multicast, add latency.
-- **Game canvas uses only 8 colors + marker/eraser**, not all 15 tools. Realtime bandwidth for 15 tool types would be much higher and kids don't need paintbrush for pictionary.
-- **"Host" role is sticky**: Only host can start rounds. If host leaves, the game ends.
+**For Payton:**
+- Her guesses in the game no longer appear twice
+- If she closes her friend's tab by accident, game ends cleanly instead of hanging
+- Save button on a sticker-selected canvas no longer has a weird flicker
 
----
+**For you (parent):**
+- New friend red-dot badge goes away when it should
+- Tier labels read "Bonus" not "Premium" so if you show another parent the app, they won't ask why you're paying for it
+- Dashboard "mark seen" doesn't accidentally hide new arrivals
 
-## Safety notes
-
-- No discovery: Games are strictly **friends-only**. No matchmaking, no "join random room."
-- Room codes are ephemeral (~2 hours max before cleanup).
-- Chat is locked to a tight set of kid-safe features: typed guesses (checked for word match) + reaction emojis only.
-- No image sharing, no voice, no free-form messaging.
-- Parent dashboard doesn't currently show game activity — that's a pass-D feature if desired.
+**Nothing else changes.** Same features, same lessons, same 16 avatars, same 15 tools.
 
 ---
 
-## If something breaks
+## Still not fixed / future
 
-**"Connecting..." stays forever** → You didn't enable Realtime on the table. Go back to Step 2.
+- Multiplayer with 3+ players
+- Chat beyond emojis (considered out of scope for kid safety)
+- Stripe / real premium gating (Pass D)
+- Voice/audio for companion
+- Printable PDF export
 
-**Guesser sees drawer's strokes but drawer doesn't see guesses** → The `self: false` broadcast config means you don't receive your own events. Open the guesser's console and look for errors. Most likely the channel subscription is failing.
-
-**"Room not found" when joining** → Code is case-sensitive in the UI but the SQL normalizes with `upper()`. If this happens, try again — the room might have just expired (>2h old).
-
-**Strokes appear slowly / stutter** → Real network latency. On shared home wifi this should be <100ms. On mobile data it can spike to 1-2s. Not fixable in app code.
-
----
-
-## Deferred to future passes
-
-- **Stripe** for premium worlds (Pass D)
-- **Game polish**: reconnection, stroke replay, word difficulty selector, custom word lists
-- **Parent push notifications** for new game invites
-- **Saving completed games to gallery** (a "frozen" canvas from the last drawing)
-- **3+ player lobbies**
-- **Spectator mode**
-
----
-
-## My honest take
-
-I've built the game end-to-end but **I genuinely cannot verify it works** without two real devices and two real accounts on two real networks. Realtime multiplayer is the one feature where simulation in my head isn't enough.
-
-So: there's a real chance that when you and a friend try this, something will be subtly broken. That's not me being pessimistic — that's me being honest about what multiplayer networking is like. If it doesn't work, tell me exactly what happened (host saw, guest saw, in what order) and I can debug from logs.
-
-If it works the first time: 🎉
-
-If it doesn't: we iterate. That was baked into your "build it, accept rough edges" choice. I'm here for the iteration.
+When you're ready, Pass D or further content expansion is the next step. Let Payton use v8 a bit first — the real multiplayer experience (with a real friend on a real network) is where you'll find issues I can't predict.

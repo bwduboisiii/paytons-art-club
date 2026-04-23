@@ -86,7 +86,7 @@ export default function GamePlayPage({ params }: { params: { code: string } }) {
     return <LoadingSpinner label="Joining game..." />;
   }
 
-  const { room, myRole, iAmDrawer, wordOptions, currentWord, guesses, timeLeft, connected } =
+  const { room, myRole, iAmDrawer, wordOptions, currentWord, guesses, timeLeft } =
     state;
 
   const myScore = myRole === 'host' ? room.hostScore : room.guestScore;
@@ -131,10 +131,14 @@ export default function GamePlayPage({ params }: { params: { code: string } }) {
         </div>
 
         <div className="flex items-center gap-2 text-xs">
-          {connected ? (
+          {state.connectionStatus === 'connected' ? (
             <span className="text-meadow-500 font-bold">● Connected</span>
+          ) : state.connectionStatus === 'error' ? (
+            <span className="text-sparkle-500 font-bold">● Reconnecting...</span>
+          ) : state.connectionStatus === 'disconnected' ? (
+            <span className="text-coral-500 font-bold">● Disconnected</span>
           ) : (
-            <span className="text-coral-500 font-bold">● Connecting...</span>
+            <span className="text-ink-500 font-bold">● Connecting...</span>
           )}
           <span className="font-mono font-bold text-ink-500">{code}</span>
         </div>
@@ -376,6 +380,29 @@ export default function GamePlayPage({ params }: { params: { code: string } }) {
                   ))}
                 </div>
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* --- GAME OVER (opponent left) --- */}
+        {room.phase === 'game_over' && (
+          <div className="card-cozy p-8 max-w-md w-full text-center">
+            <div className="flex justify-center mb-4">
+              <Companion character={activeKid.avatar_key as any} mood="thinking" size={100} />
+            </div>
+            <h2 className="heading-2 mb-2">
+              {opponentName ? `${opponentName} left the game` : 'Game ended'}
+            </h2>
+            <p className="text-ink-700 mb-6">
+              Final score: {myScore} – {theirScore}
+            </p>
+            <div className="flex gap-2 justify-center flex-wrap">
+              <Button variant="secondary" size="lg" onClick={() => router.push('/app/game')}>
+                New game
+              </Button>
+              <Button variant="primary" size="lg" onClick={() => router.push('/app')}>
+                Home
+              </Button>
             </div>
           </div>
         )}

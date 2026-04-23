@@ -25,14 +25,21 @@ export default function FriendDetailPage({ params }: { params: { id: string } })
     let cancelled = false;
     (async () => {
       const supabase = createClient();
-      // Verify friendship exists
-      const { data: fship } = await supabase
-        .from('friendships').select('id')
-        .eq('kid_id', activeKid.id)
-        .eq('friend_kid_id', friendId)
-        .maybeSingle();
+      // Gap 8: verify friendship in BOTH directions to tolerate orphaned rows
+      const [dir1, dir2] = await Promise.all([
+        supabase
+          .from('friendships').select('id')
+          .eq('kid_id', activeKid.id)
+          .eq('friend_kid_id', friendId)
+          .maybeSingle(),
+        supabase
+          .from('friendships').select('id')
+          .eq('kid_id', friendId)
+          .eq('friend_kid_id', activeKid.id)
+          .maybeSingle(),
+      ]);
       if (cancelled) return;
-      if (!fship) {
+      if (!dir1.data && !dir2.data) {
         router.replace('/app/friends');
         return;
       }

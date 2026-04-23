@@ -192,11 +192,22 @@ export default function ParentPage() {
     const supabase = createClient();
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
-    await markFriendshipsSeen(user.id);
+    // Gap 14: pass the IDs of the friendships currently visible with isNew=true
+    // so new ones arriving between load and click aren't stealthily marked seen.
+    const visibleUnseenIds: string[] = [];
+    for (const list of Object.values(kidFriends)) {
+      for (const f of list) {
+        if (f.isNew) visibleUnseenIds.push(f.friendshipId);
+      }
+    }
+    if (!visibleUnseenIds.length) return;
+    await markFriendshipsSeen(user.id, visibleUnseenIds);
     setKidFriends((prev) => {
       const next: typeof prev = {};
       for (const [kidId, list] of Object.entries(prev)) {
-        next[kidId] = list.map((f) => ({ ...f, isNew: false }));
+        next[kidId] = list.map((f) =>
+          visibleUnseenIds.includes(f.friendshipId) ? { ...f, isNew: false } : f
+        );
       }
       return next;
     });

@@ -3,17 +3,10 @@ import type { FriendInfo } from './types';
 
 // ============================================================
 // Friends data operations
-// Safety model: Path A (auto-add). Kid enters a friend_code,
-// friendship is created immediately, and it shows in the parent
-// dashboard as "new" until parent_seen_at is set.
+// Path A auto-add. Both friendship directions created by RPC.
 // ============================================================
 
-/**
- * Look up a kid by their friend_code. Returns minimal public info or null.
- */
-export async function lookupKidByCode(
-  code: string
-): Promise<FriendInfo | null> {
+export async function lookupKidByCode(code: string): Promise<FriendInfo | null> {
   const supabase = createClient();
   const normalized = code.trim().toUpperCase();
   if (normalized.length !== 6) return null;
@@ -29,8 +22,7 @@ export async function lookupKidByCode(
 }
 
 /**
- * Add a friend via the server-side RPC, which creates both directions
- * atomically so both kids see the friendship instantly.
+ * Add friend via RPC (creates both directions atomically).
  */
 export async function addFriendByCode(
   myKidId: string,
@@ -72,37 +64,48 @@ export async function addFriendByCode(
 }
 
 /**
- * Get all friends of a kid (from either direction of the friendship).
+ * List all friends of a kid.
+ * Gap 4/7: queries BOTH directions (kid_id=me OR friend_kid_id=me), dedupes,
+ * resolves friend info from whichever column isn't me. This is resilient
+ * to orphaned friendship rows.
  */
 export async function listFriends(kidId: string): Promise<FriendInfo[]> {
   const supabase = createClient();
 
-  // Our direction: friendships where kid_id = me
-  const { data: mine } = await supabase
-    .from('friendships')
-    .select('friend_kid_id, created_at')
-    .eq('kid_id', kidId);
+  // Query both directions in parallel
+  const [mineRes, reverseRes] = await Promise.all([
+    supabase
+      .from('friendships')
+      .select('friend_kid_id, created_at')
+      .eq('kid_id', kidId),
+    supabase
+      .from('friendships')
+      .select('kid_id, created_at')
+      .eq('friend_kid_id', kidId),
+  ]);
 
-  // Reverse direction: friendships where friend_kid_id = me
-  // (These are rows owned by the OTHER parent but we can read them via
-  //  the kids_friend_code_public_read policy on kids, though friendships
-  //  table itself is parent-scoped. So we'll only see our own direction here.)
-  // For now, friendships are only created from our side. If the friend
-  // adds us back, another row is created from their side, which we CAN'T
-  // read directly. We resolve this by ALWAYS adding from both sides when
-  // creating a friendship, via an RPC that has elevated permissions.
-  // TODO: move to RPC in a polish pass. For Pass A, we only show our direction.
+  // Collect friend kid IDs + the earliest creation time for each
+  const friendedAt = new Map<string, string>();
+  (mineRes.data || []).forEach((r: any) => {
+    const existing = friendedAt.get(r.friend_kid_id);
+    if (!existing || new Date(r.created_at) < new Date(existing)) {
+      friendedAt.set(r.friend_kid_id, r.created_at);
+    }
+  });
+  (reverseRes.data || []).forEach((r: any) => {
+    const existing = friendedAt.get(r.kid_id);
+    if (!existing || new Date(r.created_at) < new Date(existing)) {
+      friendedAt.set(r.kid_id, r.created_at);
+    }
+  });
 
-  const friendIds = (mine || []).map((r: any) => r.friend_kid_id);
+  const friendIds = Array.from(friendedAt.keys());
   if (!friendIds.length) return [];
 
   const { data: kids } = await supabase
     .from('kids_lookup')
     .select('id, name, avatar_key, friend_code')
     .in('id', friendIds);
-
-  const friendedAt = new Map<string, string>();
-  (mine || []).forEach((r: any) => friendedAt.set(r.friend_kid_id, r.created_at));
 
   return (kids || []).map((k: any) => ({
     id: k.id,
@@ -113,9 +116,6 @@ export async function listFriends(kidId: string): Promise<FriendInfo[]> {
   }));
 }
 
-/**
- * Remove a friendship (both directions, via RPC).
- */
 export async function removeFriend(kidId: string, friendKidId: string) {
   const supabase = createClient();
   await supabase.rpc('remove_friend', {
@@ -125,7 +125,8 @@ export async function removeFriend(kidId: string, friendKidId: string) {
 }
 
 /**
- * Parent dashboard: count of unseen friendships across all the parent's kids.
+ * Count friendships across ALL the parent's kids that haven't been
+ * acknowledged yet (parent_seen_at IS NULL).
  */
 export async function countUnseenFriendships(parentId: string): Promise<number> {
   const supabase = createClient();
@@ -143,34 +144,46 @@ export async function countUnseenFriendships(parentId: string): Promise<number> 
 }
 
 /**
- * Mark all friendships across parent's kids as seen (parent opened the dashboard).
+ * Mark specific friendship rows as seen.
+ * Gap 14: accepts a list of IDs to mark seen instead of "all unseen for this parent"
+ * so new friendships that arrive between load time and button click aren't
+ * inadvertently marked as seen.
  */
-export async function markFriendshipsSeen(parentId: string) {
+export async function markFriendshipsSeen(
+  parentId: string,
+  friendshipIds?: string[]
+) {
   const supabase = createClient();
   const { data: kids } = await supabase
     .from('kids')
     .select('id')
     .eq('parent_id', parentId);
   if (!kids?.length) return;
-  await supabase
+
+  let q = supabase
     .from('friendships')
     .update({ parent_seen_at: new Date().toISOString() })
     .in('kid_id', kids.map((k: any) => k.id))
     .is('parent_seen_at', null);
+
+  if (friendshipIds && friendshipIds.length) {
+    q = q.in('id', friendshipIds);
+  }
+  await q;
 }
 
 /**
- * Regenerate a kid's friend code (e.g. if an old code was shared with someone
- * the parent doesn't want). Uses the DB function so we don't have to worry
- * about collisions client-side.
- *
- * Note: existing friendships are NOT broken by this — only new friend-by-code
- * attempts would fail because the old code no longer resolves.
+ * Regenerate a kid's friend code.
+ * Gap 3: explicit handling of unique-violation errors, retries only on those.
+ * Other errors (network, permission) return meaningful error.
  */
-export async function regenerateFriendCode(kidId: string): Promise<string | null> {
+export async function regenerateFriendCode(
+  kidId: string
+): Promise<{ ok: true; code: string } | { ok: false; error: string }> {
   const supabase = createClient();
-  // Generate via a loop client-side — simple & works
   const chars = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+  let lastNonCollisionError: string | null = null;
+
   for (let attempt = 0; attempt < 20; attempt++) {
     let code = '';
     for (let i = 0; i < 6; i++) {
@@ -180,7 +193,25 @@ export async function regenerateFriendCode(kidId: string): Promise<string | null
       .from('kids')
       .update({ friend_code: code })
       .eq('id', kidId);
-    if (!error) return code;
+
+    if (!error) return { ok: true, code };
+
+    // Unique violation: try a different code
+    // Postgres unique violation has code '23505'. Supabase surfaces message;
+    // check both.
+    const isCollision =
+      (error as any).code === '23505' ||
+      (error.message || '').toLowerCase().includes('duplicate') ||
+      (error.message || '').toLowerCase().includes('unique');
+
+    if (!isCollision) {
+      lastNonCollisionError = error.message || 'Unknown error';
+      break; // Don't retry non-collision errors
+    }
   }
-  return null;
+
+  return {
+    ok: false,
+    error: lastNonCollisionError || "Couldn't generate a unique code. Try again.",
+  };
 }

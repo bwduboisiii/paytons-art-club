@@ -35,7 +35,7 @@ function WorldCard({ world, onClick }: { world: World; onClick: () => void }) {
     >
       {world.tier === 'premium' && (
         <div className="absolute top-3 right-3 bg-sparkle-400 text-ink-900 text-xs font-bold px-2 py-1 rounded-full shadow-chunky">
-          ⭐ Premium
+          ⭐ Bonus
         </div>
       )}
       <div className={clsx('absolute -top-6 -right-6 w-32 h-32 rounded-blob opacity-30', colorClass)} />
@@ -90,6 +90,26 @@ export default function HomePage() {
     })();
     return () => { cancelled = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Gap 5: Re-fetch unseen count when the page regains focus / visibility.
+  // Parent visits dashboard → marks seen → comes back to home. Without this,
+  // the red dot stays until a hard reload.
+  useEffect(() => {
+    async function refreshUnseen() {
+      if (document.visibilityState !== 'visible') return;
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+      const unseen = await countUnseenFriendships(user.id);
+      setUnseenFriends(unseen);
+    }
+    document.addEventListener('visibilitychange', refreshUnseen);
+    window.addEventListener('focus', refreshUnseen);
+    return () => {
+      document.removeEventListener('visibilitychange', refreshUnseen);
+      window.removeEventListener('focus', refreshUnseen);
+    };
   }, []);
 
   useEffect(() => {
@@ -209,9 +229,9 @@ export default function HomePage() {
           ))}
         </div>
 
-        <h2 className="heading-1 mb-2">More adventures ⭐</h2>
+        <h2 className="heading-1 mb-2">Bonus worlds ⭐</h2>
         <p className="text-ink-700 text-lg mb-6">
-          Special worlds to explore! (Free for now while we're building!)
+          Extra adventures to unlock — all free while we're building!
         </p>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {premiumWorlds.map((w) => (

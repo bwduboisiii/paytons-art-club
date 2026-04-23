@@ -87,10 +87,12 @@ export default function FriendsPage() {
     if (!confirm(
       "Get a new code? Your old code will stop working — but your current friends stay."
     )) return;
-    const newCode = await regenerateFriendCode(activeKid.id);
-    if (newCode) {
-      setKid({ ...kid, friend_code: newCode });
-      setActiveKid({ ...activeKid, friend_code: newCode });
+    const result = await regenerateFriendCode(activeKid.id);
+    if (result.ok) {
+      setKid({ ...kid, friend_code: result.code });
+      setActiveKid({ ...activeKid, friend_code: result.code });
+    } else {
+      alert(`Couldn't generate a new code: ${result.error}`);
     }
   }
 
