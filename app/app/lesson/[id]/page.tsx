@@ -6,9 +6,9 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import Button from '@/components/Button';
 import Companion from '@/components/Companion';
-import ColorPalette from '@/components/ColorPalette';
+import ColorPaletteVertical from '@/components/ColorPaletteVertical';
 import BrushSizer from '@/components/BrushSizer';
-import ToolPicker from '@/components/ToolPicker';
+import ToolPickerVertical from '@/components/ToolPickerVertical';
 import FloatingBuddy from '@/components/FloatingBuddy';
 import StickerTray from '@/components/StickerTray';
 import Confetti from '@/components/Confetti';
@@ -20,6 +20,8 @@ import { safeUUID, MAX_ARTWORK_BYTES } from '@/lib/utils';
 import type { DrawingToolId } from '@/lib/drawingTools';
 
 type Phase = 'intro' | 'drawing' | 'remix' | 'reward';
+
+const SIDEBAR_W = 76;
 
 export default function LessonPage({ params }: { params: { id: string } }) {
   const { id } = params;
@@ -40,21 +42,17 @@ export default function LessonPage({ params }: { params: { id: string } }) {
   const [showStickerTray, setShowStickerTray] = useState(false);
   const startTime = useRef(Date.now());
   const [canvasSize, setCanvasSize] = useState({ width: 800, height: 600 });
-  const [buddyMood, setBuddyMood] = useState<
-    'happy' | 'cheering' | 'thinking' | 'idle'
-  >('happy');
+  const [buddyMood, setBuddyMood] = useState<'happy' | 'cheering' | 'thinking' | 'idle'>('happy');
 
   useEffect(() => {
     function resize() {
-      const isMobile = window.innerWidth < 768;
-      const maxWidth = Math.min(window.innerWidth - 48, 900);
-      const maxHeight = Math.min(
-        window.innerHeight - (isMobile ? 320 : 240),
-        700
-      );
-      const width = Math.min(maxWidth, (maxHeight * 4) / 3);
-      const height = (width * 3) / 4;
-      setCanvasSize({ width, height });
+      const availW = window.innerWidth - SIDEBAR_W * 2 - 90 - 32;
+      const availH = window.innerHeight - 120 - 72 - 32;
+      const ratio = 4 / 3;
+      let w = Math.min(availW, availH * ratio, 1100);
+      let h = w / ratio;
+      if (h > availH) { h = availH; w = h * ratio; }
+      setCanvasSize({ width: Math.max(400, w), height: Math.max(300, h) });
     }
     resize();
     window.addEventListener('resize', resize);
@@ -65,18 +63,14 @@ export default function LessonPage({ params }: { params: { id: string } }) {
     function handler(e: BeforeUnloadEvent) {
       if (phase !== 'drawing' && phase !== 'remix') return;
       if (!canvasRef.current?.hasContent()) return;
-      e.preventDefault();
-      e.returnValue = '';
+      e.preventDefault(); e.returnValue = '';
     }
     window.addEventListener('beforeunload', handler);
     return () => window.removeEventListener('beforeunload', handler);
   }, [phase]);
 
   const attemptExit = useCallback(() => {
-    if (
-      (phase === 'drawing' || phase === 'remix') &&
-      canvasRef.current?.hasContent()
-    ) {
+    if ((phase === 'drawing' || phase === 'remix') && canvasRef.current?.hasContent()) {
       setShowExitConfirm(true);
     } else if (lesson) {
       router.push(`/app/world/${lesson.world_id}`);
@@ -90,9 +84,7 @@ export default function LessonPage({ params }: { params: { id: string } }) {
       <main className="min-h-screen flex flex-col items-center justify-center p-6">
         <Companion character="owl" mood="thinking" size={100} />
         <p className="mt-4 text-lg text-ink-700">Lesson not found.</p>
-        <Link href="/app" className="mt-4">
-          <Button variant="primary">Back to Home</Button>
-        </Link>
+        <Link href="/app" className="mt-4"><Button variant="primary">Back to Home</Button></Link>
       </main>
     );
   }
@@ -105,71 +97,45 @@ export default function LessonPage({ params }: { params: { id: string } }) {
     setTimeout(() => setBuddyMood('happy'), 500);
   }
 
-  function handleFinishDrawing() {
-    setPhase('remix');
-  }
+  function handleFinishDrawing() { setPhase('remix'); }
 
   async function handleSaveAndReward() {
-    setSaving(true);
-    setSaveError(null);
+    setSaving(true); setSaveError(null);
     try {
       if (!activeKid || !canvasRef.current) throw new Error('Not ready');
       const supabase = createClient();
       const blob = await canvasRef.current.exportPNG();
-      if (blob.size > MAX_ARTWORK_BYTES) {
-        throw new Error('Drawing too large to save.');
-      }
+      if (blob.size > MAX_ARTWORK_BYTES) throw new Error('Drawing too large.');
       const filename = `${activeKid.id}/${safeUUID()}.png`;
-      const { error: uploadErr } = await supabase.storage
-        .from('artwork')
-        .upload(filename, blob, { contentType: 'image/png' });
+      const { error: uploadErr } = await supabase.storage.from('artwork').upload(filename, blob, { contentType: 'image/png' });
       if (uploadErr) throw uploadErr;
-
       await supabase.from('artworks').insert({
-        kid_id: activeKid.id,
-        lesson_id: lesson.id,
-        title: lesson.title,
-        storage_path: filename,
+        kid_id: activeKid.id, lesson_id: lesson.id,
+        title: lesson.title, storage_path: filename,
       });
-
       const duration = Math.floor((Date.now() - startTime.current) / 1000);
       await supabase.from('lesson_completions').insert({
-        kid_id: activeKid.id,
-        lesson_id: lesson.id,
+        kid_id: activeKid.id, lesson_id: lesson.id,
         duration_seconds: duration,
-        stickers_earned: [lesson.completion_sticker],
-        remix_applied: remixApplied,
+        stickers_earned: [lesson.completion_sticker], remix_applied: remixApplied,
       });
-
       await supabase.from('kid_stickers').upsert(
-        {
-          kid_id: activeKid.id,
-          sticker_key: lesson.completion_sticker,
-        },
+        { kid_id: activeKid.id, sticker_key: lesson.completion_sticker },
         { onConflict: 'kid_id,sticker_key' }
       );
-    } catch (e: any) {
-      setSaveError(e?.message || 'Could not save.');
-    } finally {
-      setSaving(false);
-      setPhase('reward');
-    }
+    } catch (e: any) { setSaveError(e?.message || 'Could not save.'); }
+    finally { setSaving(false); setPhase('reward'); }
   }
 
   const referencePaths = currentStep?.reference_paths || [];
-
-  // Buddy's encouragements when drawing: includes the current step instruction
-  const buddyMessage =
-    phase === 'drawing' ? currentStep?.companion_line : undefined;
+  const buddyMessage = phase === 'drawing' ? currentStep?.companion_line : undefined;
 
   return (
-    <main className="min-h-screen flex flex-col overflow-hidden">
-      {/* Floating buddy visible during drawing and remix phases */}
+    <main className="h-screen flex flex-col overflow-hidden">
       {(phase === 'drawing' || phase === 'remix') && activeKid && (
         <FloatingBuddy
           character={activeKid.avatar_key as any}
-          mood={buddyMood}
-          message={buddyMessage}
+          mood={buddyMood} message={buddyMessage}
         />
       )}
 
@@ -178,49 +144,24 @@ export default function LessonPage({ params }: { params: { id: string } }) {
           onClose={() => setShowStickerTray(false)}
           onPick={(value, src) => {
             canvasRef.current?.placeSticker(value, src);
-            setRemixApplied(true);
-            setShowStickerTray(false);
+            setRemixApplied(true); setShowStickerTray(false);
           }}
         />
       )}
 
-      {/* Exit confirm */}
       <AnimatePresence>
         {showExitConfirm && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             className="fixed inset-0 z-50 bg-ink-900/50 backdrop-blur-sm flex items-center justify-center px-6"
-            onClick={() => setShowExitConfirm(false)}
-          >
-            <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              onClick={(e) => e.stopPropagation()}
-              className="card-cozy p-8 max-w-sm w-full text-center"
-            >
+            onClick={() => setShowExitConfirm(false)}>
+            <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()} className="card-cozy p-8 max-w-sm w-full text-center">
               <div className="text-5xl mb-3">🎨</div>
               <h2 className="heading-2 mb-2">Leave this lesson?</h2>
-              <p className="text-ink-700 mb-6">
-                Your drawing won't be saved if you leave now.
-              </p>
+              <p className="text-ink-700 mb-6">Your drawing won't be saved if you leave now.</p>
               <div className="flex flex-col gap-2">
-                <Button
-                  variant="primary"
-                  size="md"
-                  onClick={() => setShowExitConfirm(false)}
-                >
-                  Keep Drawing ✏️
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="md"
-                  onClick={() => router.push(`/app/world/${lesson.world_id}`)}
-                >
-                  Leave anyway
-                </Button>
+                <Button variant="primary" size="md" onClick={() => setShowExitConfirm(false)}>Keep Drawing ✏️</Button>
+                <Button variant="ghost" size="md" onClick={() => router.push(`/app/world/${lesson.world_id}`)}>Leave anyway</Button>
               </div>
             </motion.div>
           </motion.div>
@@ -228,247 +169,111 @@ export default function LessonPage({ params }: { params: { id: string } }) {
       </AnimatePresence>
 
       <AnimatePresence mode="wait">
-        {/* INTRO */}
         {phase === 'intro' && (
-          <motion.div
-            key="intro"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 1.05 }}
-            className="flex-1 flex items-center justify-center px-6"
-          >
+          <motion.div key="intro" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 1.05 }}
+            className="flex-1 flex items-center justify-center px-6">
             <div className="card-cozy p-8 md:p-12 max-w-xl text-center">
               <div className="flex justify-center mb-6">
-                <Companion
-                  character={(activeKid?.avatar_key as any) || 'bunny'}
-                  mood="cheering"
-                  size={140}
-                />
+                <Companion character={(activeKid?.avatar_key as any) || 'bunny'} mood="cheering" size={140} />
               </div>
               <h1 className="heading-1 mb-3">Today we'll draw</h1>
               <h2 className="heading-1 text-coral-500 mb-6">{lesson.title}!</h2>
-              <p className="text-lg text-ink-700 mb-8">
-                {lesson.steps.length} easy steps. Ready?
-              </p>
+              <p className="text-lg text-ink-700 mb-8">{lesson.steps.length} easy steps. Ready?</p>
               <div className="flex gap-3 justify-center">
                 <Link href={`/app/world/${lesson.world_id}`}>
-                  <Button variant="ghost" size="md">
-                    ← Maybe later
-                  </Button>
+                  <Button variant="ghost" size="md">← Maybe later</Button>
                 </Link>
-                <Button
-                  variant="primary"
-                  size="xl"
-                  onClick={() => setPhase('drawing')}
-                >
-                  Let's Go! ✏️
-                </Button>
+                <Button variant="primary" size="xl" onClick={() => setPhase('drawing')}>Let's Go! ✏️</Button>
               </div>
             </div>
           </motion.div>
         )}
 
-        {/* DRAWING */}
-        {phase === 'drawing' && (
-          <motion.div
-            key="drawing"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="flex-1 flex flex-col"
-          >
-            <div className="px-4 md:px-8 pt-3 pb-2 flex items-center gap-3">
-              <div className="flex-1 bg-cream-100 rounded-2xl p-3 shadow-float">
-                <p className="text-sm font-bold text-coral-500 mb-1">
-                  Step {stepIdx + 1} of {lesson.steps.length}:{' '}
-                  {currentStep.instruction}
-                </p>
-              </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={attemptExit}
-                aria-label="Close lesson"
-              >
-                ✕
-              </Button>
+        {(phase === 'drawing' || phase === 'remix') && (
+          <motion.div key="canvas-view" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex-1 flex flex-col overflow-hidden">
+            {/* Header/step info */}
+            <div className="shrink-0 px-4 py-2 flex items-center gap-3 border-b-2 border-cream-200 bg-cream-100/60">
+              {phase === 'drawing' ? (
+                <div className="flex-1 bg-cream-50 rounded-2xl p-2 shadow-float">
+                  <p className="text-sm font-bold text-coral-500">
+                    Step {stepIdx + 1} of {lesson.steps.length}: {currentStep.instruction}
+                  </p>
+                </div>
+              ) : (
+                <div className="flex-1 bg-sparkle-300/40 rounded-2xl p-2 shadow-float border-2 border-sparkle-400 text-center">
+                  <p className="font-display font-bold text-ink-900">
+                    Beautiful! Add something silly? ✨
+                  </p>
+                </div>
+              )}
+              <Button variant="ghost" size="sm" onClick={attemptExit} aria-label="Close">✕</Button>
             </div>
 
             {/* Progress dots */}
-            <div className="flex gap-2 justify-center py-1">
-              {lesson.steps.map((_, i) => (
-                <div
-                  key={i}
-                  className={`h-2 rounded-full transition-all ${
-                    i < stepIdx
-                      ? 'w-6 bg-meadow-400'
-                      : i === stepIdx
-                      ? 'w-8 bg-coral-500'
-                      : 'w-2 bg-cream-200'
-                  }`}
-                />
-              ))}
-            </div>
-
-            {/* Canvas */}
-            <div className="flex-1 flex items-center justify-center px-4 pr-24 md:pr-28">
-              <DrawingCanvas
-                ref={canvasRef}
-                width={canvasSize.width}
-                height={canvasSize.height}
-                color={color}
-                brushWidth={brushWidth}
-                tool={tool}
-                referencePaths={referencePaths}
-                traceMode={lesson.guidance_level.startsWith('trace')}
-                onStroke={onStrokeComplete}
-              />
-            </div>
-
-            {/* Bottom toolbar */}
-            <div className="px-4 md:px-8 py-3 flex flex-col gap-2 bg-cream-100/60 backdrop-blur-sm">
-              <div className="flex justify-center">
-                <ToolPicker value={tool} onChange={setTool} compact />
-              </div>
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <ColorPalette
-                  colors={lesson.palette}
-                  selected={color}
-                  onChange={setColor}
-                />
-                <div className="flex items-center gap-2">
-                  <BrushSizer value={brushWidth} onChange={setBrushWidth} />
-                  <Button
-                    variant="secondary"
-                    size="md"
-                    onClick={() => canvasRef.current?.undo()}
-                  >
-                    ↶
-                  </Button>
-                  {!isLastStep ? (
-                    <Button
-                      variant="primary"
-                      size="lg"
-                      onClick={() => setStepIdx((i) => i + 1)}
-                    >
-                      Next →
-                    </Button>
-                  ) : (
-                    <Button
-                      variant="meadow"
-                      size="lg"
-                      onClick={handleFinishDrawing}
-                    >
-                      Done! ✨
-                    </Button>
-                  )}
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        )}
-
-        {/* REMIX */}
-        {phase === 'remix' && (
-          <motion.div
-            key="remix"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="flex-1 flex flex-col"
-          >
-            <div className="px-4 md:px-8 pt-4 pb-2">
-              <div className="bg-sparkle-300/40 rounded-2xl p-4 shadow-float border-2 border-sparkle-400 max-w-2xl mx-auto">
-                <p className="font-display font-bold text-ink-900 text-lg text-center">
-                  Beautiful! Want to add something silly? ✨
-                </p>
-              </div>
-            </div>
-
-            <div className="flex-1 flex items-center justify-center px-4 pr-24 md:pr-28">
-              <DrawingCanvas
-                ref={canvasRef}
-                width={canvasSize.width}
-                height={canvasSize.height}
-                color={color}
-                brushWidth={brushWidth}
-                tool={tool}
-                referencePaths={[]}
-              />
-            </div>
-
-            <div className="px-4 md:px-8 py-4 bg-cream-100/60 backdrop-blur-sm flex flex-col gap-2">
-              <div className="flex flex-wrap justify-center gap-2">
-                {lesson.remix_options.map((opt) => (
-                  <button
-                    key={opt.id}
-                    onClick={() => {
-                      canvasRef.current?.placeSticker(opt.emoji);
-                      setRemixApplied(true);
-                    }}
-                    className="card-cozy px-3 py-2 flex items-center gap-2 hover:-translate-y-1 transition-transform"
-                  >
-                    <span className="text-xl">{opt.emoji}</span>
-                    <span className="font-display font-bold text-sm">
-                      {opt.label}
-                    </span>
-                  </button>
+            {phase === 'drawing' && (
+              <div className="shrink-0 flex gap-2 justify-center py-1 bg-cream-100/60">
+                {lesson.steps.map((_, i) => (
+                  <div key={i} className={`h-2 rounded-full transition-all ${
+                    i < stepIdx ? 'w-6 bg-meadow-400' :
+                    i === stepIdx ? 'w-8 bg-coral-500' : 'w-2 bg-cream-200'
+                  }`} />
                 ))}
-                <Button
-                  variant="sparkle"
-                  size="md"
-                  onClick={() => setShowStickerTray(true)}
-                >
-                  + More Stickers
-                </Button>
               </div>
-              <div className="flex flex-wrap justify-between gap-2 items-center">
-                <ColorPalette
-                  colors={lesson.palette}
-                  selected={color}
-                  onChange={setColor}
+            )}
+
+            {/* Main area: left tools | canvas | right colors */}
+            <div className="flex-1 flex overflow-hidden min-h-0">
+              <aside className="shrink-0 bg-cream-100/60 border-r-2 border-cream-200 flex flex-col py-2" style={{ width: SIDEBAR_W }}>
+                <ToolPickerVertical value={tool} onChange={setTool} className="flex-1" />
+              </aside>
+
+              <div className="flex-1 flex items-center justify-center overflow-hidden px-4">
+                <DrawingCanvas
+                  ref={canvasRef}
+                  width={canvasSize.width} height={canvasSize.height}
+                  color={color} brushWidth={brushWidth} tool={tool}
+                  referencePaths={phase === 'drawing' ? referencePaths : []}
+                  traceMode={phase === 'drawing' && lesson.guidance_level.startsWith('trace')}
+                  onStroke={onStrokeComplete}
                 />
-                <div className="flex gap-2">
-                  <Button
-                    variant="secondary"
-                    size="md"
-                    onClick={() => canvasRef.current?.undo()}
-                  >
-                    ↶ Undo
-                  </Button>
-                  <Button
-                    variant="primary"
-                    size="lg"
-                    onClick={handleSaveAndReward}
-                    disabled={saving}
-                  >
-                    {saving ? 'Saving...' : 'All done! 🎉'}
-                  </Button>
-                </div>
               </div>
+
+              <aside className="shrink-0 bg-cream-100/60 border-l-2 border-cream-200 flex flex-col py-2 px-1" style={{ width: SIDEBAR_W }}>
+                <ColorPaletteVertical selected={color} onChange={setColor} className="flex-1" />
+              </aside>
+            </div>
+
+            {/* Bottom utility row */}
+            <div className="shrink-0 px-4 py-2 bg-cream-100/60 border-t-2 border-cream-200 flex items-center gap-2 flex-wrap justify-center">
+              <BrushSizer value={brushWidth} onChange={setBrushWidth} />
+              <Button variant="secondary" size="md" onClick={() => canvasRef.current?.undo()}>↶</Button>
+              {phase === 'remix' && (
+                <Button variant="sparkle" size="md" onClick={() => setShowStickerTray(true)}>+ Stickers</Button>
+              )}
+              {phase === 'drawing' ? (
+                !isLastStep ? (
+                  <Button variant="primary" size="lg" onClick={() => setStepIdx((i) => i + 1)}>Next →</Button>
+                ) : (
+                  <Button variant="meadow" size="lg" onClick={handleFinishDrawing}>Done! ✨</Button>
+                )
+              ) : (
+                <Button variant="primary" size="lg" onClick={handleSaveAndReward} disabled={saving}>
+                  {saving ? 'Saving...' : 'All done! 🎉'}
+                </Button>
+              )}
             </div>
           </motion.div>
         )}
 
-        {/* REWARD */}
         {phase === 'reward' && (
-          <motion.div
-            key="reward"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="flex-1 flex items-center justify-center px-6 relative"
-          >
+          <motion.div key="reward" initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+            className="flex-1 flex items-center justify-center px-6 relative">
             <Confetti count={60} />
-            <motion.div
-              initial={{ scale: 0.3, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
+            <motion.div initial={{ scale: 0.3, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
               transition={{ type: 'spring', damping: 12, delay: 0.2 }}
-              className="card-cozy p-8 md:p-12 max-w-xl text-center relative z-10"
-            >
+              className="card-cozy p-8 md:p-12 max-w-xl text-center relative z-10">
               <div className="flex justify-center mb-4">
-                <Companion
-                  character={(activeKid?.avatar_key as any) || 'bunny'}
-                  mood="cheering"
-                  size={140}
-                />
+                <Companion character={(activeKid?.avatar_key as any) || 'bunny'} mood="cheering" size={140} />
               </div>
               <h1 className="heading-1 mb-3">🎉 You did it!</h1>
               <p className="text-xl text-ink-700 mb-2">
@@ -478,26 +283,12 @@ export default function LessonPage({ params }: { params: { id: string } }) {
                 <div className="bg-sparkle-300 rounded-full p-6 shadow-chunky animate-pop-in">
                   <div className="text-6xl">⭐</div>
                 </div>
-                <p className="font-display font-bold mt-2 text-ink-900">
-                  New sticker unlocked!
-                </p>
+                <p className="font-display font-bold mt-2 text-ink-900">New sticker unlocked!</p>
               </div>
-              {saveError && (
-                <p className="text-coral-600 text-sm mb-4">
-                  (Heads up: {saveError})
-                </p>
-              )}
+              {saveError && <p className="text-coral-600 text-sm mb-4">(Heads up: {saveError})</p>}
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <Link href="/app/gallery">
-                  <Button variant="secondary" size="lg">
-                    See My Art 🖼️
-                  </Button>
-                </Link>
-                <Link href={`/app/world/${lesson.world_id}`}>
-                  <Button variant="primary" size="lg">
-                    More Drawing ✏️
-                  </Button>
-                </Link>
+                <Link href="/app/gallery"><Button variant="secondary" size="lg">See My Art 🖼️</Button></Link>
+                <Link href={`/app/world/${lesson.world_id}`}><Button variant="primary" size="lg">More Drawing ✏️</Button></Link>
               </div>
             </motion.div>
           </motion.div>

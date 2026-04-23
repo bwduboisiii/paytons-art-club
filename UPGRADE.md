@@ -1,54 +1,48 @@
-# Payton's Art Club — v4 Upgrade
+# Payton's Art Club — v5 Upgrade (Layout Redesign)
 
-## What's new
+## What's new in this version
 
-### Sticker manipulation (full)
-- Tap any sticker to select it — dashed selection box appears
-- **Corner handle**: drag to resize (uniform scale)
-- **Rotation handle** (line going up top): drag to rotate
-- **Two-finger pinch**: resize on touch devices
-- **Two-finger twist**: rotate on touch devices
-- **Delete button** (🗑 top-left) when a sticker is selected
-- **Bring forward** (⬆) to raise sticker layer order
-- Tap outside a sticker to deselect
+### 🎨 Two-sidebar layout
+- **Left sidebar (narrow, 76px)**: All 15 tools stacked vertically, grouped by category (Draw / Effects / Shapes / Tools) with subtle dividers
+- **Right sidebar (narrow, 76px)**: Full color palette (50+ colors) stacked vertically, **scrollable**
+- **Center**: Canvas fills the remaining space, auto-sized to keep a nice 4:3 ratio
+- **Top**: Title + Save button
+- **Bottom**: Brush sizer, undo, clear, stickers button
 
-### 15 drawing tools (was 7)
-- Draw: marker, pen, pencil, crayon, **paintbrush** (watercolor), **chalk**
-- Effect: highlighter, **neon** (glowing), spray, glitter
-- Shape: **line**, **rectangle**, **circle** (drag to create)
-- Utility: **fill bucket** (tap to flood fill), eraser
-- Tool picker is now categorized with dividers so 15 tools don't feel overwhelming
+Before: all tools/colors crammed at the bottom, colors cut off past the right edge
+After: every tool and color is visible (or scrollable) without the canvas shrinking
 
-### Color palette — always visible
-- Full standard palette (50+ swatches) visible at all times, horizontal scroll on mobile
-- Rainbow-circle button on the right opens a native color picker for ANY color
-- Organized by color family: reds, oranges, yellows, greens, blues, purples, browns, neutrals, skin tones
+### Lesson page too
+- Same two-sidebar layout applied to lessons
+- Step instructions still show at the top
+- Progress dots still appear below the step banner
+- During "Add stickers" remix phase, the stickers button stays in the bottom row
 
-### 16 avatars (was 8)
-- New: monkey, sloth, octopus, deer, frog, penguin, hedgehog, turtle
-- **Tap avatar in home header** → opens picker with all 16 options
-- Also offers "Switch to another kid" if multiple kids exist
-- Your pick saves to the database — persists across devices
+### What stayed the same
+- 15 drawing tools
+- Sticker tap-select with corner/rotation handles and two-finger pinch
+- 16 companion avatars
+- Tap-avatar-to-change-buddy modal
+- Daily lesson, tier system, 8 worlds, 31 lessons
 
 ## How to apply
 
-1. **Run `supabase/schema_additions.sql`** (or the safe version I sent earlier — whichever fixes your bucket error)
-2. Back up v3, unzip v4, copy `.git` over
-3. `git add . && git commit -m "v4: sticker handles, 15 tools, full palette, 16 avatars, tap-to-change-buddy" && git push`
-4. Hard refresh (Ctrl+Shift+R) and test
+1. Back up v4 folder, unzip v5, copy `.git` over
+2. No new SQL this time — database schema is unchanged
+3. `git add . && git commit -m "v5: two-sidebar layout, full palette always visible" && git push`
+4. Hard refresh live site
 
 ## Test checklist
 
-- [ ] Sticker: tap a sticker, drag corner to resize, drag top-dot to rotate
-- [ ] Sticker: two-finger pinch (touch device) resizes
-- [ ] Drawing: try all 15 tools — especially fill bucket and line/rectangle/circle
-- [ ] Colors: scroll the palette, tap rainbow button, pick custom color
-- [ ] Avatar: tap your buddy icon in top-left of home screen → pick new buddy from 16
-- [ ] Onboarding a new kid shows all 16 avatar options
+- [ ] Free Draw: left sidebar has 15 tools in 4 categorized groups
+- [ ] Free Draw: right sidebar scrolls through all 50+ colors
+- [ ] Free Draw: rainbow color-picker button at bottom of color column still opens custom picker
+- [ ] Lesson: same layout works, step instructions visible at top
+- [ ] On smaller screens: canvas shrinks proportionally, sidebars stay narrow
+- [ ] On iPad landscape: plenty of canvas room, all tools tappable with thumb
 
 ## Known rough edges
 
-- **Fill bucket has a ~30 pixel tolerance** so it fills anti-aliased edges. If it bleeds in unexpected ways, undo. Lower tolerance = cleaner fills but leaves ring artifacts.
-- **Fill is slow on big empty areas** (scanline flood fill is O(pixels)). Fine in practice for this canvas size.
-- **Sticker selection is hidden during PNG export** — if you see the dashed outline flash when you tap Save, that's the selection briefly clearing.
-- **Two-finger gestures only work on touch devices.** On desktop, use the corner/rotation handles instead.
+- **iPad portrait orientation**: with two 76px sidebars + buddy on the right, the canvas ends up ~600×450. That's fine but not huge. Landscape is much better.
+- **Super narrow phones (<500px wide)**: might feel tight. Not designed for phone-size use primarily.
+- **Color sidebar scrolling**: I used `overflow-y-auto` which should work on touch, but if it doesn't scroll smoothly on iPad, let me know — there's a fallback I can add.
