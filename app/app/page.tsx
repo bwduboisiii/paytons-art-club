@@ -11,6 +11,7 @@ import BuddyChangeModal from '@/components/BuddyChangeModal';
 import { WORLDS, getFreeWorlds, getPremiumWorlds } from '@/lib/worlds';
 import { getDailyLesson } from '@/lib/lessons';
 import { useKidStore } from '@/lib/store';
+import { countUnseenFriendships } from '@/lib/friends';
 import { createClient } from '@/lib/supabase/client';
 import type { Kid, World } from '@/lib/types';
 import clsx from 'clsx';
@@ -62,6 +63,7 @@ export default function HomePage() {
   const [showBuddyModal, setShowBuddyModal] = useState(false);
   const [stickerCount, setStickerCount] = useState(0);
   const [dailyDone, setDailyDone] = useState(false);
+  const [unseenFriends, setUnseenFriends] = useState(0);
 
   const dailyLesson = getDailyLesson();
 
@@ -81,6 +83,9 @@ export default function HomePage() {
         const currentExists = activeKid && data.some((k: any) => k.id === activeKid.id);
         if (!currentExists && data.length) setActiveKid(data[0] as Kid);
       }
+      // Load unseen friend count for parent badge
+      const unseen = await countUnseenFriendships(user.id);
+      if (!cancelled) setUnseenFriends(unseen);
       setLoading(false);
     })();
     return () => { cancelled = true; };
@@ -143,8 +148,14 @@ export default function HomePage() {
               </div>
             </Link>
           )}
+          <Link href="/app/friends"><Button variant="secondary" size="sm">👯 Friends</Button></Link>
           <Link href="/app/gallery"><Button variant="secondary" size="sm">🖼️ Gallery</Button></Link>
-          <Link href="/parent"><Button variant="ghost" size="sm">🔒 Parent</Button></Link>
+          <Link href="/parent" className="relative">
+            <Button variant="ghost" size="sm">🔒 Parent</Button>
+            {unseenFriends > 0 && (
+              <span className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-coral-500 ring-2 ring-cream-50" aria-label={`${unseenFriends} new friendships to review`} />
+            )}
+          </Link>
         </div>
       </header>
 

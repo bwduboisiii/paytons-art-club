@@ -75,6 +75,18 @@ export default function GalleryPage() {
       .eq('id', item.id);
   }
 
+  async function toggleShared(item: GalleryItem) {
+    const supabase = createClient();
+    const next = !item.is_shared;
+    setItems((prev) =>
+      prev.map((i) => (i.id === item.id ? { ...i, is_shared: next } : i))
+    );
+    await supabase
+      .from('artworks')
+      .update({ is_shared: next })
+      .eq('id', item.id);
+  }
+
   async function deleteArtwork(item: GalleryItem) {
     if (!confirm('Delete this drawing? This cannot be undone.')) return;
     const supabase = createClient();
@@ -147,6 +159,11 @@ export default function GalleryPage() {
                 {item.is_favorite && (
                   <div className="absolute top-2 right-2 bg-coral-500 text-white rounded-full w-8 h-8 flex items-center justify-center shadow-chunky z-10">
                     ♥
+                  </div>
+                )}
+                {item.is_shared && (
+                  <div className="absolute top-2 left-2 bg-sparkle-400 text-ink-900 rounded-full w-8 h-8 flex items-center justify-center shadow-chunky z-10 text-sm">
+                    👥
                   </div>
                 )}
                 {item.signed_url ? (
@@ -225,6 +242,13 @@ export default function GalleryPage() {
                   onClick={() => toggleFavorite(items[lightboxIdx])}
                 >
                   {items[lightboxIdx].is_favorite ? '♥ Favorited' : '♡ Favorite'}
+                </Button>
+                <Button
+                  variant={items[lightboxIdx].is_shared ? 'sparkle' : 'secondary'}
+                  size="md"
+                  onClick={() => toggleShared(items[lightboxIdx])}
+                >
+                  {items[lightboxIdx].is_shared ? '👥 Shared with friends' : '👥 Share with friends'}
                 </Button>
                 <Button
                   variant="secondary"

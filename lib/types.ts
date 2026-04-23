@@ -33,11 +33,13 @@ export interface Lesson {
 export interface Kid {
   id: string; parent_id: string; name: string; age: number | null;
   avatar_key: CompanionKey; created_at: string;
+  friend_code?: string | null;
 }
 
 export interface Artwork {
   id: string; kid_id: string; lesson_id: string | null; title: string | null;
   storage_path: string; thumbnail_path: string | null; is_favorite: boolean;
+  is_shared?: boolean;
   created_at: string;
 }
 
@@ -63,4 +65,22 @@ export interface CanvasState {
 export interface CustomSticker {
   id: string; kid_id: string; name: string;
   storage_path: string; created_at: string; signed_url?: string;
+}
+
+// NEW: Friendship record
+export interface Friendship {
+  id: string;
+  kid_id: string;
+  friend_kid_id: string;
+  created_at: string;
+  parent_seen_at: string | null;
+}
+
+// Minimal friend info (what you can see about other kids via the lookup view)
+export interface FriendInfo {
+  id: string;
+  name: string;
+  avatar_key: CompanionKey;
+  friend_code?: string;
+  friended_at?: string;
 }

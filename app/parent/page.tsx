@@ -8,7 +8,8 @@ import Companion from '@/components/Companion';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { createClient } from '@/lib/supabase/client';
 import { useKidStore } from '@/lib/store';
-import type { Kid } from '@/lib/types';
+import { removeFriend, markFriendshipsSeen } from '@/lib/friends';
+import type { Kid, FriendInfo } from '@/lib/types';
 
 function ParentGate({ onPass }: { onPass: () => void }) {
   const [a] = useState(() => 3 + Math.floor(Math.random() * 7));
@@ -84,6 +85,10 @@ export default function ParentPage() {
     Record<string, number>
   >({});
   const [artworkCount, setArtworkCount] = useState<Record<string, number>>({});
+  // Map of kid_id -> friend list with per-friend "new" flag
+  const [kidFriends, setKidFriends] = useState<
+    Record<string, Array<FriendInfo & { isNew: boolean; friendshipId: string }>>
+  >({});
   const [loading, setLoading] = useState(true);
   const [parentEmail, setParentEmail] = useState<string>('');
 
@@ -109,9 +114,13 @@ export default function ParentPage() {
 
     const completions: Record<string, number> = {};
     const artworks: Record<string, number> = {};
+    const friendsMap: Record<
+      string,
+      Array<FriendInfo & { isNew: boolean; friendshipId: string }>
+    > = {};
     await Promise.all(
       kidList.map(async (kid) => {
-        const [{ count: cc }, { count: ac }] = await Promise.all([
+        const [{ count: cc }, { count: ac }, friendshipsRes] = await Promise.all([
           supabase
             .from('lesson_completions')
             .select('*', { count: 'exact', head: true })
@@ -120,13 +129,48 @@ export default function ParentPage() {
             .from('artworks')
             .select('*', { count: 'exact', head: true })
             .eq('kid_id', kid.id),
+          supabase
+            .from('friendships')
+            .select('id, friend_kid_id, created_at, parent_seen_at')
+            .eq('kid_id', kid.id)
+            .order('created_at', { ascending: false }),
         ]);
         completions[kid.id] = cc || 0;
         artworks[kid.id] = ac || 0;
+
+        const fRows = (friendshipsRes.data || []) as Array<any>;
+        if (fRows.length) {
+          const friendIds = fRows.map((r) => r.friend_kid_id);
+          const { data: friendKids } = await supabase
+            .from('kids_lookup')
+            .select('id, name, avatar_key, friend_code')
+            .in('id', friendIds);
+          const friendKidMap = new Map(
+            (friendKids || []).map((k: any) => [k.id, k])
+          );
+          friendsMap[kid.id] = fRows
+            .map((r) => {
+              const fk = friendKidMap.get(r.friend_kid_id);
+              if (!fk) return null;
+              return {
+                id: fk.id,
+                name: fk.name,
+                avatar_key: fk.avatar_key,
+                friend_code: fk.friend_code,
+                friended_at: r.created_at,
+                isNew: !r.parent_seen_at,
+                friendshipId: r.id,
+              } as FriendInfo & { isNew: boolean; friendshipId: string };
+            })
+            .filter((x): x is NonNullable<typeof x> => x !== null);
+        } else {
+          friendsMap[kid.id] = [];
+        }
       })
     );
     setCompletionCount(completions);
     setArtworkCount(artworks);
+    setKidFriends(friendsMap);
     setLoading(false);
   }
 
@@ -134,6 +178,29 @@ export default function ParentPage() {
     if (unlocked) loadData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [unlocked]);
+
+  async function parentRemoveFriend(kid: Kid, friend: FriendInfo) {
+    if (!confirm(`Remove ${friend.name} as ${kid.name}'s friend?`)) return;
+    await removeFriend(kid.id, friend.id);
+    setKidFriends((prev) => ({
+      ...prev,
+      [kid.id]: (prev[kid.id] || []).filter((f) => f.id !== friend.id),
+    }));
+  }
+
+  async function markAllSeen() {
+    const supabase = createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+    await markFriendshipsSeen(user.id);
+    setKidFriends((prev) => {
+      const next: typeof prev = {};
+      for (const [kidId, list] of Object.entries(prev)) {
+        next[kidId] = list.map((f) => ({ ...f, isNew: false }));
+      }
+      return next;
+    });
+  }
 
   async function signOut() {
     const supabase = createClient();
@@ -249,35 +316,116 @@ export default function ParentPage() {
           <p className="text-ink-700">Manage your family's account here.</p>
         </div>
 
-        <h2 className="heading-2 mb-4">Kids</h2>
+        <h2 className="heading-2 mb-4 flex items-center gap-3 flex-wrap">
+          Kids
+          {(() => {
+            const unseenTotal = Object.values(kidFriends).reduce(
+              (sum, list) => sum + list.filter((f) => f.isNew).length,
+              0
+            );
+            return unseenTotal > 0 ? (
+              <>
+                <span className="bg-coral-500 text-white text-xs font-bold rounded-full px-3 py-1">
+                  {unseenTotal} NEW {unseenTotal === 1 ? 'friend' : 'friends'}
+                </span>
+                <button
+                  onClick={markAllSeen}
+                  className="text-sm text-ink-500 underline hover:text-ink-900"
+                >
+                  mark all seen
+                </button>
+              </>
+            ) : null;
+          })()}
+        </h2>
         <div className="space-y-4 mb-10">
-          {kids.map((kid) => (
-            <div
-              key={kid.id}
-              className="card-cozy p-5 flex items-center gap-4 flex-wrap"
-            >
-              <Companion character={kid.avatar_key as any} size={70} />
-              <div className="flex-1 min-w-[200px]">
-                <h3 className="heading-3">{kid.name}</h3>
-                <p className="text-ink-700 text-sm">Age {kid.age}</p>
-                <div className="flex gap-4 mt-2 text-sm">
-                  <span className="font-bold text-meadow-500">
-                    ✓ {completionCount[kid.id] || 0} lessons
-                  </span>
-                  <span className="font-bold text-berry-500">
-                    🖼️ {artworkCount[kid.id] || 0} artworks
-                  </span>
+          {kids.map((kid) => {
+            const friends = kidFriends[kid.id] || [];
+            const newFriendCount = friends.filter((f) => f.isNew).length;
+            return (
+              <div key={kid.id} className="card-cozy p-5">
+                {/* Header row: kid info + delete */}
+                <div className="flex items-center gap-4 flex-wrap">
+                  <Companion character={kid.avatar_key as any} size={70} />
+                  <div className="flex-1 min-w-[200px]">
+                    <h3 className="heading-3">{kid.name}</h3>
+                    <p className="text-ink-700 text-sm">Age {kid.age}</p>
+                    <div className="flex gap-4 mt-2 text-sm flex-wrap">
+                      <span className="font-bold text-meadow-500">
+                        ✓ {completionCount[kid.id] || 0} lessons
+                      </span>
+                      <span className="font-bold text-berry-500">
+                        🖼️ {artworkCount[kid.id] || 0} artworks
+                      </span>
+                      {kid.friend_code && (
+                        <span className="font-mono font-bold text-ink-500">
+                          Code: {kid.friend_code}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  <Button variant="ghost" size="sm" onClick={() => deleteKid(kid)}>
+                    Delete
+                  </Button>
+                </div>
+
+                {/* Friends subsection */}
+                <div className="mt-4 pt-4 border-t-2 border-cream-100">
+                  <h4 className="font-display font-bold text-sm mb-2 flex items-center gap-2">
+                    👯 Friends ({friends.length})
+                    {newFriendCount > 0 && (
+                      <span className="bg-coral-500 text-white text-xs rounded-full px-2 py-0.5">
+                        {newFriendCount} NEW
+                      </span>
+                    )}
+                  </h4>
+                  {friends.length === 0 ? (
+                    <p className="text-ink-500 text-sm">
+                      No friends yet.
+                    </p>
+                  ) : (
+                    <div className="grid sm:grid-cols-2 gap-2">
+                      {friends.map((f) => (
+                        <div
+                          key={f.id}
+                          className={`flex items-center gap-2 rounded-xl p-2 ${
+                            f.isNew
+                              ? 'bg-coral-300/20 border-2 border-coral-400'
+                              : 'bg-cream-100'
+                          }`}
+                        >
+                          <Companion character={f.avatar_key} size={40} />
+                          <div className="flex-1 min-w-0">
+                            <p className="font-bold text-sm truncate flex items-center gap-1">
+                              {f.name}
+                              {f.isNew && (
+                                <span className="text-[10px] bg-coral-500 text-white rounded-full px-1.5 py-0.5">
+                                  NEW
+                                </span>
+                              )}
+                            </p>
+                            <p className="text-xs text-ink-500">
+                              {f.friend_code} · added{' '}
+                              {f.friended_at
+                                ? new Date(f.friended_at).toLocaleDateString()
+                                : ''}
+                            </p>
+                          </div>
+                          <button
+                            onClick={() => parentRemoveFriend(kid, f)}
+                            aria-label={`Remove ${f.name}`}
+                            className="w-7 h-7 rounded-full hover:bg-coral-300/40 text-ink-500 text-sm shrink-0"
+                          >
+                            ✕
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => deleteKid(kid)}
-              >
-                Delete
-              </Button>
-            </div>
-          ))}
+            );
+          })}
           <Link href="/onboarding">
             <Button variant="secondary" size="md" className="w-full">
               + Add another kid
