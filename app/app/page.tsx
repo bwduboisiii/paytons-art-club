@@ -3,11 +3,11 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
 import Button from '@/components/Button';
 import Companion from '@/components/Companion';
 import Sparkles from '@/components/Sparkles';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import BuddyChangeModal from '@/components/BuddyChangeModal';
 import { WORLDS, getFreeWorlds, getPremiumWorlds } from '@/lib/worlds';
 import { getDailyLesson } from '@/lib/lessons';
 import { useKidStore } from '@/lib/store';
@@ -16,11 +16,8 @@ import type { Kid, World } from '@/lib/types';
 import clsx from 'clsx';
 
 const WORLD_COLOR_CLASSES: Record<string, string> = {
-  meadow: 'bg-meadow-400',
-  berry: 'bg-berry-400',
-  sky: 'bg-sky-400',
-  coral: 'bg-coral-400',
-  sparkle: 'bg-sparkle-400',
+  meadow: 'bg-meadow-400', berry: 'bg-berry-400', sky: 'bg-sky-400',
+  coral: 'bg-coral-400', sparkle: 'bg-sparkle-400',
 };
 
 function WorldCard({ world, onClick }: { world: World; onClick: () => void }) {
@@ -46,9 +43,7 @@ function WorldCard({ world, onClick }: { world: World; onClick: () => void }) {
         <h3 className="heading-3 mb-1">{world.name}</h3>
         <p className="text-ink-700 mb-4">{world.tagline}</p>
         {locked ? (
-          <span className="inline-flex items-center gap-2 text-sm font-bold text-ink-500">
-            🔒 Coming Soon
-          </span>
+          <span className="inline-flex items-center gap-2 text-sm font-bold text-ink-500">🔒 Coming Soon</span>
         ) : (
           <span className="inline-flex items-center gap-2 text-sm font-bold text-coral-500">
             {world.lessons.length} lessons →
@@ -64,7 +59,7 @@ export default function HomePage() {
   const { activeKid, setActiveKid } = useKidStore();
   const [kids, setKids] = useState<Kid[]>([]);
   const [loading, setLoading] = useState(true);
-  const [showKidSwitcher, setShowKidSwitcher] = useState(false);
+  const [showBuddyModal, setShowBuddyModal] = useState(false);
   const [stickerCount, setStickerCount] = useState(0);
   const [dailyDone, setDailyDone] = useState(false);
 
@@ -77,8 +72,7 @@ export default function HomePage() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
       const { data } = await supabase
-        .from('kids')
-        .select('*')
+        .from('kids').select('*')
         .eq('parent_id', user.id)
         .order('created_at', { ascending: true });
       if (cancelled) return;
@@ -98,21 +92,16 @@ export default function HomePage() {
     (async () => {
       const supabase = createClient();
       const { count } = await supabase
-        .from('kid_stickers')
-        .select('*', { count: 'exact', head: true })
+        .from('kid_stickers').select('*', { count: 'exact', head: true })
         .eq('kid_id', activeKid.id);
       setStickerCount(count || 0);
 
-      // Check if today's daily lesson has been completed today
       const today = new Date();
       today.setHours(0, 0, 0, 0);
       const { data } = await supabase
-        .from('lesson_completions')
-        .select('completed_at')
-        .eq('kid_id', activeKid.id)
-        .eq('lesson_id', dailyLesson.id)
-        .gte('completed_at', today.toISOString())
-        .limit(1);
+        .from('lesson_completions').select('completed_at')
+        .eq('kid_id', activeKid.id).eq('lesson_id', dailyLesson.id)
+        .gte('completed_at', today.toISOString()).limit(1);
       setDailyDone((data || []).length > 0);
     })();
   }, [activeKid, dailyLesson.id]);
@@ -129,18 +118,20 @@ export default function HomePage() {
 
       <header className="relative z-10 flex items-center justify-between px-6 md:px-12 py-5">
         <button
-          onClick={() => kids.length > 1 && setShowKidSwitcher(true)}
-          className={clsx(
-            'flex items-center gap-3 rounded-2xl p-2 transition-colors',
-            kids.length > 1 && 'hover:bg-cream-100'
-          )}
+          onClick={() => setShowBuddyModal(true)}
+          className="flex items-center gap-3 rounded-2xl p-2 hover:bg-cream-100 transition-colors relative"
+          aria-label="Change buddy or switch kid"
         >
           {kid && <Companion character={kid.avatar_key as any} size={60} />}
           <div className="text-left">
             <p className="text-sm text-ink-500">Welcome back,</p>
             <h1 className="font-display font-bold text-xl text-ink-900">
-              {kid?.name}! {kids.length > 1 && '▾'}
+              {kid?.name}! ▾
             </h1>
+          </div>
+          {/* Pencil overlay hinting tappable */}
+          <div className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-sparkle-400 shadow-chunky flex items-center justify-center text-xs">
+            ✎
           </div>
         </button>
         <div className="flex gap-2 md:gap-3 items-center flex-wrap justify-end">
@@ -152,17 +143,12 @@ export default function HomePage() {
               </div>
             </Link>
           )}
-          <Link href="/app/gallery">
-            <Button variant="secondary" size="sm">🖼️ Gallery</Button>
-          </Link>
-          <Link href="/parent">
-            <Button variant="ghost" size="sm">🔒 Parent</Button>
-          </Link>
+          <Link href="/app/gallery"><Button variant="secondary" size="sm">🖼️ Gallery</Button></Link>
+          <Link href="/parent"><Button variant="ghost" size="sm">🔒 Parent</Button></Link>
         </div>
       </header>
 
       <section className="relative z-10 px-6 md:px-12 py-4 max-w-6xl mx-auto">
-        {/* Daily lesson CTA */}
         <Link href={`/app/lesson/${dailyLesson.id}`} className="block mb-4">
           <div className={clsx(
             'card-cozy card-cozy-hover p-5 relative overflow-hidden',
@@ -188,7 +174,6 @@ export default function HomePage() {
           </div>
         </Link>
 
-        {/* Free Draw CTA */}
         <Link href="/app/draw" className="block mb-8">
           <div className="card-cozy card-cozy-hover p-6 bg-gradient-to-r from-sparkle-300 via-berry-300 to-coral-300 relative overflow-hidden">
             <div className="absolute -top-4 -right-4 text-7xl opacity-40">✨</div>
@@ -197,85 +182,38 @@ export default function HomePage() {
               <div className="text-5xl">🖌️</div>
               <div className="flex-1">
                 <h2 className="heading-2 mb-1">Free Draw Mode</h2>
-                <p className="text-ink-700">
-                  Blank canvas, all the colors, all the tools. Go wild!
-                </p>
+                <p className="text-ink-700">Blank canvas, 15 tools, every color. Go wild!</p>
               </div>
               <div className="text-3xl font-bold text-coral-600">→</div>
             </div>
           </div>
         </Link>
 
-        {/* Free worlds */}
         <h2 className="heading-1 mb-2">Free worlds 🌈</h2>
-        <p className="text-ink-700 text-lg mb-6">
-          All yours — no unlock needed!
-        </p>
+        <p className="text-ink-700 text-lg mb-6">All yours — no unlock needed!</p>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           {freeWorlds.map((w) => (
-            <WorldCard
-              key={w.id}
-              world={w}
-              onClick={() => router.push(`/app/world/${w.id}`)}
-            />
+            <WorldCard key={w.id} world={w} onClick={() => router.push(`/app/world/${w.id}`)} />
           ))}
         </div>
 
-        {/* Premium worlds */}
         <h2 className="heading-1 mb-2">More adventures ⭐</h2>
         <p className="text-ink-700 text-lg mb-6">
           Special worlds to explore! (Free for now while we're building!)
         </p>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {premiumWorlds.map((w) => (
-            <WorldCard
-              key={w.id}
-              world={w}
-              onClick={() => router.push(`/app/world/${w.id}`)}
-            />
+            <WorldCard key={w.id} world={w} onClick={() => router.push(`/app/world/${w.id}`)} />
           ))}
         </div>
       </section>
 
-      <AnimatePresence>
-        {showKidSwitcher && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-ink-900/50 backdrop-blur-sm flex items-center justify-center px-6"
-            onClick={() => setShowKidSwitcher(false)}
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              onClick={(e) => e.stopPropagation()}
-              className="card-cozy p-6 max-w-md w-full"
-            >
-              <h2 className="heading-2 mb-4 text-center">Who's drawing?</h2>
-              <div className="space-y-3">
-                {kids.map((k) => (
-                  <button
-                    key={k.id}
-                    onClick={() => { setActiveKid(k); setShowKidSwitcher(false); }}
-                    className={clsx(
-                      'w-full card-cozy p-4 flex items-center gap-4 text-left transition-all hover:-translate-y-1',
-                      activeKid?.id === k.id && 'border-coral-400 bg-coral-300/10'
-                    )}
-                  >
-                    <Companion character={k.avatar_key as any} size={50} />
-                    <div>
-                      <p className="font-display font-bold text-lg">{k.name}</p>
-                      <p className="text-sm text-ink-500">Age {k.age}</p>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <BuddyChangeModal
+        open={showBuddyModal}
+        onClose={() => setShowBuddyModal(false)}
+        kids={kids}
+        onKidSwitch={(k) => setActiveKid(k)}
+      />
     </main>
   );
 }

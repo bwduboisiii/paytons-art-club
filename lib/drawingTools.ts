@@ -1,7 +1,5 @@
 // ============================================================
-// Drawing Tools
-// Each tool has its own rendering behavior. The canvas reads this
-// descriptor and applies the right settings.
+// Drawing Tools - full registry with 15 tools
 // ============================================================
 
 export type DrawingToolId =
@@ -11,21 +9,45 @@ export type DrawingToolId =
   | 'highlighter'
   | 'spray'
   | 'glitter'
-  | 'eraser';
+  | 'eraser'
+  // New in v4:
+  | 'paintbrush'
+  | 'chalk'
+  | 'neon'
+  | 'pen'
+  | 'fill'
+  | 'line'
+  | 'rectangle'
+  | 'circle';
+
+export type RenderMode =
+  | 'smooth'
+  | 'textured'
+  | 'spray'
+  | 'glitter'
+  | 'erase'
+  | 'paint'
+  | 'chalk'
+  | 'neon'
+  | 'pen'
+  | 'fill'
+  | 'line'
+  | 'rectangle'
+  | 'circle';
 
 export interface DrawingTool {
   id: DrawingToolId;
   label: string;
-  icon: string; // emoji or single char
+  icon: string;
   description: string;
-  // Rendering hints. The canvas uses these to decide how to draw.
-  renderMode: 'smooth' | 'textured' | 'spray' | 'glitter' | 'erase';
-  // Opacity multiplier (1 = fully opaque, 0.4 = transparent like highlighter)
+  renderMode: RenderMode;
   opacity: number;
-  // Extra stroke-width multiplier (1 = normal)
   widthMultiplier: number;
-  // If true, uses destination-out composite (eraser mode)
   isEraser?: boolean;
+  /** If true, tool places exactly one shape per down/up (not per point). */
+  isShape?: boolean;
+  /** Tool category for grouping the picker. */
+  category: 'draw' | 'effect' | 'shape' | 'utility';
 }
 
 export const DRAWING_TOOLS: Record<DrawingToolId, DrawingTool> = {
@@ -37,6 +59,7 @@ export const DRAWING_TOOLS: Record<DrawingToolId, DrawingTool> = {
     renderMode: 'smooth',
     opacity: 1,
     widthMultiplier: 1,
+    category: 'draw',
   },
   pencil: {
     id: 'pencil',
@@ -46,6 +69,7 @@ export const DRAWING_TOOLS: Record<DrawingToolId, DrawingTool> = {
     renderMode: 'textured',
     opacity: 0.85,
     widthMultiplier: 0.5,
+    category: 'draw',
   },
   crayon: {
     id: 'crayon',
@@ -55,6 +79,37 @@ export const DRAWING_TOOLS: Record<DrawingToolId, DrawingTool> = {
     renderMode: 'textured',
     opacity: 0.9,
     widthMultiplier: 1.3,
+    category: 'draw',
+  },
+  paintbrush: {
+    id: 'paintbrush',
+    label: 'Paintbrush',
+    icon: '🎨',
+    description: 'Thick watercolor',
+    renderMode: 'paint',
+    opacity: 0.75,
+    widthMultiplier: 2.2,
+    category: 'draw',
+  },
+  chalk: {
+    id: 'chalk',
+    label: 'Chalk',
+    icon: '⬜',
+    description: 'Dusty & soft',
+    renderMode: 'chalk',
+    opacity: 0.7,
+    widthMultiplier: 1.5,
+    category: 'draw',
+  },
+  pen: {
+    id: 'pen',
+    label: 'Pen',
+    icon: '🖊',
+    description: 'Crisp thin lines',
+    renderMode: 'pen',
+    opacity: 1,
+    widthMultiplier: 0.35,
+    category: 'draw',
   },
   highlighter: {
     id: 'highlighter',
@@ -64,6 +119,17 @@ export const DRAWING_TOOLS: Record<DrawingToolId, DrawingTool> = {
     renderMode: 'smooth',
     opacity: 0.35,
     widthMultiplier: 2,
+    category: 'effect',
+  },
+  neon: {
+    id: 'neon',
+    label: 'Neon',
+    icon: '💡',
+    description: 'Glowing lights',
+    renderMode: 'neon',
+    opacity: 1,
+    widthMultiplier: 1,
+    category: 'effect',
   },
   spray: {
     id: 'spray',
@@ -73,6 +139,7 @@ export const DRAWING_TOOLS: Record<DrawingToolId, DrawingTool> = {
     renderMode: 'spray',
     opacity: 0.8,
     widthMultiplier: 3,
+    category: 'effect',
   },
   glitter: {
     id: 'glitter',
@@ -82,6 +149,50 @@ export const DRAWING_TOOLS: Record<DrawingToolId, DrawingTool> = {
     renderMode: 'glitter',
     opacity: 1,
     widthMultiplier: 1.5,
+    category: 'effect',
+  },
+  line: {
+    id: 'line',
+    label: 'Line',
+    icon: '📏',
+    description: 'Straight line',
+    renderMode: 'line',
+    opacity: 1,
+    widthMultiplier: 1,
+    isShape: true,
+    category: 'shape',
+  },
+  rectangle: {
+    id: 'rectangle',
+    label: 'Rectangle',
+    icon: '⬛',
+    description: 'Box shape',
+    renderMode: 'rectangle',
+    opacity: 1,
+    widthMultiplier: 1,
+    isShape: true,
+    category: 'shape',
+  },
+  circle: {
+    id: 'circle',
+    label: 'Circle',
+    icon: '⭕',
+    description: 'Round shape',
+    renderMode: 'circle',
+    opacity: 1,
+    widthMultiplier: 1,
+    isShape: true,
+    category: 'shape',
+  },
+  fill: {
+    id: 'fill',
+    label: 'Fill',
+    icon: '🪣',
+    description: 'Tap to fill',
+    renderMode: 'fill',
+    opacity: 1,
+    widthMultiplier: 1,
+    category: 'utility',
   },
   eraser: {
     id: 'eraser',
@@ -92,15 +203,17 @@ export const DRAWING_TOOLS: Record<DrawingToolId, DrawingTool> = {
     opacity: 1,
     widthMultiplier: 1.5,
     isEraser: true,
+    category: 'utility',
   },
 };
 
 export const TOOL_ORDER: DrawingToolId[] = [
-  'marker',
-  'pencil',
-  'crayon',
-  'highlighter',
-  'spray',
-  'glitter',
-  'eraser',
+  // draw
+  'marker', 'pen', 'pencil', 'crayon', 'paintbrush', 'chalk',
+  // effect
+  'highlighter', 'neon', 'spray', 'glitter',
+  // shape
+  'line', 'rectangle', 'circle',
+  // utility
+  'fill', 'eraser',
 ];
