@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import Button from '@/components/Button';
 import Companion from '@/components/Companion';
 import LoadingSpinner from '@/components/LoadingSpinner';
@@ -198,15 +198,26 @@ function SubscriptionSection() {
 
 export default function ParentPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const checkoutStatus = searchParams?.get('checkout');
-  const [checkoutBanner, setCheckoutBanner] = useState<string | null>(
-    checkoutStatus === 'success'
-      ? '🎉 Subscription started! It may take a moment to activate.'
-      : checkoutStatus === 'cancelled'
-      ? 'Checkout was cancelled. No charges were made.'
-      : null
-  );
+  // Read checkout query param from URL directly (avoids useSearchParams which
+  // would require Suspense wrapping in Next.js 14 static generation).
+  const [checkoutStatus, setCheckoutStatus] = useState<string | null>(null);
+  const [checkoutBanner, setCheckoutBanner] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const params = new URLSearchParams(window.location.search);
+    const status = params.get('checkout');
+    if (status) {
+      setCheckoutStatus(status);
+      setCheckoutBanner(
+        status === 'success'
+          ? '🎉 Subscription started! It may take a moment to activate.'
+          : status === 'cancelled'
+          ? 'Checkout was cancelled. No charges were made.'
+          : null
+      );
+    }
+  }, []);
 
   // Clear banner from URL once shown, and auto-dismiss after 6s
   useEffect(() => {
