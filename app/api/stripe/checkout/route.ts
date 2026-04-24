@@ -86,7 +86,9 @@ export async function POST(req: NextRequest) {
       cancel_url: `${origin}/parent?checkout=cancelled`,
       allow_promotion_codes: true,
       billing_address_collection: 'auto',
-      automatic_tax: { enabled: true },
+      // automatic_tax disabled — re-enable once you set up business
+      // address + tax settings at https://dashboard.stripe.com/settings/tax
+      // automatic_tax: { enabled: true },
     });
 
     return NextResponse.json({ url: session.url });
