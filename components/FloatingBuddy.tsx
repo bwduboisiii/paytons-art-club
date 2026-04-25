@@ -10,14 +10,9 @@ interface Props {
   encouragements?: string[];
   message?: string;
   mood?: 'happy' | 'cheering' | 'thinking' | 'idle';
-  /**
-   * @deprecated Kept for backwards compatibility. Buddy now lives bottom-left
-   * by default so it doesn't block the right-side color sidebar at all.
-   */
+  /** @deprecated Kept for backward compat; ignored. */
   offsetRight?: number;
-  /**
-   * Start in collapsed (peek tab) mode.
-   */
+  /** Start in collapsed (peek tab) mode. */
   defaultCollapsed?: boolean;
 }
 
@@ -39,7 +34,6 @@ export default function FloatingBuddy({
   encouragements = DEFAULT_LINES,
   message,
   mood = 'happy',
-  offsetRight = 16,
   defaultCollapsed = false,
 }: Props) {
   const [collapsed, setCollapsed] = useState(defaultCollapsed);
@@ -64,33 +58,45 @@ export default function FloatingBuddy({
 
   const currentLine = message || encouragements[lineIdx];
 
-  // Collapsed mode: tiny tab peeking from the bottom-left edge
+  // ============================================================
+  // CRITICAL: pointer-events handling (v16c fix)
+  // ============================================================
+  // The whole outer wrapper uses pointer-events-none. Only the EXACT
+  // interactive elements (the avatar button, the close X, the peek tab)
+  // opt back in via pointer-events-auto.
+  //
+  // This means kids drawing on the canvas behind/around the buddy will
+  // NOT have their pointer events captured by empty buddy padding or
+  // the speech bubble area. The buddy only intercepts when they tap
+  // directly on the avatar circle or the close button.
+  // ============================================================
+
+  // COLLAPSED MODE: tiny tab on the left edge
   if (collapsed) {
     return (
-      <motion.button
-        initial={{ x: -80 }}
-        animate={{ x: 0 }}
-        exit={{ x: -80 }}
-        onClick={() => setCollapsed(false)}
-        aria-label="Show buddy"
-        className="fixed left-0 bottom-24 md:bottom-20 z-40 bg-coral-500 hover:bg-coral-400 rounded-r-2xl p-2 shadow-chunky active:-translate-x-1 transition-transform"
-      >
-        <div className="w-12 h-16 rounded-xl bg-cream-50 flex items-end justify-center overflow-hidden">
-          <Companion character={character} mood="idle" size={42} />
-        </div>
-        <span className="block text-[10px] font-bold text-white mt-1">Hi!</span>
-      </motion.button>
+      <div className="fixed left-0 bottom-24 md:bottom-20 z-40 pointer-events-none">
+        <motion.button
+          initial={{ x: -80 }}
+          animate={{ x: 0 }}
+          exit={{ x: -80 }}
+          onClick={() => setCollapsed(false)}
+          aria-label="Show buddy"
+          className="bg-coral-500 hover:bg-coral-400 rounded-r-2xl p-2 shadow-chunky active:-translate-x-1 transition-transform pointer-events-auto"
+        >
+          <div className="w-10 h-14 rounded-xl bg-cream-50 flex items-end justify-center overflow-hidden">
+            <Companion character={character} mood="idle" size={36} />
+          </div>
+          <span className="block text-[10px] font-bold text-white mt-1">Hi!</span>
+        </motion.button>
+      </div>
     );
   }
 
+  // EXPANDED MODE: speech bubble + buddy avatar
   return (
-    <motion.div
-      initial={{ x: -120, opacity: 0 }}
-      animate={{ x: 0, opacity: 1 }}
-      transition={{ type: 'spring', damping: 18 }}
-      className="fixed left-4 bottom-24 md:bottom-20 z-40 pointer-events-none"
-    >
-      <div className="flex flex-col items-start gap-2 pointer-events-auto">
+    <div className="fixed left-4 bottom-24 md:bottom-20 z-40 pointer-events-none">
+      <div className="flex flex-col items-start gap-2">
+        {/* Speech bubble — purely visual, NO pointer events */}
         <AnimatePresence mode="wait">
           {showBubble && currentLine && (
             <motion.div
@@ -104,27 +110,35 @@ export default function FloatingBuddy({
               <p className="text-sm font-display font-bold text-ink-900 leading-tight">
                 {currentLine}
               </p>
-              {/* Bubble tail pointing down to buddy on left side */}
               <div className="absolute -bottom-2 left-6 w-4 h-4 bg-cream-50 border-r-4 border-b-4 border-coral-300 rotate-45" />
             </motion.div>
           )}
         </AnimatePresence>
 
+        {/* Buddy avatar block — ONLY the actual avatar gets pointer events */}
         <div className="relative">
+          {/* Sparkle glow — visual only, no events */}
           <div className="absolute inset-0 rounded-3xl bg-sparkle-300/40 blur-xl animate-sparkle" />
-          <div className="relative bg-cream-50 rounded-3xl p-2 shadow-float border-4 border-sparkle-300 flex items-end justify-center">
-            <Companion character={character} mood={mood} size={70} />
-          </div>
-          {/* Hide button on the right of buddy now (since we're on the left) */}
-          <button
+
+          {/* The actual buddy — clicking it collapses */}
+          <div
             onClick={() => setCollapsed(true)}
+            className="relative bg-cream-50 rounded-3xl p-1.5 shadow-float border-4 border-sparkle-300 flex items-end justify-center pointer-events-auto cursor-pointer hover:scale-105 transition-transform"
+            title="Tap to hide buddy"
+          >
+            <Companion character={character} mood={mood} size={56} />
+          </div>
+
+          {/* Hide button — pointer-events-auto */}
+          <button
+            onClick={(e) => { e.stopPropagation(); setCollapsed(true); }}
             aria-label="Hide buddy"
-            className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-ink-900 text-white text-xs font-bold flex items-center justify-center shadow-chunky hover:scale-110 transition-transform"
+            className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-ink-900 text-white text-xs font-bold flex items-center justify-center shadow-chunky hover:scale-110 transition-transform pointer-events-auto"
           >
             ×
           </button>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }

@@ -137,6 +137,22 @@ const DrawingCanvas = forwardRef<DrawingCanvasHandle, Props>(function DrawingCan
   const [strokes, setStrokes] = useState<Stroke[]>([]);
   const [stickers, setStickers] = useState<PlacedSticker[]>([]);
   const [selectedStickerIdx, setSelectedStickerIdx] = useState<number | null>(null);
+
+  // Mirror state/props into refs so redraw() can read latest values without
+  // needing to be re-created on every render. This is critical for preventing
+  // mid-stroke render races where a parent re-render (e.g. setBuddyMood)
+  // causes the redraw closure to use stale state.
+  const strokesRef = useRef(strokes);
+  const stickersRef = useRef(stickers);
+  const selectedStickerIdxRef = useRef(selectedStickerIdx);
+  const referencePathsRef = useRef<string[]>([]);
+  const ghostPathsRef = useRef<string[]>([]);
+  const traceModeRef = useRef(false);
+  const widthRef = useRef(800);
+  const heightRef = useRef(600);
+  useEffect(() => { strokesRef.current = strokes; }, [strokes]);
+  useEffect(() => { stickersRef.current = stickers; }, [stickers]);
+  useEffect(() => { selectedStickerIdxRef.current = selectedStickerIdx; }, [selectedStickerIdx]);
   const currentStroke = useRef<Stroke | null>(null);
   const isDrawing = useRef(false);
   const shapeStart = useRef<{ x: number; y: number } | null>(null);
@@ -157,6 +173,14 @@ const DrawingCanvas = forwardRef<DrawingCanvasHandle, Props>(function DrawingCan
     initialPinchAngle?: number;
   } | null>(null);
   const activePointers = useRef<Map<number, { x: number; y: number }>>(new Map());
+
+  useEffect(() => {
+    referencePathsRef.current = referencePaths;
+    ghostPathsRef.current = ghostPaths;
+    traceModeRef.current = traceMode;
+    widthRef.current = width;
+    heightRef.current = height;
+  }, [referencePaths, ghostPaths, traceMode, width, height]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -450,7 +474,9 @@ const DrawingCanvas = forwardRef<DrawingCanvasHandle, Props>(function DrawingCan
   }
 
   // ============================================================
-  // Main redraw
+  // Main redraw — uses refs for all state so it has stable identity
+  // and never reads stale state. Critical for in-flight stroke fidelity
+  // when parent re-renders (e.g. setBuddyMood on stroke complete).
   // ============================================================
   const redraw = useCallback(() => {
     const canvas = canvasRef.current;
@@ -458,58 +484,60 @@ const DrawingCanvas = forwardRef<DrawingCanvasHandle, Props>(function DrawingCan
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
+    // Read latest values from refs (not closure)
+    const _width = widthRef.current;
+    const _height = heightRef.current;
+    const _strokes = strokesRef.current;
+    const _stickers = stickersRef.current;
+    const _selectedStickerIdx = selectedStickerIdxRef.current;
+    const _referencePaths = referencePathsRef.current;
+    const _ghostPaths = ghostPathsRef.current;
+    const _traceMode = traceModeRef.current;
+
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.scale(dpr.current, dpr.current);
 
     ctx.fillStyle = '#FFFBF4';
-    ctx.fillRect(0, 0, width, height);
+    ctx.fillRect(0, 0, _width, _height);
 
     // Paper texture
     ctx.save();
     ctx.globalAlpha = 0.04;
     ctx.fillStyle = '#2A1B3D';
-    for (let x = 0; x < width; x += 14) {
-      for (let y = 0; y < height; y += 14) ctx.fillRect(x, y, 1, 1);
+    for (let x = 0; x < _width; x += 14) {
+      for (let y = 0; y < _height; y += 14) ctx.fillRect(x, y, 1, 1);
     }
     ctx.restore();
 
     // Ghost / reference paths
-    if (ghostPaths.length) {
+    if (_ghostPaths.length) {
       ctx.save();
       ctx.globalAlpha = 0.18;
       ctx.strokeStyle = '#2A1B3D';
       ctx.lineWidth = 3;
       ctx.setLineDash([6, 6]);
       ctx.lineCap = 'round';
-      ghostPaths.forEach((d) => { try { ctx.stroke(new Path2D(d)); } catch {} });
+      _ghostPaths.forEach((d) => { try { ctx.stroke(new Path2D(d)); } catch {} });
       ctx.restore();
     }
-    if (referencePaths.length) {
+    if (_referencePaths.length) {
       ctx.save();
-      ctx.globalAlpha = traceMode ? 0.35 : 0.22;
+      ctx.globalAlpha = _traceMode ? 0.35 : 0.22;
       ctx.strokeStyle = '#5B4A6E';
       ctx.lineWidth = 4;
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
-      referencePaths.forEach((d) => { try { ctx.stroke(new Path2D(d)); } catch {} });
+      _referencePaths.forEach((d) => { try { ctx.stroke(new Path2D(d)); } catch {} });
       ctx.restore();
     }
 
-    // Strokes (including fill, which stores its color + start point; applied separately below)
-    strokes.forEach((s) => {
+    // Strokes
+    _strokes.forEach((s) => {
       if (s.toolId === 'fill' && s.points.length) {
-        // Apply flood fill in-place using imageData
         const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
         const [r, g, b] = hexToRGB(s.color);
-        floodFill(
-          imgData,
-          s.points[0].x * dpr.current,
-          s.points[0].y * dpr.current,
-          r,
-          g,
-          b
-        );
+        floodFill(imgData, s.points[0].x * dpr.current, s.points[0].y * dpr.current, r, g, b);
         ctx.putImageData(imgData, 0, 0);
       } else {
         drawStroke(ctx, s);
@@ -518,7 +546,7 @@ const DrawingCanvas = forwardRef<DrawingCanvasHandle, Props>(function DrawingCan
     if (currentStroke.current) drawStroke(ctx, currentStroke.current);
 
     // Stickers
-    stickers.forEach((s, i) => {
+    _stickers.forEach((s, i) => {
       ctx.save();
       ctx.translate(s.x, s.y);
       ctx.rotate((s.rotation * Math.PI) / 180);
@@ -548,19 +576,16 @@ const DrawingCanvas = forwardRef<DrawingCanvasHandle, Props>(function DrawingCan
       }
       ctx.restore();
 
-      // Selection UI for selected sticker
-      if (i === selectedStickerIdx) {
+      if (i === _selectedStickerIdx) {
         const halfSize = (STICKER_BASE_SIZE / 2) * s.scale;
         ctx.save();
         ctx.translate(s.x, s.y);
         ctx.rotate((s.rotation * Math.PI) / 180);
-        // Dashed selection box
         ctx.strokeStyle = '#FF6B5B';
         ctx.lineWidth = 2;
         ctx.setLineDash([6, 4]);
         ctx.strokeRect(-halfSize, -halfSize, halfSize * 2, halfSize * 2);
         ctx.setLineDash([]);
-        // Corner resize handle (bottom-right)
         ctx.fillStyle = '#FF6B5B';
         ctx.beginPath();
         ctx.arc(halfSize, halfSize, HANDLE_SIZE / 2, 0, Math.PI * 2);
@@ -568,7 +593,6 @@ const DrawingCanvas = forwardRef<DrawingCanvasHandle, Props>(function DrawingCan
         ctx.strokeStyle = 'white';
         ctx.lineWidth = 2;
         ctx.stroke();
-        // Rotation handle (top-center, extended)
         ctx.beginPath();
         ctx.moveTo(0, -halfSize);
         ctx.lineTo(0, -halfSize - 28);
@@ -585,8 +609,7 @@ const DrawingCanvas = forwardRef<DrawingCanvasHandle, Props>(function DrawingCan
         ctx.restore();
       }
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [width, height, strokes, stickers, referencePaths, ghostPaths, traceMode, selectedStickerIdx]);
+  }, []); // STABLE — no deps. All state read from refs.
 
   // ============================================================
   // Pointer event handling
