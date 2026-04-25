@@ -1,0 +1,98 @@
+{
+  "id": "robot_workshop_03",
+  "world_id": "robot_workshop",
+  "order_index": 3,
+  "title": "Mini Drone",
+  "subject": "drone",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": true,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "drone_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Round drone body",
+      "companion_line": "A round drone body in the middle!",
+      "reference_paths": [
+        "M 400 360 m -40 0 a 40 30 0 1 0 80 0 a 40 30 0 1 0 -80 0"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Four arms",
+      "companion_line": "Four arms reaching out (like a plus)!",
+      "reference_paths": [
+        "M 400 360 m -40 0 a 40 30 0 1 0 80 0 a 40 30 0 1 0 -80 0",
+        "M 400 360 l -100 -60",
+        "M 400 360 l 100 -60",
+        "M 400 360 l -100 60",
+        "M 400 360 l 100 60"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Propellers!",
+      "companion_line": "Spinning propellers on each arm!",
+      "reference_paths": [
+        "M 400 360 m -40 0 a 40 30 0 1 0 80 0 a 40 30 0 1 0 -80 0",
+        "M 400 360 l -100 -60",
+        "M 400 360 l 100 -60",
+        "M 400 360 l -100 60",
+        "M 400 360 l 100 60",
+        "M 300 300 m -25 0 a 25 5 0 1 0 50 0 a 25 5 0 1 0 -50 0",
+        "M 500 300 m -25 0 a 25 5 0 1 0 50 0 a 25 5 0 1 0 -50 0",
+        "M 300 420 m -25 0 a 25 5 0 1 0 50 0 a 25 5 0 1 0 -50 0",
+        "M 500 420 m -25 0 a 25 5 0 1 0 50 0 a 25 5 0 1 0 -50 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Camera in front",
+      "companion_line": "A camera lens on the front!",
+      "reference_paths": [
+        "M 400 360 m -40 0 a 40 30 0 1 0 80 0 a 40 30 0 1 0 -80 0",
+        "M 400 360 l -100 -60",
+        "M 400 360 l 100 -60",
+        "M 400 360 l -100 60",
+        "M 400 360 l 100 60",
+        "M 300 300 m -25 0 a 25 5 0 1 0 50 0 a 25 5 0 1 0 -50 0",
+        "M 500 300 m -25 0 a 25 5 0 1 0 50 0 a 25 5 0 1 0 -50 0",
+        "M 300 420 m -25 0 a 25 5 0 1 0 50 0 a 25 5 0 1 0 -50 0",
+        "M 500 420 m -25 0 a 25 5 0 1 0 50 0 a 25 5 0 1 0 -50 0",
+        "M 400 365 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s5",
+      "instruction": "Status lights",
+      "companion_line": "Two little lights on top!",
+      "reference_paths": [
+        "M 400 360 m -40 0 a 40 30 0 1 0 80 0 a 40 30 0 1 0 -80 0",
+        "M 400 360 l -100 -60",
+        "M 400 360 l 100 -60",
+        "M 400 360 l -100 60",
+        "M 400 360 l 100 60",
+        "M 300 300 m -25 0 a 25 5 0 1 0 50 0 a 25 5 0 1 0 -50 0",
+        "M 500 300 m -25 0 a 25 5 0 1 0 50 0 a 25 5 0 1 0 -50 0",
+        "M 300 420 m -25 0 a 25 5 0 1 0 50 0 a 25 5 0 1 0 -50 0",
+        "M 500 420 m -25 0 a 25 5 0 1 0 50 0 a 25 5 0 1 0 -50 0",
+        "M 400 365 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 380 340 m -3 0 a 3 3 0 1 0 6 0 a 3 3 0 1 0 -6 0",
+        "M 420 340 m -3 0 a 3 3 0 1 0 6 0 a 3 3 0 1 0 -6 0"
+      ],
+      "show_ghost": true
+    }
+  ]
+}

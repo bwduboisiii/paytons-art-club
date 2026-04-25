@@ -1,0 +1,78 @@
+{
+  "id": "bakery_sweets_03",
+  "world_id": "bakery_sweets",
+  "order_index": 3,
+  "title": "Cookie Friend",
+  "subject": "cookie",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": true,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "cookie_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Round cookie",
+      "companion_line": "A big round cookie!",
+      "reference_paths": [
+        "M 400 360 m -110 0 a 110 110 0 1 0 220 0 a 110 110 0 1 0 -220 0"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Bumpy edges",
+      "companion_line": "A bumpy wavy edge — like a real cookie!",
+      "reference_paths": [
+        "M 400 360 m -110 0 a 110 110 0 1 0 220 0 a 110 110 0 1 0 -220 0",
+        "M 290 380 q 5 -8 12 -3 q 7 -10 14 -2",
+        "M 510 360 q -5 -10 -12 -3 q -7 -10 -14 -2"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Chocolate chips!",
+      "companion_line": "Yummy chocolate chips!",
+      "reference_paths": [
+        "M 400 360 m -110 0 a 110 110 0 1 0 220 0 a 110 110 0 1 0 -220 0",
+        "M 290 380 q 5 -8 12 -3 q 7 -10 14 -2",
+        "M 510 360 q -5 -10 -12 -3 q -7 -10 -14 -2",
+        "M 350 320 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 410 305 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 460 340 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 340 400 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 430 410 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 460 380 m -7 0 a 7 7 0 1 0 14 0 a 7 7 0 1 0 -14 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Cookie face",
+      "companion_line": "Eyes and a smile in the cookie!",
+      "reference_paths": [
+        "M 400 360 m -110 0 a 110 110 0 1 0 220 0 a 110 110 0 1 0 -220 0",
+        "M 290 380 q 5 -8 12 -3 q 7 -10 14 -2",
+        "M 510 360 q -5 -10 -12 -3 q -7 -10 -14 -2",
+        "M 350 320 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 410 305 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 460 340 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 340 400 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 430 410 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 460 380 m -7 0 a 7 7 0 1 0 14 0 a 7 7 0 1 0 -14 0",
+        "M 380 345 m -4 0 a 4 4 0 1 0 8 0 a 4 4 0 1 0 -8 0",
+        "M 420 345 m -4 0 a 4 4 0 1 0 8 0 a 4 4 0 1 0 -8 0",
+        "M 380 375 q 20 15 40 0"
+      ],
+      "show_ghost": true
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "id": "robot_workshop_02",
+  "world_id": "robot_workshop",
+  "order_index": 2,
+  "title": "Gear Spinner",
+  "subject": "gear",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": true,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "gear_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Round gear center",
+      "companion_line": "A big circle for the gear!",
+      "reference_paths": [
+        "M 400 360 m -90 0 a 90 90 0 1 0 180 0 a 90 90 0 1 0 -180 0"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Small inner circle",
+      "companion_line": "A smaller circle in the middle.",
+      "reference_paths": [
+        "M 400 360 m -90 0 a 90 90 0 1 0 180 0 a 90 90 0 1 0 -180 0",
+        "M 400 360 m -25 0 a 25 25 0 1 0 50 0 a 25 25 0 1 0 -50 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Top and bottom teeth",
+      "companion_line": "Square teeth poking out!",
+      "reference_paths": [
+        "M 400 360 m -90 0 a 90 90 0 1 0 180 0 a 90 90 0 1 0 -180 0",
+        "M 400 360 m -25 0 a 25 25 0 1 0 50 0 a 25 25 0 1 0 -50 0",
+        "M 380 270 l 0 -25 l 40 0 l 0 25",
+        "M 380 450 l 0 25 l 40 0 l 0 -25"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Side teeth",
+      "companion_line": "Teeth on the sides too!",
+      "reference_paths": [
+        "M 400 360 m -90 0 a 90 90 0 1 0 180 0 a 90 90 0 1 0 -180 0",
+        "M 400 360 m -25 0 a 25 25 0 1 0 50 0 a 25 25 0 1 0 -50 0",
+        "M 380 270 l 0 -25 l 40 0 l 0 25",
+        "M 380 450 l 0 25 l 40 0 l 0 -25",
+        "M 310 340 l -25 0 l 0 40 l 25 0",
+        "M 490 340 l 25 0 l 0 40 l -25 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s5",
+      "instruction": "Diagonal teeth",
+      "companion_line": "Four more teeth in between!",
+      "reference_paths": [
+        "M 400 360 m -90 0 a 90 90 0 1 0 180 0 a 90 90 0 1 0 -180 0",
+        "M 400 360 m -25 0 a 25 25 0 1 0 50 0 a 25 25 0 1 0 -50 0",
+        "M 380 270 l 0 -25 l 40 0 l 0 25",
+        "M 380 450 l 0 25 l 40 0 l 0 -25",
+        "M 310 340 l -25 0 l 0 40 l 25 0",
+        "M 490 340 l 25 0 l 0 40 l -25 0",
+        "M 335 295 l -18 -18 l 25 -18 l 18 25",
+        "M 465 295 l 18 -18 l -25 -18 l -18 25",
+        "M 335 425 l -18 18 l 25 18 l 18 -25",
+        "M 465 425 l 18 18 l -25 18 l -18 -25"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s6",
+      "instruction": "Smiley gear face",
+      "companion_line": "A happy face on our gear!",
+      "reference_paths": [
+        "M 400 360 m -90 0 a 90 90 0 1 0 180 0 a 90 90 0 1 0 -180 0",
+        "M 400 360 m -25 0 a 25 25 0 1 0 50 0 a 25 25 0 1 0 -50 0",
+        "M 380 270 l 0 -25 l 40 0 l 0 25",
+        "M 380 450 l 0 25 l 40 0 l 0 -25",
+        "M 310 340 l -25 0 l 0 40 l 25 0",
+        "M 490 340 l 25 0 l 0 40 l -25 0",
+        "M 335 295 l -18 -18 l 25 -18 l 18 25",
+        "M 465 295 l 18 -18 l -25 -18 l -18 25",
+        "M 335 425 l -18 18 l 25 18 l 18 -25",
+        "M 465 425 l 18 18 l -25 18 l -18 -25",
+        "M 388 355 m -3 0 a 3 3 0 1 0 6 0 a 3 3 0 1 0 -6 0",
+        "M 412 355 m -3 0 a 3 3 0 1 0 6 0 a 3 3 0 1 0 -6 0",
+        "M 392 370 q 8 6 16 0"
+      ],
+      "show_ghost": true
+    }
+  ]
+}

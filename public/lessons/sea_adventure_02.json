@@ -1,0 +1,108 @@
+{
+  "id": "sea_adventure_02",
+  "world_id": "sea_adventure",
+  "order_index": 2,
+  "title": "Lighthouse",
+  "subject": "lighthouse",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": true,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "lighthouse_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Tall tower base",
+      "companion_line": "A tall narrow tower!",
+      "reference_paths": [
+        "M 350 480 l 0 -260 l 100 0 l 0 260 z"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Stripes",
+      "companion_line": "Stripes around the tower (red and white)!",
+      "reference_paths": [
+        "M 350 480 l 0 -260 l 100 0 l 0 260 z",
+        "M 350 280 l 100 0",
+        "M 350 340 l 100 0",
+        "M 350 400 l 100 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Light room",
+      "companion_line": "A small room at the top where the light shines!",
+      "reference_paths": [
+        "M 350 480 l 0 -260 l 100 0 l 0 260 z",
+        "M 350 280 l 100 0",
+        "M 350 340 l 100 0",
+        "M 350 400 l 100 0",
+        "M 340 220 l 120 0 l 0 -50 l -120 0 z"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Pointy roof",
+      "companion_line": "A pointy roof on top!",
+      "reference_paths": [
+        "M 350 480 l 0 -260 l 100 0 l 0 260 z",
+        "M 350 280 l 100 0",
+        "M 350 340 l 100 0",
+        "M 350 400 l 100 0",
+        "M 340 220 l 120 0 l 0 -50 l -120 0 z",
+        "M 340 170 l 60 -40 l 60 40"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s5",
+      "instruction": "Light beams!",
+      "companion_line": "Bright beams of light shining out!",
+      "reference_paths": [
+        "M 350 480 l 0 -260 l 100 0 l 0 260 z",
+        "M 350 280 l 100 0",
+        "M 350 340 l 100 0",
+        "M 350 400 l 100 0",
+        "M 340 220 l 120 0 l 0 -50 l -120 0 z",
+        "M 340 170 l 60 -40 l 60 40",
+        "M 340 195 l -50 -20",
+        "M 460 195 l 50 -20",
+        "M 400 175 l 0 -40",
+        "M 320 200 l -40 0",
+        "M 480 200 l 40 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s6",
+      "instruction": "Door at the bottom",
+      "companion_line": "A little door for the lighthouse keeper!",
+      "reference_paths": [
+        "M 350 480 l 0 -260 l 100 0 l 0 260 z",
+        "M 350 280 l 100 0",
+        "M 350 340 l 100 0",
+        "M 350 400 l 100 0",
+        "M 340 220 l 120 0 l 0 -50 l -120 0 z",
+        "M 340 170 l 60 -40 l 60 40",
+        "M 340 195 l -50 -20",
+        "M 460 195 l 50 -20",
+        "M 400 175 l 0 -40",
+        "M 320 200 l -40 0",
+        "M 480 200 l 40 0",
+        "M 380 480 l 0 -50 q 20 -30 40 0 l 0 50"
+      ],
+      "show_ghost": true
+    }
+  ]
+}

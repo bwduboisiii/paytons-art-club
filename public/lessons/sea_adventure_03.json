@@ -1,0 +1,112 @@
+{
+  "id": "sea_adventure_03",
+  "world_id": "sea_adventure",
+  "order_index": 3,
+  "title": "Treasure Map",
+  "subject": "map",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": true,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "map_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Wavy parchment edges",
+      "companion_line": "Old crinkly parchment paper!",
+      "reference_paths": [
+        "M 200 200 q 50 -30 100 0 q 100 -30 200 0 q 100 -30 100 0 l 0 240 q -50 30 -100 0 q -100 30 -200 0 q -100 30 -100 0 z"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Mountains",
+      "companion_line": "Two pointy mountain shapes!",
+      "reference_paths": [
+        "M 200 200 q 50 -30 100 0 q 100 -30 200 0 q 100 -30 100 0 l 0 240 q -50 30 -100 0 q -100 30 -200 0 q -100 30 -100 0 z",
+        "M 280 380 l 30 -50 l 30 50",
+        "M 340 380 l 30 -60 l 30 60"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "A river curving across",
+      "companion_line": "A wavy blue river!",
+      "reference_paths": [
+        "M 200 200 q 50 -30 100 0 q 100 -30 200 0 q 100 -30 100 0 l 0 240 q -50 30 -100 0 q -100 30 -200 0 q -100 30 -100 0 z",
+        "M 280 380 l 30 -50 l 30 50",
+        "M 340 380 l 30 -60 l 30 60",
+        "M 220 250 q 80 30 160 0 q 80 -30 160 0 q 60 30 60 30"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Big X marks the spot!",
+      "companion_line": "An X where the treasure is buried!",
+      "reference_paths": [
+        "M 200 200 q 50 -30 100 0 q 100 -30 200 0 q 100 -30 100 0 l 0 240 q -50 30 -100 0 q -100 30 -200 0 q -100 30 -100 0 z",
+        "M 280 380 l 30 -50 l 30 50",
+        "M 340 380 l 30 -60 l 30 60",
+        "M 220 250 q 80 30 160 0 q 80 -30 160 0 q 60 30 60 30",
+        "M 470 320 l 30 30",
+        "M 500 320 l -30 30"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s5",
+      "instruction": "Dotted path to X",
+      "companion_line": "A dotted trail leading to X!",
+      "reference_paths": [
+        "M 200 200 q 50 -30 100 0 q 100 -30 200 0 q 100 -30 100 0 l 0 240 q -50 30 -100 0 q -100 30 -200 0 q -100 30 -100 0 z",
+        "M 280 380 l 30 -50 l 30 50",
+        "M 340 380 l 30 -60 l 30 60",
+        "M 220 250 q 80 30 160 0 q 80 -30 160 0 q 60 30 60 30",
+        "M 470 320 l 30 30",
+        "M 500 320 l -30 30",
+        "M 280 410 l 10 -10",
+        "M 310 380 l 10 -10",
+        "M 340 350 l 10 -10",
+        "M 380 330 l 10 -5",
+        "M 420 320 l 10 -3",
+        "M 450 318 l 10 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s6",
+      "instruction": "Compass rose",
+      "companion_line": "A compass with N, S, E, W!",
+      "reference_paths": [
+        "M 200 200 q 50 -30 100 0 q 100 -30 200 0 q 100 -30 100 0 l 0 240 q -50 30 -100 0 q -100 30 -200 0 q -100 30 -100 0 z",
+        "M 280 380 l 30 -50 l 30 50",
+        "M 340 380 l 30 -60 l 30 60",
+        "M 220 250 q 80 30 160 0 q 80 -30 160 0 q 60 30 60 30",
+        "M 470 320 l 30 30",
+        "M 500 320 l -30 30",
+        "M 280 410 l 10 -10",
+        "M 310 380 l 10 -10",
+        "M 340 350 l 10 -10",
+        "M 380 330 l 10 -5",
+        "M 420 320 l 10 -3",
+        "M 450 318 l 10 0",
+        "M 250 190 l 0 -40",
+        "M 250 190 l 0 40",
+        "M 230 170 l 40 0",
+        "M 230 210 l 40 0",
+        "M 240 145 l 10 -15 l 10 15"
+      ],
+      "show_ghost": true
+    }
+  ]
+}

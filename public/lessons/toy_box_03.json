@@ -1,0 +1,101 @@
+{
+  "id": "toy_box_03",
+  "world_id": "toy_box",
+  "order_index": 3,
+  "title": "Floating Balloons",
+  "subject": "balloon",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": true,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "balloon_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "First big balloon",
+      "companion_line": "A round balloon!",
+      "reference_paths": [
+        "M 320 280 m -50 0 a 50 60 0 1 0 100 0 a 50 60 0 1 0 -100 0"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Tied bottom",
+      "companion_line": "A tiny knot at the bottom!",
+      "reference_paths": [
+        "M 320 280 m -50 0 a 50 60 0 1 0 100 0 a 50 60 0 1 0 -100 0",
+        "M 320 340 l -5 10 l 10 0 z"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Second balloon",
+      "companion_line": "Another balloon floating beside!",
+      "reference_paths": [
+        "M 320 280 m -50 0 a 50 60 0 1 0 100 0 a 50 60 0 1 0 -100 0",
+        "M 320 340 l -5 10 l 10 0 z",
+        "M 440 240 m -45 0 a 45 55 0 1 0 90 0 a 45 55 0 1 0 -90 0",
+        "M 440 295 l -5 10 l 10 0 z"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Third balloon",
+      "companion_line": "And one more!",
+      "reference_paths": [
+        "M 320 280 m -50 0 a 50 60 0 1 0 100 0 a 50 60 0 1 0 -100 0",
+        "M 320 340 l -5 10 l 10 0 z",
+        "M 440 240 m -45 0 a 45 55 0 1 0 90 0 a 45 55 0 1 0 -90 0",
+        "M 440 295 l -5 10 l 10 0 z",
+        "M 540 290 m -42 0 a 42 50 0 1 0 84 0 a 42 50 0 1 0 -84 0",
+        "M 540 340 l -5 10 l 10 0 z"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s5",
+      "instruction": "Strings dangling",
+      "companion_line": "Curvy strings dangling down!",
+      "reference_paths": [
+        "M 320 280 m -50 0 a 50 60 0 1 0 100 0 a 50 60 0 1 0 -100 0",
+        "M 320 340 l -5 10 l 10 0 z",
+        "M 440 240 m -45 0 a 45 55 0 1 0 90 0 a 45 55 0 1 0 -90 0",
+        "M 440 295 l -5 10 l 10 0 z",
+        "M 540 290 m -42 0 a 42 50 0 1 0 84 0 a 42 50 0 1 0 -84 0",
+        "M 540 340 l -5 10 l 10 0 z",
+        "M 320 350 q 20 60 0 130",
+        "M 440 305 q -20 70 -10 140",
+        "M 540 350 q 30 70 10 130"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s6",
+      "instruction": "Hand holding strings",
+      "companion_line": "A little hand holding all the strings!",
+      "reference_paths": [
+        "M 320 280 m -50 0 a 50 60 0 1 0 100 0 a 50 60 0 1 0 -100 0",
+        "M 320 340 l -5 10 l 10 0 z",
+        "M 440 240 m -45 0 a 45 55 0 1 0 90 0 a 45 55 0 1 0 -90 0",
+        "M 440 295 l -5 10 l 10 0 z",
+        "M 540 290 m -42 0 a 42 50 0 1 0 84 0 a 42 50 0 1 0 -84 0",
+        "M 540 340 l -5 10 l 10 0 z",
+        "M 320 350 q 20 60 0 130",
+        "M 440 305 q -20 70 -10 140",
+        "M 540 350 q 30 70 10 130",
+        "M 410 480 m -25 0 a 25 15 0 1 0 50 0 a 25 15 0 1 0 -50 0"
+      ],
+      "show_ghost": true
+    }
+  ]
+}

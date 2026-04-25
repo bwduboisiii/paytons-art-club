@@ -1,0 +1,94 @@
+{
+  "id": "holiday_magic_03",
+  "world_id": "holiday_magic",
+  "order_index": 3,
+  "title": "Heart Garland",
+  "subject": "hearts",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": true,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "hearts_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "String across",
+      "companion_line": "A swooping string for our garland!",
+      "reference_paths": [
+        "M 200 280 q 200 80 400 0"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "First heart",
+      "companion_line": "Big heart on the left!",
+      "reference_paths": [
+        "M 200 280 q 200 80 400 0",
+        "M 280 320 q -25 -30 -50 0 q 0 25 50 55 q 50 -30 50 -55 q -25 -30 -50 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Second heart",
+      "companion_line": "Medium heart in the middle!",
+      "reference_paths": [
+        "M 200 280 q 200 80 400 0",
+        "M 280 320 q -25 -30 -50 0 q 0 25 50 55 q 50 -30 50 -55 q -25 -30 -50 0",
+        "M 400 360 q -22 -25 -44 0 q 0 22 44 48 q 44 -26 44 -48 q -22 -25 -44 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Third heart",
+      "companion_line": "Heart on the right!",
+      "reference_paths": [
+        "M 200 280 q 200 80 400 0",
+        "M 280 320 q -25 -30 -50 0 q 0 25 50 55 q 50 -30 50 -55 q -25 -30 -50 0",
+        "M 400 360 q -22 -25 -44 0 q 0 22 44 48 q 44 -26 44 -48 q -22 -25 -44 0",
+        "M 520 320 q -25 -30 -50 0 q 0 25 50 55 q 50 -30 50 -55 q -25 -30 -50 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s5",
+      "instruction": "Tiny hearts in between",
+      "companion_line": "Little hearts to fill in!",
+      "reference_paths": [
+        "M 200 280 q 200 80 400 0",
+        "M 280 320 q -25 -30 -50 0 q 0 25 50 55 q 50 -30 50 -55 q -25 -30 -50 0",
+        "M 400 360 q -22 -25 -44 0 q 0 22 44 48 q 44 -26 44 -48 q -22 -25 -44 0",
+        "M 520 320 q -25 -30 -50 0 q 0 25 50 55 q 50 -30 50 -55 q -25 -30 -50 0",
+        "M 340 320 q -10 -12 -20 0 q 0 10 20 22 q 20 -12 20 -22 q -10 -12 -20 0",
+        "M 460 320 q -10 -12 -20 0 q 0 10 20 22 q 20 -12 20 -22 q -10 -12 -20 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s6",
+      "instruction": "Sparkles around",
+      "companion_line": "Sparkly bursts!",
+      "reference_paths": [
+        "M 200 280 q 200 80 400 0",
+        "M 280 320 q -25 -30 -50 0 q 0 25 50 55 q 50 -30 50 -55 q -25 -30 -50 0",
+        "M 400 360 q -22 -25 -44 0 q 0 22 44 48 q 44 -26 44 -48 q -22 -25 -44 0",
+        "M 520 320 q -25 -30 -50 0 q 0 25 50 55 q 50 -30 50 -55 q -25 -30 -50 0",
+        "M 340 320 q -10 -12 -20 0 q 0 10 20 22 q 20 -12 20 -22 q -10 -12 -20 0",
+        "M 460 320 q -10 -12 -20 0 q 0 10 20 22 q 20 -12 20 -22 q -10 -12 -20 0",
+        "M 250 240 l 0 -10 m -5 5 l 10 0",
+        "M 550 240 l 0 -10 m -5 5 l 10 0",
+        "M 400 240 l 0 -10 m -5 5 l 10 0"
+      ],
+      "show_ghost": true
+    }
+  ]
+}

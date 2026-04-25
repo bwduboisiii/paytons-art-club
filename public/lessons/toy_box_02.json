@@ -1,0 +1,95 @@
+{
+  "id": "toy_box_02",
+  "world_id": "toy_box",
+  "order_index": 2,
+  "title": "Building Blocks",
+  "subject": "blocks",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": true,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "blocks_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "First block",
+      "companion_line": "A square block!",
+      "reference_paths": [
+        "M 280 480 l 0 -100 l 100 0 l 0 100 z"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Letter A on the block",
+      "companion_line": "An A on the first block!",
+      "reference_paths": [
+        "M 280 480 l 0 -100 l 100 0 l 0 100 z",
+        "M 305 470 l 25 -65 l 25 65",
+        "M 315 445 l 30 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Second block",
+      "companion_line": "Another block to the right!",
+      "reference_paths": [
+        "M 280 480 l 0 -100 l 100 0 l 0 100 z",
+        "M 305 470 l 25 -65 l 25 65",
+        "M 315 445 l 30 0",
+        "M 380 480 l 0 -100 l 100 0 l 0 100 z"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Letter B",
+      "companion_line": "A B on the second block!",
+      "reference_paths": [
+        "M 280 480 l 0 -100 l 100 0 l 0 100 z",
+        "M 305 470 l 25 -65 l 25 65",
+        "M 315 445 l 30 0",
+        "M 380 480 l 0 -100 l 100 0 l 0 100 z",
+        "M 405 470 l 0 -65 l 25 0 q 15 0 0 30 q 15 0 0 35 z"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s5",
+      "instruction": "Third block on top",
+      "companion_line": "Third block stacked on top!",
+      "reference_paths": [
+        "M 280 480 l 0 -100 l 100 0 l 0 100 z",
+        "M 305 470 l 25 -65 l 25 65",
+        "M 315 445 l 30 0",
+        "M 380 480 l 0 -100 l 100 0 l 0 100 z",
+        "M 405 470 l 0 -65 l 25 0 q 15 0 0 30 q 15 0 0 35 z",
+        "M 330 380 l 0 -100 l 100 0 l 0 100 z"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s6",
+      "instruction": "Letter C",
+      "companion_line": "A C on the top block!",
+      "reference_paths": [
+        "M 280 480 l 0 -100 l 100 0 l 0 100 z",
+        "M 305 470 l 25 -65 l 25 65",
+        "M 315 445 l 30 0",
+        "M 380 480 l 0 -100 l 100 0 l 0 100 z",
+        "M 405 470 l 0 -65 l 25 0 q 15 0 0 30 q 15 0 0 35 z",
+        "M 330 380 l 0 -100 l 100 0 l 0 100 z",
+        "M 410 290 q -45 0 -45 40 q 0 40 45 40"
+      ],
+      "show_ghost": true
+    }
+  ]
+}

@@ -1,189 +1,212 @@
-# 🎨 Payton's Art Club
+# Payton's Art Club 🎨
 
-A cozy, guided-drawing web app for young artists (ages 5–10). Built with Next.js 14, Supabase, and Tailwind. Deploys to Vercel.
+A complete kid-friendly drawing web app built for Payton (age 7) — but designed for any kid ages 5-10.
 
----
-
-## ✨ What's inside
-
-- **Worlds & lessons** — content-driven lessons in `/public/lessons/`. Launch worlds: Critter Cove, Sparkle Kingdom, Star Hop, Mermaid Lagoon (coming soon).
-- **Guided drawing canvas** — HTML5 canvas with pointer events, quadratic smoothing, reference + ghost layers, undo, Blob-based PNG export.
-- **Companion characters** — four animated SVG buddies (Bunny, Kitty, Fox, Owl).
-- **Lesson loop** — intro → step-by-step drawing → remix with stickers → confetti reward → sticker unlock.
-- **Gallery** — full-size lightbox viewer, favorite toggle, download, delete.
-- **Sticker book** — track all earned stickers, see locked/unlocked states.
-- **Multi-kid support** — add multiple children, switch between them, delete individual profiles.
-- **Parent mode** — COPPA-friendly arithmetic gate, dashboard, per-kid stats, delete account flow.
-- **Error boundary** — any component crash shows a friendly fallback instead of a white screen.
-- **Unsaved-work warning** — leaving a lesson mid-drawing asks for confirmation.
-- **No child-facing monetization**. No ads. No third-party trackers.
+This is the **complete cumulative codebase** through v14b. Every feature built across all 14 versions is included here.
 
 ---
 
-## 🏗️ Tech stack
+## Quick start
 
-- Next.js 14 (App Router) + TypeScript
-- Tailwind CSS with custom design system
-- Supabase — Auth, Postgres (with RLS), Storage
-- Framer Motion animations
-- Zustand for client state
-- Vercel hosting
-- PWA-installable on iPad (Safari → Add to Home Screen)
+This is a Next.js 14 app deployed on Vercel with Supabase backend and Stripe subscriptions.
 
----
-
-## 🚀 First-time setup
-
-### 1. Install
-
+### To run locally:
 ```bash
 npm install
-```
-
-### 2. Create a Supabase project
-
-At [supabase.com](https://supabase.com) → New Project. Note the Project URL and anon key (Settings → API).
-
-### 3. Run the schema
-
-In Supabase SQL Editor, paste and run:
-
-1. `supabase/schema.sql` — creates tables, RLS, storage bucket, signup trigger
-2. `supabase/seed.sql` — seeds the 10 launch lessons
-
-### 4. Environment variables
-
-Copy `.env.example` → `.env.local`:
-
-```
-NEXT_PUBLIC_SUPABASE_URL=https://YOUR-PROJECT.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJ...
-NEXT_PUBLIC_APP_NAME=Payton's Art Club
-```
-
-### 5. Supabase auth setup
-
-Authentication → URL Configuration:
-- Site URL: `https://your-vercel-url.vercel.app`
-- Redirect URLs: `https://your-vercel-url.vercel.app/**` and `http://localhost:3000/**`
-
-Authentication → Providers → Email → turn OFF "Confirm email" (for frictionless signup) — OR keep it on and have users verify their address.
-
-### 6. Run locally
-
-```bash
+# Set up .env.local from .env.example (see "Environment variables" below)
 npm run dev
 ```
 
-http://localhost:3000
+### To deploy:
+1. Push to GitHub
+2. Connect to Vercel (auto-deploys on push to main)
+3. Add environment variables in Vercel project settings (see below)
 
 ---
 
-## ☁️ Deploying to Vercel
+## Environment variables
 
-1. Push the repo to GitHub
-2. vercel.com/new → Import the repo
-3. Add the three env vars from `.env.example`
-4. Deploy
+See `.env.example`. You need:
 
-Every subsequent `git push` auto-deploys.
+**Required for any deploy:**
+- `NEXT_PUBLIC_SUPABASE_URL` — your Supabase project URL
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` — Supabase anon key
+- `SUPABASE_SERVICE_ROLE_KEY` — Supabase service role (for webhook)
+- `NEXT_PUBLIC_SITE_URL` — your production URL (e.g. `https://project-quucx.vercel.app`)
 
----
+**Required for Stripe subscriptions:**
+- `NEXT_PUBLIC_STRIPE_PUBLIC_KEY` — Stripe publishable key (`pk_test_...` or `pk_live_...`)
+- `STRIPE_SECRET_KEY` — Stripe secret key (`sk_test_...` or `sk_live_...`)
+- `STRIPE_PRICE_ID` — Stripe Price ID for $4.99/mo subscription
+- `STRIPE_WEBHOOK_SECRET` — Stripe webhook signing secret (`whsec_...`)
 
-## 📚 Adding new lessons
-
-Lesson files live in `/public/lessons/`. To add one:
-
-1. Create `public/lessons/my_lesson.json` following the `Lesson` shape in `lib/types.ts`
-2. Register it in `lib/lessons.ts` (import + add to `LESSON_MAP`)
-3. Add the lesson id to the appropriate world's `lessons` array in `lib/worlds.ts`
-4. Add a row to `supabase/seed.sql` and re-run it (for analytics)
-5. If it grants a new sticker, add the emoji to `STICKER_EMOJI` in `app/app/stickers/page.tsx`
-
-Reference paths use SVG `d` attribute syntax, drawn on an 800×600 coordinate space.
+The Stripe code gracefully degrades if Stripe vars are absent — premium features simply lock without crashing.
 
 ---
 
-## 🛡️ Privacy & kid-safety
+## Database setup
 
-- **No child-facing monetization.** Parent gate required for settings/account operations.
-- **COPPA-friendly parent gate** using arithmetic — filters pre-readers without requiring PINs.
-- **RLS-enforced data isolation** — parents can only access their own family via Postgres row-level security policies.
-- **Private storage bucket** — artwork URLs are signed, 1 hour TTL.
-- **No external trackers.** Add analytics later with a privacy-first tool (Plausible, Fathom).
-- **Error boundary** catches unexpected crashes so kids don't see stack traces.
-- **Unsaved-work confirm** — kids can't accidentally lose a drawing.
+All required SQL is in `supabase/`. Run these migrations in order via Supabase SQL Editor:
 
-### Additional security hardening to consider later
+1. `supabase/01_schema.sql` — core tables (kids, artworks, parents, etc.)
+2. `supabase/02_friends.sql` — friend codes + relationships
+3. `supabase/03_game.sql` — multiplayer game tables
+4. `supabase/04_voice.sql` — voice notes storage
+5. `supabase/05_stripe.sql` — Stripe subscription columns + entitlement view
 
-- **Supabase auth rate limiting** — in the dashboard, Authentication → Policies, set rate limits on sign-in/sign-up.
-- **Storage upload size cap** — currently enforced client-side (2 MB); also enforce server-side via a Postgres Edge Function or Supabase policy.
-- **Full account deletion** — the parent dashboard deletes kids/artwork/stickers but the Supabase Auth row itself requires a server-side admin call. Add a Supabase Edge Function to handle this.
-- **Email verification** — turn "Confirm email" back on in Supabase once you trust the email sender.
+Storage buckets needed:
+- `artworks` — kids' drawings
+- `voice-notes` — voice recordings
+- `stickers` — user-uploaded custom stickers
 
 ---
 
-## 📁 Project structure
+## Feature inventory
 
-```
-app/
-  page.tsx                   # Landing
-  login/page.tsx             # Sign in/up
-  onboarding/page.tsx        # Create kid profile
-  app/
-    layout.tsx               # Authed shell
-    page.tsx                 # Home + world map + kid switcher
-    world/[id]/page.tsx      # Lesson list
-    lesson/[id]/page.tsx     # Drawing flow
-    gallery/page.tsx         # Artwork gallery with lightbox
-    stickers/page.tsx        # Sticker collection book
-  parent/page.tsx            # Parent dashboard with PIN gate
-  auth/callback/route.ts     # Supabase auth callback
-components/
-  DrawingCanvas.tsx          # Core drawing engine
-  Companion.tsx              # Animated buddies
-  ErrorBoundary.tsx          # Crash safety net
-  LoadingSpinner.tsx         # Friendly loading indicator
-  Button, ColorPalette, BrushSizer, Confetti, Sparkles
-lib/
-  types.ts                   # Shared types
-  worlds.ts                  # World registry
-  lessons.ts                 # Lesson loader
-  store.ts                   # Zustand (active kid)
-  utils.ts                   # safeUUID, date formatting, etc.
-  supabase/
-    client.ts                # Browser client
-    server.ts                # Server client
-middleware.ts                # Session refresh + route protection
-public/
-  lessons/*.json             # Lesson content
-  manifest.json, icon.svg
-supabase/
-  schema.sql, seed.sql
-```
+### Drawing & creativity
+- **15 drawing tools**: marker, pen, pencil, crayon, paintbrush, chalk, highlighter, neon, spray, glitter, line, rectangle, circle, fill bucket, eraser
+- **Brush size control** with visual preview
+- **Always-visible color sidebar** with 50+ colors + custom rainbow color picker
+- **Free Draw mode** — open canvas, no lessons
+- **Sticker tray** — ~489 stickers across 9 categories (animals, nature, food, magic, space, faces, emoji, fun, places)
+- **Sticker manipulation** — drag, resize via handles, rotate, pinch-to-zoom, duplicate, layering (bring forward/back), delete
+- **Custom sticker uploads** — kids can upload their own stickers
+- **Voice notes** — 60-second voice recordings attached to artwork (MediaRecorder API)
+- **Undo/clear**
+
+### iOS Safari drawing fix (v12)
+- Window-level pointer listeners during strokes (Safari can't yank capture)
+- `getCoalescedEvents()` recovers sub-frame points → smoother lines
+- Non-passive `touchstart`/`touchmove` `preventDefault()` blocks swipe-back
+- Stronger CSS touch isolation (`overscrollBehavior: contain`, etc.)
+
+### Lessons & worlds (v14a + v14b)
+- **18 themed worlds** total
+- **9 free worlds**:
+  - Critter Cove 🐰 (8 lessons + 4 hidden rotation)
+  - Sparkle Kingdom 👑 (5 lessons + 4 hidden rotation)
+  - Star Hop 🚀 (3 lessons + 4 hidden rotation)
+  - Mermaid Lagoon 🧜‍♀️ (3 lessons + 4 hidden rotation)
+  - Pet Parade 🐶 (4 lessons)
+  - Weather Wonders 🌈 (4 lessons)
+  - Bug Buddies 🐝 (4 lessons)
+  - Shape Shop ⭐ (4 lessons)
+  - Garden Patch 🌷 (4 lessons)
+- **9 premium worlds** (require subscription):
+  - Dino Land 🦕 (3 lessons)
+  - Fairy Garden 🧚 (3 lessons)
+  - Food Friends 🍰 (3 lessons)
+  - Vehicle Village 🚗 (3 lessons)
+  - Sea Adventure ⚓ (4 lessons)
+  - Robot Workshop 🤖 (4 lessons)
+  - Bakery Sweets 🧁 (4 lessons)
+  - Toy Box 🧸 (4 lessons)
+  - Holiday Magic 🎃 (4 lessons)
+- **87 lessons total**
+- **Daily lesson rotation** — UTC-based, deterministic, pulls from 36 free lessons (hidden + new), changes once per calendar day
+- Each lesson: step-by-step trace guidance, companion dialogue, reference SVG paths, ghost mode toggle, completion sticker reward, remix phase with stickers
+
+### Companion avatars (28 total)
+Original 16: Hoppy (bunny), Whiskers (kitty), Rusty (fox), Hoot (owl), Bamboo (panda), Honey (bear), Sparkle (unicorn), Ember (dragon), Banana (monkey), Snooze (sloth), Inky (octopus), Clover (deer), Lily (frog), Waddle (penguin), Spike (hedgehog), Shelly (turtle).
+
+v13 additions (12 new): Buddy (dog), Storm (husky), Pearl (poodle), Nibbles (hamster), Eucalyptus (koala), Roar (lion), Stripes (tiger), Dash (zebra), Tally (giraffe), Flutter (butterfly), Buzz (bee), Coral (mermaid).
+
+Each avatar: hand-drawn SVG, 4 mood animations (idle, happy, cheering, thinking), used as kid's chosen companion + appears in friend lists.
+
+### Multi-kid profiles + parent dashboard
+- Multiple kid profiles per parent account
+- Each kid has: name, avatar, sticker count, completed lessons, friendships, artworks
+- Math-gate parent area (kids can't access without solving simple math)
+- Parent dashboard: review kids' artwork, manage friends, manage subscription, delete kid/account
+
+### Friends system
+- 6-char friend codes (BUNNY7 format) — easy for kids to share
+- Bidirectional auto-add via Postgres RPC
+- Kids see friends' galleries (shared art)
+- Friend code regeneration if compromised
+- Parent approval shown for new friendships
+
+### Multiplayer pictionary game
+- 4-character room codes
+- Supabase Realtime channel for live drawing
+- 60 kid-safe word prompts
+- 60-second rounds with auto-scoring
+- Reconnection handling
+- Spectator mode while waiting
+
+### Stripe subscription tier (v10)
+- $4.99/month with **7-day free trial**
+- Stripe Checkout integration
+- Webhook handles: `checkout.session.completed`, `customer.subscription.created/updated/deleted`, `invoice.payment_failed`
+- Customer portal for self-service cancellation
+- Graceful degradation when Stripe env vars missing
+- Premium worlds gate via `useEntitlement` hook
+
+### Mobile-first UI (v11)
+- `useIsMobile()` hook detects narrow viewport + touch capability
+- **Mobile-only**: bottom nav bar (5 tabs), bottom-sheet modals, fullscreen lightbox with swipe gestures, floating drawing toolbar with bottom-sheet pickers
+- **Desktop**: top nav, sidebar pickers, centered modals — unchanged
+- Safe-area-aware (iPhone notches)
+
+### Brand & polish (v13)
+- Custom Payton's Art Club logo on landing page + login + favicons
+- iOS apple-touch-icon, Android PWA icons (192/512), browser favicon
+- Sparkles, confetti, animations throughout
+- Cozy color palette (cream, coral, meadow, sky, berry, sparkle, ink)
 
 ---
 
-## 🧪 Commands
+## Tech stack
 
-```bash
-npm run dev         # dev server
-npm run build       # production build
-npm run start       # run production build
-npm run lint        # eslint
-npm run typecheck   # tsc --noEmit (note: build itself ignores type errors)
-```
-
----
-
-## 🗺️ Roadmap
-
-**Phase 1 (this repo)**: shell, onboarding, 10 lessons across 3 worlds, drawing engine, gallery, stickers, parent mode, multi-kid ✅
-
-**Phase 2**: free-draw mode, audio voice-over, more worlds, lesson authoring tool, cloud sync, offline PWA.
-
-**Phase 3**: print/share, community gallery (moderated), subscription tier.
+- **Frontend**: Next.js 14 App Router + TypeScript + Tailwind CSS
+- **Animations**: Framer Motion
+- **Auth + DB**: Supabase (Postgres + Auth + Storage + Realtime)
+- **Payments**: Stripe (subscriptions + webhooks + customer portal)
+- **Hosting**: Vercel (auto-deploy from GitHub `main`)
+- **Mobile detection**: custom `useIsMobile` hook
+- **Drawing engine**: HTML5 Canvas with PointerEvents API
 
 ---
 
-Made with 💛 for little artists everywhere.
+## Version history (what shipped when)
+
+| Version | What it added |
+|---|---|
+| v1-v8 | Foundation: lessons, worlds, drawing canvas, friends, multiplayer, gap fixes |
+| v9 | Voice recording on artwork |
+| v10 | Stripe premium tier ($4.99/mo, 7-day trial) |
+| v10-hotfix-1 | Fixed Suspense boundary error in `/parent` |
+| v10-hotfix-2 | Disabled automatic_tax (no business address required) |
+| v11 | Mobile-first UI (bottom nav, sheets, fullscreen lightbox) |
+| v12 | iOS Safari drawing fix (lines stopped breaking on iPad) |
+| v13 | New logo, 12 new avatars (28 total), ~489 stickers across 9 categories |
+| v14a | 5 new free worlds + hidden daily-rotation pool (36 lessons) |
+| v14b | 5 new premium worlds + 20 lessons |
+
+---
+
+## Known caveats / honest notes
+
+These are deliberate compromises, not bugs:
+
+- **Lessons in v14 are template-generated.** The original 31 lessons (v1-v8) were hand-crafted with carefully tuned SVG reference paths. The 56 lessons added in v14 follow the same pattern but were generated programmatically from a template. They work, kids can trace them, but the art quality varies.
+- **Tool/color pickers in mobile bottom sheets** scroll vertically rather than displaying as tight grids. Refining requires rebuilding the picker components — deferred.
+- **The FloatingBuddy companion** still uses desktop offsets on mobile. May overlap the bottom toolbar in some lesson states.
+- **Holiday Magic mixes seasons** (snowman + pumpkin + Christmas tree + hearts in one world). Works fine year-round — kids don't care.
+- **Custom per-world reward stickers** aren't implemented. Completion gives a generic gold sticker.
+- **App Store wrapper** isn't built. Would require Apple IAP, which conflicts with Stripe subscription. Web-only for now.
+
+---
+
+## What you should do with this
+
+1. **Deploy** — push to GitHub, Vercel auto-builds
+2. **Run SQL migrations** — Supabase SQL editor, in order
+3. **Add env vars** — Vercel project settings
+4. **Test on iPad** — that's Payton's actual device
+5. **Watch her play** — real usage signal beats any feature speculation
+6. **Iterate based on what she does** — not what you think she'll do
+
+This is a real, complete, working kid art SaaS. Ship it. Watch your daughter use it. Refine based on what you see.
+
+— Built session by session over 14 versions. April 2026.

@@ -1,0 +1,112 @@
+{
+  "id": "robot_workshop_04",
+  "world_id": "robot_workshop",
+  "order_index": 4,
+  "title": "Robot Pet",
+  "subject": "robot_pet",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": true,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "robot_pet_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Square robot body",
+      "companion_line": "A small square body!",
+      "reference_paths": [
+        "M 320 440 l 0 -100 l 160 0 l 0 100 z"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Round robot head",
+      "companion_line": "A round head on top!",
+      "reference_paths": [
+        "M 320 440 l 0 -100 l 160 0 l 0 100 z",
+        "M 400 290 m -55 0 a 55 55 0 1 0 110 0 a 55 55 0 1 0 -110 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Big puppy eyes",
+      "companion_line": "Two big eyes!",
+      "reference_paths": [
+        "M 320 440 l 0 -100 l 160 0 l 0 100 z",
+        "M 400 290 m -55 0 a 55 55 0 1 0 110 0 a 55 55 0 1 0 -110 0",
+        "M 380 285 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 420 285 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 380 285 m -4 0 a 4 4 0 1 0 8 0 a 4 4 0 1 0 -8 0",
+        "M 420 285 m -4 0 a 4 4 0 1 0 8 0 a 4 4 0 1 0 -8 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Antenna ears",
+      "companion_line": "Two antenna ears!",
+      "reference_paths": [
+        "M 320 440 l 0 -100 l 160 0 l 0 100 z",
+        "M 400 290 m -55 0 a 55 55 0 1 0 110 0 a 55 55 0 1 0 -110 0",
+        "M 380 285 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 420 285 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 380 285 m -4 0 a 4 4 0 1 0 8 0 a 4 4 0 1 0 -8 0",
+        "M 420 285 m -4 0 a 4 4 0 1 0 8 0 a 4 4 0 1 0 -8 0",
+        "M 360 240 l -15 -25",
+        "M 440 240 l 15 -25",
+        "M 345 215 m -5 0 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0",
+        "M 455 215 m -5 0 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s5",
+      "instruction": "Smile",
+      "companion_line": "A cute robot smile!",
+      "reference_paths": [
+        "M 320 440 l 0 -100 l 160 0 l 0 100 z",
+        "M 400 290 m -55 0 a 55 55 0 1 0 110 0 a 55 55 0 1 0 -110 0",
+        "M 380 285 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 420 285 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 380 285 m -4 0 a 4 4 0 1 0 8 0 a 4 4 0 1 0 -8 0",
+        "M 420 285 m -4 0 a 4 4 0 1 0 8 0 a 4 4 0 1 0 -8 0",
+        "M 360 240 l -15 -25",
+        "M 440 240 l 15 -25",
+        "M 345 215 m -5 0 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0",
+        "M 455 215 m -5 0 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0",
+        "M 380 320 q 20 12 40 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s6",
+      "instruction": "Wheels",
+      "companion_line": "Two little wheels at the bottom!",
+      "reference_paths": [
+        "M 320 440 l 0 -100 l 160 0 l 0 100 z",
+        "M 400 290 m -55 0 a 55 55 0 1 0 110 0 a 55 55 0 1 0 -110 0",
+        "M 380 285 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 420 285 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 380 285 m -4 0 a 4 4 0 1 0 8 0 a 4 4 0 1 0 -8 0",
+        "M 420 285 m -4 0 a 4 4 0 1 0 8 0 a 4 4 0 1 0 -8 0",
+        "M 360 240 l -15 -25",
+        "M 440 240 l 15 -25",
+        "M 345 215 m -5 0 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0",
+        "M 455 215 m -5 0 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0",
+        "M 380 320 q 20 12 40 0",
+        "M 350 460 m -15 0 a 15 15 0 1 0 30 0 a 15 15 0 1 0 -30 0",
+        "M 450 460 m -15 0 a 15 15 0 1 0 30 0 a 15 15 0 1 0 -30 0"
+      ],
+      "show_ghost": true
+    }
+  ]
+}

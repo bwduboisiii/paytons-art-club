@@ -1,0 +1,94 @@
+{
+  "id": "holiday_magic_04",
+  "world_id": "holiday_magic",
+  "order_index": 4,
+  "title": "Christmas Tree",
+  "subject": "tree",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": true,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "tree_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Top triangle",
+      "companion_line": "Top of the tree — a small triangle!",
+      "reference_paths": [
+        "M 400 200 l -50 80 l 100 0 z"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Middle triangle",
+      "companion_line": "A bigger triangle below!",
+      "reference_paths": [
+        "M 400 200 l -50 80 l 100 0 z",
+        "M 400 250 l -75 100 l 150 0 z"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Bottom triangle",
+      "companion_line": "An even bigger triangle at the bottom!",
+      "reference_paths": [
+        "M 400 200 l -50 80 l 100 0 z",
+        "M 400 250 l -75 100 l 150 0 z",
+        "M 400 320 l -100 120 l 200 0 z"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Tree trunk",
+      "companion_line": "A small brown trunk!",
+      "reference_paths": [
+        "M 400 200 l -50 80 l 100 0 z",
+        "M 400 250 l -75 100 l 150 0 z",
+        "M 400 320 l -100 120 l 200 0 z",
+        "M 380 440 l 0 40 l 40 0 l 0 -40 z"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s5",
+      "instruction": "Star on top!",
+      "companion_line": "A big sparkly star on top!",
+      "reference_paths": [
+        "M 400 200 l -50 80 l 100 0 z",
+        "M 400 250 l -75 100 l 150 0 z",
+        "M 400 320 l -100 120 l 200 0 z",
+        "M 380 440 l 0 40 l 40 0 l 0 -40 z",
+        "M 400 200 l -8 -25 l -25 -2 l 18 -18 l -8 -25 l 23 12 l 23 -12 l -8 25 l 18 18 l -25 2 z"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s6",
+      "instruction": "Ornaments",
+      "companion_line": "Round ornaments hanging!",
+      "reference_paths": [
+        "M 400 200 l -50 80 l 100 0 z",
+        "M 400 250 l -75 100 l 150 0 z",
+        "M 400 320 l -100 120 l 200 0 z",
+        "M 380 440 l 0 40 l 40 0 l 0 -40 z",
+        "M 400 200 l -8 -25 l -25 -2 l 18 -18 l -8 -25 l 23 12 l 23 -12 l -8 25 l 18 18 l -25 2 z",
+        "M 380 270 m -7 0 a 7 7 0 1 0 14 0 a 7 7 0 1 0 -14 0",
+        "M 360 320 m -7 0 a 7 7 0 1 0 14 0 a 7 7 0 1 0 -14 0",
+        "M 430 320 m -7 0 a 7 7 0 1 0 14 0 a 7 7 0 1 0 -14 0",
+        "M 350 400 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 450 400 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0"
+      ],
+      "show_ghost": true
+    }
+  ]
+}

@@ -1,0 +1,114 @@
+{
+  "id": "toy_box_01",
+  "world_id": "toy_box",
+  "order_index": 1,
+  "title": "Teddy Bear",
+  "subject": "teddy",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": true,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "teddy_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Teddy head",
+      "companion_line": "A round bear head!",
+      "reference_paths": [
+        "M 400 280 m -75 0 a 75 75 0 1 0 150 0 a 75 75 0 1 0 -150 0"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Round ears",
+      "companion_line": "Two round ears on top!",
+      "reference_paths": [
+        "M 400 280 m -75 0 a 75 75 0 1 0 150 0 a 75 75 0 1 0 -150 0",
+        "M 340 220 m -22 0 a 22 22 0 1 0 44 0 a 22 22 0 1 0 -44 0",
+        "M 460 220 m -22 0 a 22 22 0 1 0 44 0 a 22 22 0 1 0 -44 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Bear face",
+      "companion_line": "Two eyes, a snout, and a smile!",
+      "reference_paths": [
+        "M 400 280 m -75 0 a 75 75 0 1 0 150 0 a 75 75 0 1 0 -150 0",
+        "M 340 220 m -22 0 a 22 22 0 1 0 44 0 a 22 22 0 1 0 -44 0",
+        "M 460 220 m -22 0 a 22 22 0 1 0 44 0 a 22 22 0 1 0 -44 0",
+        "M 375 270 m -6 0 a 6 6 0 1 0 12 0 a 6 6 0 1 0 -12 0",
+        "M 425 270 m -6 0 a 6 6 0 1 0 12 0 a 6 6 0 1 0 -12 0",
+        "M 400 300 m -15 0 a 15 12 0 1 0 30 0 a 15 12 0 1 0 -30 0",
+        "M 400 295 m -3 0 a 3 3 0 1 0 6 0 a 3 3 0 1 0 -6 0",
+        "M 388 312 q 12 8 24 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Round body",
+      "companion_line": "A bigger round body below!",
+      "reference_paths": [
+        "M 400 280 m -75 0 a 75 75 0 1 0 150 0 a 75 75 0 1 0 -150 0",
+        "M 340 220 m -22 0 a 22 22 0 1 0 44 0 a 22 22 0 1 0 -44 0",
+        "M 460 220 m -22 0 a 22 22 0 1 0 44 0 a 22 22 0 1 0 -44 0",
+        "M 375 270 m -6 0 a 6 6 0 1 0 12 0 a 6 6 0 1 0 -12 0",
+        "M 425 270 m -6 0 a 6 6 0 1 0 12 0 a 6 6 0 1 0 -12 0",
+        "M 400 300 m -15 0 a 15 12 0 1 0 30 0 a 15 12 0 1 0 -30 0",
+        "M 400 295 m -3 0 a 3 3 0 1 0 6 0 a 3 3 0 1 0 -6 0",
+        "M 388 312 q 12 8 24 0",
+        "M 400 420 m -90 0 a 90 75 0 1 0 180 0 a 90 75 0 1 0 -180 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s5",
+      "instruction": "Tummy patch",
+      "companion_line": "A lighter patch on the tummy!",
+      "reference_paths": [
+        "M 400 280 m -75 0 a 75 75 0 1 0 150 0 a 75 75 0 1 0 -150 0",
+        "M 340 220 m -22 0 a 22 22 0 1 0 44 0 a 22 22 0 1 0 -44 0",
+        "M 460 220 m -22 0 a 22 22 0 1 0 44 0 a 22 22 0 1 0 -44 0",
+        "M 375 270 m -6 0 a 6 6 0 1 0 12 0 a 6 6 0 1 0 -12 0",
+        "M 425 270 m -6 0 a 6 6 0 1 0 12 0 a 6 6 0 1 0 -12 0",
+        "M 400 300 m -15 0 a 15 12 0 1 0 30 0 a 15 12 0 1 0 -30 0",
+        "M 400 295 m -3 0 a 3 3 0 1 0 6 0 a 3 3 0 1 0 -6 0",
+        "M 388 312 q 12 8 24 0",
+        "M 400 420 m -90 0 a 90 75 0 1 0 180 0 a 90 75 0 1 0 -180 0",
+        "M 400 425 m -45 0 a 45 35 0 1 0 90 0 a 45 35 0 1 0 -90 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s6",
+      "instruction": "Arms and legs",
+      "companion_line": "Little stubby arms and legs!",
+      "reference_paths": [
+        "M 400 280 m -75 0 a 75 75 0 1 0 150 0 a 75 75 0 1 0 -150 0",
+        "M 340 220 m -22 0 a 22 22 0 1 0 44 0 a 22 22 0 1 0 -44 0",
+        "M 460 220 m -22 0 a 22 22 0 1 0 44 0 a 22 22 0 1 0 -44 0",
+        "M 375 270 m -6 0 a 6 6 0 1 0 12 0 a 6 6 0 1 0 -12 0",
+        "M 425 270 m -6 0 a 6 6 0 1 0 12 0 a 6 6 0 1 0 -12 0",
+        "M 400 300 m -15 0 a 15 12 0 1 0 30 0 a 15 12 0 1 0 -30 0",
+        "M 400 295 m -3 0 a 3 3 0 1 0 6 0 a 3 3 0 1 0 -6 0",
+        "M 388 312 q 12 8 24 0",
+        "M 400 420 m -90 0 a 90 75 0 1 0 180 0 a 90 75 0 1 0 -180 0",
+        "M 400 425 m -45 0 a 45 35 0 1 0 90 0 a 45 35 0 1 0 -90 0",
+        "M 320 400 l -30 20 l 5 30",
+        "M 480 400 l 30 20 l -5 30",
+        "M 350 490 l -10 30 l 25 0",
+        "M 450 490 l 10 30 l -25 0"
+      ],
+      "show_ghost": true
+    }
+  ]
+}

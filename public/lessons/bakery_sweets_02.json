@@ -1,0 +1,90 @@
+{
+  "id": "bakery_sweets_02",
+  "world_id": "bakery_sweets",
+  "order_index": 2,
+  "title": "Glazed Donut",
+  "subject": "donut",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": true,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "donut_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Donut shape (outer)",
+      "companion_line": "A big round circle for the donut!",
+      "reference_paths": [
+        "M 400 360 m -110 0 a 110 110 0 1 0 220 0 a 110 110 0 1 0 -220 0"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Donut hole",
+      "companion_line": "A circle in the middle (the hole!)",
+      "reference_paths": [
+        "M 400 360 m -110 0 a 110 110 0 1 0 220 0 a 110 110 0 1 0 -220 0",
+        "M 400 360 m -35 0 a 35 35 0 1 0 70 0 a 35 35 0 1 0 -70 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Drippy frosting",
+      "companion_line": "A drippy frosting line going around!",
+      "reference_paths": [
+        "M 400 360 m -110 0 a 110 110 0 1 0 220 0 a 110 110 0 1 0 -220 0",
+        "M 400 360 m -35 0 a 35 35 0 1 0 70 0 a 35 35 0 1 0 -70 0",
+        "M 290 360 q 0 -30 20 -50 q 30 -30 90 -30 q 60 0 90 30 q 20 20 20 50 q -10 30 -30 20 q -20 30 -80 30 q -60 0 -80 -30 q -20 10 -30 -20"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Sprinkles on top",
+      "companion_line": "Lots of sprinkles!",
+      "reference_paths": [
+        "M 400 360 m -110 0 a 110 110 0 1 0 220 0 a 110 110 0 1 0 -220 0",
+        "M 400 360 m -35 0 a 35 35 0 1 0 70 0 a 35 35 0 1 0 -70 0",
+        "M 290 360 q 0 -30 20 -50 q 30 -30 90 -30 q 60 0 90 30 q 20 20 20 50 q -10 30 -30 20 q -20 30 -80 30 q -60 0 -80 -30 q -20 10 -30 -20",
+        "M 340 330 l 5 -10",
+        "M 370 320 l 5 -10",
+        "M 400 315 l 0 -10",
+        "M 430 320 l -5 -10",
+        "M 460 330 l -5 -10",
+        "M 350 380 l 5 10",
+        "M 450 380 l -5 10"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s5",
+      "instruction": "Tiny smile",
+      "companion_line": "A happy donut face!",
+      "reference_paths": [
+        "M 400 360 m -110 0 a 110 110 0 1 0 220 0 a 110 110 0 1 0 -220 0",
+        "M 400 360 m -35 0 a 35 35 0 1 0 70 0 a 35 35 0 1 0 -70 0",
+        "M 290 360 q 0 -30 20 -50 q 30 -30 90 -30 q 60 0 90 30 q 20 20 20 50 q -10 30 -30 20 q -20 30 -80 30 q -60 0 -80 -30 q -20 10 -30 -20",
+        "M 340 330 l 5 -10",
+        "M 370 320 l 5 -10",
+        "M 400 315 l 0 -10",
+        "M 430 320 l -5 -10",
+        "M 460 330 l -5 -10",
+        "M 350 380 l 5 10",
+        "M 450 380 l -5 10",
+        "M 360 410 m -3 0 a 3 3 0 1 0 6 0 a 3 3 0 1 0 -6 0",
+        "M 440 410 m -3 0 a 3 3 0 1 0 6 0 a 3 3 0 1 0 -6 0",
+        "M 380 430 q 20 12 40 0"
+      ],
+      "show_ghost": true
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "id": "toy_box_04",
+  "world_id": "toy_box",
+  "order_index": 4,
+  "title": "Flying Kite",
+  "subject": "kite",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": true,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "kite_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Diamond kite shape",
+      "companion_line": "A diamond shape — point up, point down!",
+      "reference_paths": [
+        "M 400 220 l 80 80 l -80 80 l -80 -80 z"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Cross brace",
+      "companion_line": "Sticks crossing inside!",
+      "reference_paths": [
+        "M 400 220 l 80 80 l -80 80 l -80 -80 z",
+        "M 400 220 l 0 160",
+        "M 320 300 l 160 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Kite tail",
+      "companion_line": "A long swooshy tail!",
+      "reference_paths": [
+        "M 400 220 l 80 80 l -80 80 l -80 -80 z",
+        "M 400 220 l 0 160",
+        "M 320 300 l 160 0",
+        "M 400 380 q -20 30 0 60 q 20 30 0 60 q -20 30 0 60"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Bows on the tail",
+      "companion_line": "Pretty bows on the tail!",
+      "reference_paths": [
+        "M 400 220 l 80 80 l -80 80 l -80 -80 z",
+        "M 400 220 l 0 160",
+        "M 320 300 l 160 0",
+        "M 400 380 q -20 30 0 60 q 20 30 0 60 q -20 30 0 60",
+        "M 390 425 l 5 5 l -5 5 l -5 -5 z m 10 0 l 5 5 l -5 5 l -5 -5 z",
+        "M 400 485 l 5 5 l -5 5 l -5 -5 z m 10 0 l 5 5 l -5 5 l -5 -5 z",
+        "M 390 545 l 5 5 l -5 5 l -5 -5 z m 10 0 l 5 5 l -5 5 l -5 -5 z"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s5",
+      "instruction": "Happy kite face",
+      "companion_line": "A face on the kite!",
+      "reference_paths": [
+        "M 400 220 l 80 80 l -80 80 l -80 -80 z",
+        "M 400 220 l 0 160",
+        "M 320 300 l 160 0",
+        "M 400 380 q -20 30 0 60 q 20 30 0 60 q -20 30 0 60",
+        "M 390 425 l 5 5 l -5 5 l -5 -5 z m 10 0 l 5 5 l -5 5 l -5 -5 z",
+        "M 400 485 l 5 5 l -5 5 l -5 -5 z m 10 0 l 5 5 l -5 5 l -5 -5 z",
+        "M 390 545 l 5 5 l -5 5 l -5 -5 z m 10 0 l 5 5 l -5 5 l -5 -5 z",
+        "M 380 290 m -4 0 a 4 4 0 1 0 8 0 a 4 4 0 1 0 -8 0",
+        "M 420 290 m -4 0 a 4 4 0 1 0 8 0 a 4 4 0 1 0 -8 0",
+        "M 385 320 q 15 10 30 0"
+      ],
+      "show_ghost": true
+    }
+  ]
+}

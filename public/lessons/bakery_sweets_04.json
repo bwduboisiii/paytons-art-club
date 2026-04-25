@@ -1,0 +1,111 @@
+{
+  "id": "bakery_sweets_04",
+  "world_id": "bakery_sweets",
+  "order_index": 4,
+  "title": "Ice Cream Cone",
+  "subject": "ice_cream",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": true,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "ice_cream_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Triangle cone",
+      "companion_line": "A waffle cone — pointing down!",
+      "reference_paths": [
+        "M 340 360 l 60 130 l 60 -130 z"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Cone waffle pattern",
+      "companion_line": "Diagonal lines on the cone!",
+      "reference_paths": [
+        "M 340 360 l 60 130 l 60 -130 z",
+        "M 350 380 l 50 0",
+        "M 360 410 l 30 0",
+        "M 370 440 l 10 0",
+        "M 365 365 l 30 95",
+        "M 405 365 l -30 95"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "First scoop",
+      "companion_line": "A round scoop of ice cream on top!",
+      "reference_paths": [
+        "M 340 360 l 60 130 l 60 -130 z",
+        "M 350 380 l 50 0",
+        "M 360 410 l 30 0",
+        "M 370 440 l 10 0",
+        "M 365 365 l 30 95",
+        "M 405 365 l -30 95",
+        "M 340 360 q 60 -50 120 0 q 0 -40 -60 -50 q -60 10 -60 50"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Second scoop",
+      "companion_line": "Another scoop on top of that!",
+      "reference_paths": [
+        "M 340 360 l 60 130 l 60 -130 z",
+        "M 350 380 l 50 0",
+        "M 360 410 l 30 0",
+        "M 370 440 l 10 0",
+        "M 365 365 l 30 95",
+        "M 405 365 l -30 95",
+        "M 340 360 q 60 -50 120 0 q 0 -40 -60 -50 q -60 10 -60 50",
+        "M 350 290 q 50 -45 100 0 q 0 -35 -50 -45 q -50 10 -50 45"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s5",
+      "instruction": "Third scoop",
+      "companion_line": "And one more scoop!",
+      "reference_paths": [
+        "M 340 360 l 60 130 l 60 -130 z",
+        "M 350 380 l 50 0",
+        "M 360 410 l 30 0",
+        "M 370 440 l 10 0",
+        "M 365 365 l 30 95",
+        "M 405 365 l -30 95",
+        "M 340 360 q 60 -50 120 0 q 0 -40 -60 -50 q -60 10 -60 50",
+        "M 350 290 q 50 -45 100 0 q 0 -35 -50 -45 q -50 10 -50 45",
+        "M 360 220 q 40 -40 80 0 q 0 -30 -40 -40 q -40 10 -40 40"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s6",
+      "instruction": "Cherry on top!",
+      "companion_line": "A cherry on the very top!",
+      "reference_paths": [
+        "M 340 360 l 60 130 l 60 -130 z",
+        "M 350 380 l 50 0",
+        "M 360 410 l 30 0",
+        "M 370 440 l 10 0",
+        "M 365 365 l 30 95",
+        "M 405 365 l -30 95",
+        "M 340 360 q 60 -50 120 0 q 0 -40 -60 -50 q -60 10 -60 50",
+        "M 350 290 q 50 -45 100 0 q 0 -35 -50 -45 q -50 10 -50 45",
+        "M 360 220 q 40 -40 80 0 q 0 -30 -40 -40 q -40 10 -40 40",
+        "M 400 175 m -12 0 a 12 12 0 1 0 24 0 a 12 12 0 1 0 -24 0",
+        "M 400 165 q 5 -15 -8 -20"
+      ],
+      "show_ghost": true
+    }
+  ]
+}

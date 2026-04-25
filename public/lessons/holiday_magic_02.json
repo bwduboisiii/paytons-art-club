@@ -1,0 +1,98 @@
+{
+  "id": "holiday_magic_02",
+  "world_id": "holiday_magic",
+  "order_index": 2,
+  "title": "Jack-o-Lantern",
+  "subject": "jack_o_lantern",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": true,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "jack_o_lantern_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Round pumpkin",
+      "companion_line": "Big round pumpkin shape!",
+      "reference_paths": [
+        "M 400 380 m -120 0 a 120 100 0 1 0 240 0 a 120 100 0 1 0 -240 0"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Pumpkin lines",
+      "companion_line": "Curvy lines for shape!",
+      "reference_paths": [
+        "M 400 380 m -120 0 a 120 100 0 1 0 240 0 a 120 100 0 1 0 -240 0",
+        "M 340 290 q -10 90 0 180",
+        "M 460 290 q 10 90 0 180"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Stem on top",
+      "companion_line": "A green stem on top!",
+      "reference_paths": [
+        "M 400 380 m -120 0 a 120 100 0 1 0 240 0 a 120 100 0 1 0 -240 0",
+        "M 340 290 q -10 90 0 180",
+        "M 460 290 q 10 90 0 180",
+        "M 380 290 l 5 -25 l 30 0 l 5 25"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Spooky triangle eyes",
+      "companion_line": "Two glowing triangle eyes!",
+      "reference_paths": [
+        "M 400 380 m -120 0 a 120 100 0 1 0 240 0 a 120 100 0 1 0 -240 0",
+        "M 340 290 q -10 90 0 180",
+        "M 460 290 q 10 90 0 180",
+        "M 380 290 l 5 -25 l 30 0 l 5 25",
+        "M 350 360 l 25 0 l -12 25 z",
+        "M 425 360 l 25 0 l -12 25 z"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s5",
+      "instruction": "Triangle nose",
+      "companion_line": "A small triangle nose!",
+      "reference_paths": [
+        "M 400 380 m -120 0 a 120 100 0 1 0 240 0 a 120 100 0 1 0 -240 0",
+        "M 340 290 q -10 90 0 180",
+        "M 460 290 q 10 90 0 180",
+        "M 380 290 l 5 -25 l 30 0 l 5 25",
+        "M 350 360 l 25 0 l -12 25 z",
+        "M 425 360 l 25 0 l -12 25 z",
+        "M 392 410 l 16 0 l -8 14 z"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s6",
+      "instruction": "Zigzag mouth",
+      "companion_line": "A jagged jack-o-mouth!",
+      "reference_paths": [
+        "M 400 380 m -120 0 a 120 100 0 1 0 240 0 a 120 100 0 1 0 -240 0",
+        "M 340 290 q -10 90 0 180",
+        "M 460 290 q 10 90 0 180",
+        "M 380 290 l 5 -25 l 30 0 l 5 25",
+        "M 350 360 l 25 0 l -12 25 z",
+        "M 425 360 l 25 0 l -12 25 z",
+        "M 392 410 l 16 0 l -8 14 z",
+        "M 320 440 l 20 -10 l 20 10 l 20 -10 l 20 10 l 20 -10 l 20 10 l 20 -10 l 20 10"
+      ],
+      "show_ghost": true
+    }
+  ]
+}

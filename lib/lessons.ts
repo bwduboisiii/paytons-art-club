@@ -90,6 +90,32 @@ import vv01 from '@/public/lessons/vehicle_village_01.json';
 import vv02 from '@/public/lessons/vehicle_village_02.json';
 import vv03 from '@/public/lessons/vehicle_village_03.json';
 
+// ========== v14b NEW PREMIUM WORLDS ==========
+import sea01 from '@/public/lessons/sea_adventure_01.json';
+import sea02 from '@/public/lessons/sea_adventure_02.json';
+import sea03 from '@/public/lessons/sea_adventure_03.json';
+import sea04 from '@/public/lessons/sea_adventure_04.json';
+
+import rw01 from '@/public/lessons/robot_workshop_01.json';
+import rw02 from '@/public/lessons/robot_workshop_02.json';
+import rw03 from '@/public/lessons/robot_workshop_03.json';
+import rw04 from '@/public/lessons/robot_workshop_04.json';
+
+import bs01 from '@/public/lessons/bakery_sweets_01.json';
+import bs02 from '@/public/lessons/bakery_sweets_02.json';
+import bs03 from '@/public/lessons/bakery_sweets_03.json';
+import bs04 from '@/public/lessons/bakery_sweets_04.json';
+
+import tb01 from '@/public/lessons/toy_box_01.json';
+import tb02 from '@/public/lessons/toy_box_02.json';
+import tb03 from '@/public/lessons/toy_box_03.json';
+import tb04 from '@/public/lessons/toy_box_04.json';
+
+import hm01 from '@/public/lessons/holiday_magic_01.json';
+import hm02 from '@/public/lessons/holiday_magic_02.json';
+import hm03 from '@/public/lessons/holiday_magic_03.json';
+import hm04 from '@/public/lessons/holiday_magic_04.json';
+
 const LESSON_MAP: Record<string, Lesson> = {
   // Critter Cove
   critter_cove_01: cc01 as Lesson, critter_cove_02: cc02 as Lesson,
@@ -129,6 +155,17 @@ const LESSON_MAP: Record<string, Lesson> = {
   fairy_garden_01: fg01 as Lesson, fairy_garden_02: fg02 as Lesson, fairy_garden_03: fg03 as Lesson,
   food_friends_01: ff01 as Lesson, food_friends_02: ff02 as Lesson, food_friends_03: ff03 as Lesson,
   vehicle_village_01: vv01 as Lesson, vehicle_village_02: vv02 as Lesson, vehicle_village_03: vv03 as Lesson,
+  // v14b new premium worlds
+  sea_adventure_01: sea01 as Lesson, sea_adventure_02: sea02 as Lesson,
+  sea_adventure_03: sea03 as Lesson, sea_adventure_04: sea04 as Lesson,
+  robot_workshop_01: rw01 as Lesson, robot_workshop_02: rw02 as Lesson,
+  robot_workshop_03: rw03 as Lesson, robot_workshop_04: rw04 as Lesson,
+  bakery_sweets_01: bs01 as Lesson, bakery_sweets_02: bs02 as Lesson,
+  bakery_sweets_03: bs03 as Lesson, bakery_sweets_04: bs04 as Lesson,
+  toy_box_01: tb01 as Lesson, toy_box_02: tb02 as Lesson,
+  toy_box_03: tb03 as Lesson, toy_box_04: tb04 as Lesson,
+  holiday_magic_01: hm01 as Lesson, holiday_magic_02: hm02 as Lesson,
+  holiday_magic_03: hm03 as Lesson, holiday_magic_04: hm04 as Lesson,
 };
 
 export function getLesson(id: string): Lesson | undefined {

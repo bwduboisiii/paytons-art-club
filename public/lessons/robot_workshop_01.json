@@ -1,0 +1,128 @@
+{
+  "id": "robot_workshop_01",
+  "world_id": "robot_workshop",
+  "order_index": 1,
+  "title": "Bolt the Robot",
+  "subject": "robot",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": true,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "robot_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Square robot body",
+      "companion_line": "A big square body for our robot!",
+      "reference_paths": [
+        "M 290 480 l 0 -160 l 220 0 l 0 160 z"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Smaller square head",
+      "companion_line": "A square head on top!",
+      "reference_paths": [
+        "M 290 480 l 0 -160 l 220 0 l 0 160 z",
+        "M 320 320 l 0 -100 l 160 0 l 0 100"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Robot eyes",
+      "companion_line": "Two glowing eyes!",
+      "reference_paths": [
+        "M 290 480 l 0 -160 l 220 0 l 0 160 z",
+        "M 320 320 l 0 -100 l 160 0 l 0 100",
+        "M 360 270 m -12 0 a 12 12 0 1 0 24 0 a 12 12 0 1 0 -24 0",
+        "M 440 270 m -12 0 a 12 12 0 1 0 24 0 a 12 12 0 1 0 -24 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Antenna",
+      "companion_line": "An antenna on top with a ball!",
+      "reference_paths": [
+        "M 290 480 l 0 -160 l 220 0 l 0 160 z",
+        "M 320 320 l 0 -100 l 160 0 l 0 100",
+        "M 360 270 m -12 0 a 12 12 0 1 0 24 0 a 12 12 0 1 0 -24 0",
+        "M 440 270 m -12 0 a 12 12 0 1 0 24 0 a 12 12 0 1 0 -24 0",
+        "M 400 220 l 0 -30",
+        "M 400 180 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s5",
+      "instruction": "Mouth grid",
+      "companion_line": "A grid mouth — like a speaker!",
+      "reference_paths": [
+        "M 290 480 l 0 -160 l 220 0 l 0 160 z",
+        "M 320 320 l 0 -100 l 160 0 l 0 100",
+        "M 360 270 m -12 0 a 12 12 0 1 0 24 0 a 12 12 0 1 0 -24 0",
+        "M 440 270 m -12 0 a 12 12 0 1 0 24 0 a 12 12 0 1 0 -24 0",
+        "M 400 220 l 0 -30",
+        "M 400 180 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 360 295 l 80 0",
+        "M 380 285 l 0 20",
+        "M 400 285 l 0 20",
+        "M 420 285 l 0 20"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s6",
+      "instruction": "Buttons on chest",
+      "companion_line": "Three colorful buttons!",
+      "reference_paths": [
+        "M 290 480 l 0 -160 l 220 0 l 0 160 z",
+        "M 320 320 l 0 -100 l 160 0 l 0 100",
+        "M 360 270 m -12 0 a 12 12 0 1 0 24 0 a 12 12 0 1 0 -24 0",
+        "M 440 270 m -12 0 a 12 12 0 1 0 24 0 a 12 12 0 1 0 -24 0",
+        "M 400 220 l 0 -30",
+        "M 400 180 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 360 295 l 80 0",
+        "M 380 285 l 0 20",
+        "M 400 285 l 0 20",
+        "M 420 285 l 0 20",
+        "M 370 380 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 400 380 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 430 380 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s7",
+      "instruction": "Robot arms",
+      "companion_line": "Block arms on each side!",
+      "reference_paths": [
+        "M 290 480 l 0 -160 l 220 0 l 0 160 z",
+        "M 320 320 l 0 -100 l 160 0 l 0 100",
+        "M 360 270 m -12 0 a 12 12 0 1 0 24 0 a 12 12 0 1 0 -24 0",
+        "M 440 270 m -12 0 a 12 12 0 1 0 24 0 a 12 12 0 1 0 -24 0",
+        "M 400 220 l 0 -30",
+        "M 400 180 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 360 295 l 80 0",
+        "M 380 285 l 0 20",
+        "M 400 285 l 0 20",
+        "M 420 285 l 0 20",
+        "M 370 380 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 400 380 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 430 380 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 290 350 l -30 0 l 0 50 l 30 0",
+        "M 510 350 l 30 0 l 0 50 l -30 0"
+      ],
+      "show_ghost": true
+    }
+  ]
+}

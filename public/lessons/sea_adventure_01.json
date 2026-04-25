@@ -1,0 +1,84 @@
+{
+  "id": "sea_adventure_01",
+  "world_id": "sea_adventure",
+  "order_index": 1,
+  "title": "Pirate Ship",
+  "subject": "pirate_ship",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": true,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "pirate_ship_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Ship hull (boat shape)",
+      "companion_line": "A long boat shape on the water!",
+      "reference_paths": [
+        "M 240 440 q 160 60 320 0 l -40 -50 l -240 0 z"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Tall mast",
+      "companion_line": "A tall mast going up!",
+      "reference_paths": [
+        "M 240 440 q 160 60 320 0 l -40 -50 l -240 0 z",
+        "M 400 390 l 0 -200"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Big sail",
+      "companion_line": "A big puffy sail catching the wind!",
+      "reference_paths": [
+        "M 240 440 q 160 60 320 0 l -40 -50 l -240 0 z",
+        "M 400 390 l 0 -200",
+        "M 400 200 q 60 30 60 80 l -60 0 z",
+        "M 400 200 q -60 30 -60 80 l 60 0 z"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Pirate flag",
+      "companion_line": "A skull-and-crossbones flag on top!",
+      "reference_paths": [
+        "M 240 440 q 160 60 320 0 l -40 -50 l -240 0 z",
+        "M 400 390 l 0 -200",
+        "M 400 200 q 60 30 60 80 l -60 0 z",
+        "M 400 200 q -60 30 -60 80 l 60 0 z",
+        "M 400 190 l 0 -50",
+        "M 400 140 l 50 10 l -50 10",
+        "M 425 155 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s5",
+      "instruction": "Waves and porthole",
+      "companion_line": "Waves below and a window on the side!",
+      "reference_paths": [
+        "M 240 440 q 160 60 320 0 l -40 -50 l -240 0 z",
+        "M 400 390 l 0 -200",
+        "M 400 200 q 60 30 60 80 l -60 0 z",
+        "M 400 200 q -60 30 -60 80 l 60 0 z",
+        "M 400 190 l 0 -50",
+        "M 400 140 l 50 10 l -50 10",
+        "M 425 155 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 200 480 q 30 -10 60 0 q 30 -10 60 0 q 30 -10 60 0 q 30 -10 60 0 q 30 -10 60 0 q 30 -10 60 0",
+        "M 380 410 m -12 0 a 12 12 0 1 0 24 0 a 12 12 0 1 0 -24 0"
+      ],
+      "show_ghost": true
+    }
+  ]
+}
