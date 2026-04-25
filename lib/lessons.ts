@@ -1,4 +1,5 @@
 import type { Lesson } from './types';
+import { WORLDS } from './worlds';
 
 // ========== CRITTER COVE ==========
 import cc01 from '@/public/lessons/critter_cove_01.json';
@@ -180,6 +181,24 @@ export function getLessonsForWorld(worldId: string): Lesson[] {
   return getAllLessons()
     .filter((l) => l.world_id === worldId)
     .sort((a, b) => a.order_index - b.order_index);
+}
+
+/**
+ * Find the next lesson in a world after the given lesson id.
+ * Uses the world's canonical `lessons` array (NOT rotation pool).
+ * Returns null if this was the last lesson, or if the lesson isn't in any world.
+ *
+ * v18: Added so the lesson reward screen can auto-advance to the next lesson.
+ */
+export function getNextLesson(currentLessonId: string): Lesson | null {
+  for (const w of WORLDS) {
+    const idx = w.lessons.indexOf(currentLessonId);
+    if (idx >= 0 && idx < w.lessons.length - 1) {
+      const nextId = w.lessons[idx + 1];
+      return LESSON_MAP[nextId] || null;
+    }
+  }
+  return null;
 }
 
 /**

@@ -1,106 +1,106 @@
-# Payton's Art Club — v17: REAL Drawing Fix 🎨
+# Payton's Art Club — v18: Lessons Auto-Advance + Polish 🎨
 
-## The actual bug (and why v15 didn't fully fix it)
+## What's new
 
-I told you v15 was the real fix. It wasn't. v15 fixed PART of it (the duplicate window listeners) but missed a deeper bug. Here's what I finally found:
+### 1. ✏️ Next lesson opens with one tap
 
-### The chain of events
+When a kid finishes a lesson, the reward screen now shows a big **"Next: [Lesson Title] →"** button as the primary action. One tap and the next lesson in the same world opens up. If it was the last lesson in the world, the button falls back to "More Drawing ✏️" (returns to the world list).
 
-1. `onStrokeComplete` in the parent (draw page / lesson page) calls `setBuddyMood('cheering')` after every stroke ends
-2. That triggers the parent to re-render
-3. `DrawingCanvas` re-renders with new prop references
-4. The `redraw` `useCallback` had dependencies on `[width, height, strokes, stickers, referencePaths, ghostPaths, traceMode, selectedStickerIdx]` — so it gets a NEW IDENTITY on every re-render
-5. The `scheduleRedraw` `useCallback` (which depends on `redraw`) also gets a new identity on every re-render
-6. **The killer**: a pending `requestAnimationFrame` callback queued mid-stroke holds a reference to the OLD `redraw` function with stale state
-7. When the rAF fires, it draws using stale state — the in-flight stroke renders incompletely or not at all
-8. The next pointermove triggers a fresh scheduleRedraw → stroke "pops back"
+Files changed:
+- `lib/lessons.ts` — added `getNextLesson(currentLessonId)` helper
+- `app/app/lesson/[id]/page.tsx` — reward screen now shows Next button
 
-### Why I missed this in v15
+### 2. 🎫 Patrick Moss has lifetime premium
 
-In v15 I removed the duplicate window event listeners (the obvious bug). But I didn't realize the rAF batching itself had a closure-staleness issue when the parent re-renders during a stroke.
+Your account (`bamoss25@gmail.com`, UID `6f5aa6d8-6cfa-4714-84d4-186a9470a15b`) now has premium access regardless of Stripe subscription status. Implemented two ways for redundancy:
 
-The bug requires **a parent re-render to happen WHILE a stroke is in flight**. Some strokes won't trigger it (if no rAF is pending at the moment of the parent re-render). That's why v15 "kind of worked" and you didn't immediately notice.
+**Client-side override** (`lib/useEntitlement.ts`): hardcoded list of override user IDs. The hook checks this list first and returns `hasPremium: true` immediately if the current user matches.
 
-In v16b, two things made it worse:
-- Companion grew 40% taller → more layout work per Companion render → more re-render time
-- The `setBuddyMood` chain creates state cascades that hit during strokes
+**Database grant** (`supabase/v18_grant_premium.sql`): SQL migration that sets `has_premium = true` on the parents row for your UID, with `subscription_current_period_end = '2099-12-31'` so it never auto-expires.
 
-### Why hard refresh doesn't help
+You should run the SQL migration in Supabase SQL Editor after deploying. The client-side override will work immediately on deploy without needing the SQL, but the DB grant makes it persistent in the source of truth.
 
-It's not browser cache. It's a real bug in the deployed code. Same bug exists in v15 too — you just hit it less often.
+### 3. 🐰 Buddy moved INSIDE canvas (no longer blocks tools)
 
-## What v17 actually changes
+The buddy now lives ANCHORED to the bottom-left corner of the canvas itself, not floating over the page. This means:
+- Tools in the left toolbar are always fully visible/clickable
+- Color sidebar on the right is always fully visible/clickable
+- Bottom utility row (undo, save, etc) is always fully visible/clickable
+- The buddy occupies a small portion of the canvas itself, where strokes pass through it (`pointer-events-none` on the wrapper, only the actual avatar circle and X button capture events)
 
-### 1. `redraw` is now STABLE (no useCallback dependencies)
+### 4. 🐼 Buddy is bigger
 
-I added refs that mirror every piece of state `redraw` reads:
-- `strokesRef` mirrors `strokes`
-- `stickersRef` mirrors `stickers`
-- `selectedStickerIdxRef` mirrors `selectedStickerIdx`
-- `referencePathsRef` mirrors `referencePaths` prop
-- `ghostPathsRef` mirrors `ghostPaths` prop
-- `traceModeRef` mirrors `traceMode` prop
-- `widthRef` / `heightRef` mirror canvas dimensions
+Avatar size increased from 56 → 90 in expanded mode. Speech bubble max-width increased from 180 → 200. Hide button slightly larger.
 
-These refs are kept in sync via `useEffect`. The `redraw` function reads everything from these refs instead of from closure-captured props/state.
+The buddy is now a substantial presence the kid can actually engage with, not a tiny thumbnail.
 
-The result: **`redraw` has a stable identity across all renders**. Any pending rAF callback that fires after a parent re-render still calls a valid `redraw` with the latest state.
+### 5. 🏷️ Sticker tabs auto-scroll into view
 
-### 2. `scheduleRedraw` is also stable
+When you tap a sticker category tab that's offscreen (e.g. "Magic" when you're scrolled to "Animals"), the tab bar now auto-scrolls so the active tab is centered/visible. Fixes the "doesn't slide all the way over" complaint.
 
-Because `redraw` is stable, `scheduleRedraw` (which depends on it) is also stable.
+File changed: `components/StickerTray.tsx`
 
-### 3. FloatingBuddy uses surgical pointer-events
+### 6. 🎨 New logo
 
-Brought in from the prepared v16c fix. Only the actual avatar circle and the close X button capture pointer events. Speech bubble area, padding, and the sparkle glow are transparent. Kids can draw right under and around the buddy without it stealing strokes.
+The new "Payton's Art Club" logo from your upload replaces the old one. All favicons (32px, 192px, 512px, apple-touch-icon, favicon.ico) regenerated from the new logo. Will appear:
+- Browser tab favicon
+- iOS home screen icon (when "Add to Home Screen")
+- Android PWA icon
+- Logo on landing/login pages
 
 ## How to apply
 
-1. Back up v16b, unzip v17, copy `.git` over
-2. `git add . && git commit -m "v17: real drawing fix — stable redraw identity"`
+1. Back up v17, unzip v18, copy `.git` over
+2. `git add . && git commit -m "v18: auto-advance lessons, premium grant, buddy polish, new logo"`
 3. `git push`
-4. Vercel auto-deploys (~2 min)
-5. Hard refresh
+4. Vercel auto-deploys (~2-3 min)
+5. **Run the SQL migration**: open Supabase → SQL Editor → paste contents of `supabase/v18_grant_premium.sql` → Run
+6. Hard refresh on every device (browser will need to fetch new favicons too)
 
-## Test these specifically
+## Test checklist
 
-- [ ] Draw 30+ strokes in a row, fast and slow, anywhere on canvas
-- [ ] Lines should ALWAYS appear and stay — no disappearing, no popping back
-- [ ] Try drawing immediately after a buddy speech bubble appears (this is when re-renders cluster)
-- [ ] Try drawing in the bottom-left where buddy lives — should pass right through
-- [ ] Tap buddy avatar → collapses to peek tab
-- [ ] Tap peek tab → buddy returns
-- [ ] Same on PC and iPad
+- [ ] Open a lesson → finish it → reward screen shows "Next: [lesson title] →"
+- [ ] Tap Next → next lesson in same world opens
+- [ ] Finish the LAST lesson in a world → reward screen shows "More Drawing ✏️" instead
+- [ ] Log in as `bamoss25@gmail.com` → all premium worlds unlocked (no paywall)
+- [ ] Open Free Draw → buddy is in bottom-left corner of canvas, NOT covering tools
+- [ ] Buddy is noticeably larger than before (size 90 vs old 56)
+- [ ] Tap buddy → collapses to peek tab on left edge
+- [ ] Open sticker tray → tap "Magic" or other offscreen tab → tab scrolls into view
+- [ ] Browser tab shows new logo favicon
+- [ ] On iPad: add to home screen → home screen icon is the new logo
 
-## What's NOT changed
+## What's NOT in v18
 
-- Companion full-body avatars from v16b: preserved
-- Buddy bottom-left position from v16a: preserved
-- Stripe, friends, voice, multiplayer, lessons: all preserved
-- Mobile UI, iOS Safari fix: preserved
+- **Language switcher** — strongly pushed back. Full app i18n is 20-40+ hours of work per language with proper translations. Partial implementations (only menus translated) feel broken. Recommend treating this as its own future project, not bundling it into a polish release.
 
-Two files changed:
-- `components/DrawingCanvas.tsx` (added refs, refactored redraw to use them, made redraw stable)
-- `components/FloatingBuddy.tsx` (surgical pointer-events)
+## Honest caveats
 
-## Why I'm confident this time
+- The buddy at size 90 covers ~120×170 pixels in the bottom-left of the canvas. Strokes pass through (pointer-events-none) so kids CAN draw under the buddy, but they won't see what they drew until they collapse the buddy. If this becomes a problem, kids can tap the buddy to collapse it.
+- The "auto-scroll" sticker tab fix uses `scrollIntoView({ behavior: 'smooth' })`. On older iOS versions the smooth scroll may be janky — that's a browser limitation, not a code issue.
+- The Patrick Moss override is a hardcoded user ID. If you want to add more comp accounts later, edit `PREMIUM_OVERRIDE_USER_IDS` in `lib/useEntitlement.ts`.
 
-I traced the exact code path that produces "disappear and pop back" with parent re-renders during a stroke. The fix removes the staleness vector. There's no remaining mechanism I can identify that would reproduce the symptom.
+## Files changed in v18
 
-If drawing STILL has issues after v17:
-1. Take a screen recording
-2. Note what device/browser
-3. Note what you're doing when it happens (pressure? speed? specific tool?)
-4. Try it in incognito mode
+| File | What changed |
+|---|---|
+| `components/FloatingBuddy.tsx` | Added `anchored` prop, increased size to 90 |
+| `components/StickerTray.tsx` | Added auto-scroll on active tab change |
+| `app/app/draw/page.tsx` | Buddy moved inside canvas wrapper, anchored |
+| `app/app/lesson/[id]/page.tsx` | Buddy anchored, Next Lesson button on reward screen |
+| `lib/lessons.ts` | Added `getNextLesson()` helper, imported WORLDS |
+| `lib/useEntitlement.ts` | Added `PREMIUM_OVERRIDE_USER_IDS` set |
+| `public/logo.png` | New "Payton's Art Club" logo |
+| `public/favicon*.png`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png` | Regenerated from new logo |
+| `supabase/v18_grant_premium.sql` | NEW — SQL migration for Patrick Moss premium grant |
 
-But I'm not expecting that to be needed. This should be it.
+## What I'd recommend next
 
-## What to do next (broken record)
+You've made a lot of changes (v15-v18) and Payton hasn't had a chance to use the stable version for any meaningful time. **Stop and let her play for a week**. Note specifically:
 
-After v17 deploys and drawing works:
-- Stop adding features
-- Watch Payton play for a week
-- Note 2-3 things she actually does or asks for
-- Come back with that signal, not feature ideas
+- Does she actually tap "Next Lesson" or close the app at the reward screen?
+- Does the bigger buddy delight her or annoy her?
+- Does she find the sticker categories easier to navigate now?
+- Any new issues that come up only with sustained use?
 
-You now have a real drawing app. Let her use it.
+Real signal beats more iterations.

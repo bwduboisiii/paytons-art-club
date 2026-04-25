@@ -3,6 +3,17 @@
 import { useEffect, useState, useCallback } from 'react';
 import { createClient } from './supabase/client';
 
+/**
+ * Hard-coded list of user IDs who always have premium access regardless of
+ * Stripe subscription status. Use sparingly — for the developer's own account,
+ * paid-out comp accounts, friends-and-family, etc.
+ *
+ * Added in v18.
+ */
+const PREMIUM_OVERRIDE_USER_IDS = new Set<string>([
+  '6f5aa6d8-6cfa-4714-84d4-186a9470a15b', // Patrick Moss (bamoss25@gmail.com)
+]);
+
 export interface Entitlement {
   hasPremium: boolean;
   subscriptionStatus: string | null;
@@ -46,6 +57,20 @@ export function useEntitlement() {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) {
       setEntitlement({ ...DEFAULT_ENTITLEMENT, stripeConfigured });
+      setLoading(false);
+      return;
+    }
+
+    // v18: hard-coded admin override — these users always have premium
+    if (PREMIUM_OVERRIDE_USER_IDS.has(user.id)) {
+      setEntitlement({
+        hasPremium: true,
+        subscriptionStatus: 'admin_override',
+        currentPeriodEnd: null,
+        trialEnd: null,
+        hasActiveTrial: false,
+        stripeConfigured,
+      });
       setLoading(false);
       return;
     }

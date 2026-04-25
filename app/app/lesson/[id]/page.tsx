@@ -15,7 +15,7 @@ import StickerTray from '@/components/StickerTray';
 import VoiceRecorder from '@/components/VoiceRecorder';
 import Confetti from '@/components/Confetti';
 import DrawingCanvas, { type DrawingCanvasHandle } from '@/components/DrawingCanvas';
-import { getLesson } from '@/lib/lessons';
+import { getLesson, getNextLesson } from '@/lib/lessons';
 import { useKidStore } from '@/lib/store';
 import { useIsMobile } from '@/lib/useIsMobile';
 import { createClient } from '@/lib/supabase/client';
@@ -31,6 +31,7 @@ export default function LessonPage({ params }: { params: { id: string } }) {
   const router = useRouter();
   const activeKid = useKidStore((s) => s.activeKid);
   const lesson = getLesson(id);
+  const nextLesson = lesson ? getNextLesson(lesson.id) : null;
 
   const canvasRef = useRef<DrawingCanvasHandle>(null);
   const [phase, setPhase] = useState<Phase>('intro');
@@ -167,14 +168,7 @@ export default function LessonPage({ params }: { params: { id: string } }) {
 
   return (
     <main className="h-screen flex flex-col overflow-hidden">
-      {(phase === 'drawing' || phase === 'remix') && activeKid && (
-        <FloatingBuddy
-          character={activeKid.avatar_key as any}
-          mood={buddyMood} message={buddyMessage}
-          defaultCollapsed={!buddyMessage}
-          offsetRight={SIDEBAR_W + 16}
-        />
-      )}
+      {/* Buddy moved into canvas wrapper below — anchored to bottom-left of canvas */}
 
       {showStickerTray && (
         <StickerTray
@@ -267,14 +261,26 @@ export default function LessonPage({ params }: { params: { id: string } }) {
               )}
 
               <div className="flex-1 flex items-center justify-center overflow-hidden px-2 md:px-4">
-                <DrawingCanvas
-                  ref={canvasRef}
-                  width={canvasSize.width} height={canvasSize.height}
-                  color={color} brushWidth={brushWidth} tool={tool}
-                  referencePaths={phase === 'drawing' ? referencePaths : []}
-                  traceMode={phase === 'drawing' && lesson.guidance_level.startsWith('trace')}
-                  onStroke={onStrokeComplete}
-                />
+                <div className="relative">
+                  <DrawingCanvas
+                    ref={canvasRef}
+                    width={canvasSize.width} height={canvasSize.height}
+                    color={color} brushWidth={brushWidth} tool={tool}
+                    referencePaths={phase === 'drawing' ? referencePaths : []}
+                    traceMode={phase === 'drawing' && lesson.guidance_level.startsWith('trace')}
+                    onStroke={onStrokeComplete}
+                  />
+                  {/* Buddy anchored bottom-left of canvas during drawing/remix */}
+                  {(phase === 'drawing' || phase === 'remix') && activeKid && (
+                    <div className="absolute bottom-2 left-2 z-10 pointer-events-none">
+                      <FloatingBuddy
+                        character={activeKid.avatar_key as any}
+                        mood={buddyMood} message={buddyMessage}
+                        anchored
+                      />
+                    </div>
+                  )}
+                </div>
               </div>
 
               {!isMobile && (
@@ -387,7 +393,17 @@ export default function LessonPage({ params }: { params: { id: string } }) {
 
               <div className="flex flex-col sm:flex-row gap-3 justify-center mt-4">
                 <Link href="/app/gallery"><Button variant="secondary" size="lg">See My Art 🖼️</Button></Link>
-                <Link href={`/app/world/${lesson.world_id}`}><Button variant="primary" size="lg">More Drawing ✏️</Button></Link>
+                {nextLesson ? (
+                  <Link href={`/app/lesson/${nextLesson.id}`}>
+                    <Button variant="primary" size="lg">
+                      Next: {nextLesson.title} →
+                    </Button>
+                  </Link>
+                ) : (
+                  <Link href={`/app/world/${lesson.world_id}`}>
+                    <Button variant="primary" size="lg">More Drawing ✏️</Button>
+                  </Link>
+                )}
               </div>
             </motion.div>
           </motion.div>

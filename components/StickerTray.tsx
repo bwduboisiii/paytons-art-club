@@ -31,6 +31,19 @@ export default function StickerTray({ onPick, onClose }: Props) {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const tabBarRef = useRef<HTMLDivElement>(null);
+
+  // v18: auto-scroll the active tab into view when it changes.
+  // Without this, tapping a tab that's offscreen (e.g. "Magic" when starting
+  // on "Animals") leaves it offscreen — kids think nothing happened.
+  useEffect(() => {
+    const bar = tabBarRef.current;
+    if (!bar) return;
+    const activeBtn = bar.querySelector<HTMLElement>(`[data-tab-id="${activeTab}"]`);
+    if (activeBtn) {
+      activeBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    }
+  }, [activeTab]);
 
   useEffect(() => {
     if (!activeKid) return;
@@ -131,10 +144,11 @@ export default function StickerTray({ onPick, onClose }: Props) {
           className="bg-cream-50 rounded-t-squircle md:rounded-squircle shadow-float max-w-2xl w-full max-h-[85vh] flex flex-col"
         >
           {/* Tab bar */}
-          <div className="flex items-center gap-2 p-3 border-b-2 border-cream-100 overflow-x-auto no-scrollbar">
+          <div ref={tabBarRef} className="flex items-center gap-2 p-3 border-b-2 border-cream-100 overflow-x-auto no-scrollbar">
             {STICKER_LIBRARY.map((cat) => (
               <button
                 key={cat.id}
+                data-tab-id={cat.id}
                 onClick={() => setActiveTab(cat.id)}
                 className={clsx(
                   'px-3 py-2 rounded-2xl font-display font-bold whitespace-nowrap transition-all',
@@ -147,6 +161,7 @@ export default function StickerTray({ onPick, onClose }: Props) {
               </button>
             ))}
             <button
+              data-tab-id="custom"
               onClick={() => setActiveTab('custom')}
               className={clsx(
                 'px-3 py-2 rounded-2xl font-display font-bold whitespace-nowrap transition-all',

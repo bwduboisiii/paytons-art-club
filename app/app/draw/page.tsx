@@ -125,19 +125,7 @@ export default function FreeDrawPage() {
         />
       )}
 
-      {activeKid && (
-        <FloatingBuddy
-          character={activeKid.avatar_key as any}
-          mood={buddyMood}
-          defaultCollapsed
-          offsetRight={SIDEBAR_W + 16}
-          encouragements={[
-            'Wow! So creative!', 'I love this!', 'Try a new tool!',
-            'Keep going!', 'Beautiful!', '✨ Magical! ✨',
-            'More colors, more colors!', 'You\'re an artist!',
-          ]}
-        />
-      )}
+      {/* Buddy is now rendered inside the canvas wrapper below — see canvas section */}
 
       <header className="shrink-0 px-4 py-3 flex items-center gap-3 border-b-2 border-cream-200 bg-cream-100/60">
         <Link href="/app"><Button variant="ghost" size="sm">← Home</Button></Link>
@@ -199,12 +187,30 @@ export default function FreeDrawPage() {
         )}
 
         <div className="flex-1 flex flex-col items-center justify-center overflow-hidden px-2 md:px-4 relative">
-          <DrawingCanvas
-            ref={canvasRef}
-            width={canvasSize.width} height={canvasSize.height}
-            color={color} brushWidth={brushWidth} tool={tool}
-            onStroke={onStrokeComplete}
-          />
+          <div className="relative">
+            <DrawingCanvas
+              ref={canvasRef}
+              width={canvasSize.width} height={canvasSize.height}
+              color={color} brushWidth={brushWidth} tool={tool}
+              onStroke={onStrokeComplete}
+            />
+            {/* Buddy anchored to bottom-left of the canvas itself */}
+            {activeKid && (
+              <div className="absolute bottom-2 left-2 z-10 pointer-events-none">
+                <FloatingBuddy
+                  character={activeKid.avatar_key as any}
+                  mood={buddyMood}
+                  defaultCollapsed={false}
+                  anchored
+                  encouragements={[
+                    'Wow! So creative!', 'I love this!', 'Try a new tool!',
+                    'Keep going!', 'Beautiful!', '✨ Magical! ✨',
+                    'More colors, more colors!', 'You\'re an artist!',
+                  ]}
+                />
+              </div>
+            )}
+          </div>
         </div>
 
         {!isMobile && (
