@@ -264,6 +264,348 @@ const CHARACTERS: Record<CompanionKey, (fill: string) => JSX.Element> = {
       <path d="M46 35 Q50 38 54 35" stroke="#2A1B3D" strokeWidth="1.5" fill="none" strokeLinecap="round" />
     </g>
   ),
+
+  // ===== NEW IN v13 =====
+
+  dog: (fill) => (
+    <g>
+      {/* Floppy ears */}
+      <ellipse cx="32" cy="38" rx="10" ry="16" fill="#8B5A3C" transform="rotate(-15 32 38)" />
+      <ellipse cx="68" cy="38" rx="10" ry="16" fill="#8B5A3C" transform="rotate(15 68 38)" />
+      {/* Head */}
+      <circle cx="50" cy="55" r="28" fill={fill} />
+      {/* Snout */}
+      <ellipse cx="50" cy="65" rx="14" ry="10" fill="#FFF4E0" />
+      {/* Eyes */}
+      <circle cx="42" cy="50" r="3.5" fill="#2A1B3D" />
+      <circle cx="58" cy="50" r="3.5" fill="#2A1B3D" />
+      <circle cx="43" cy="49" r="1.2" fill="white" />
+      <circle cx="59" cy="49" r="1.2" fill="white" />
+      {/* Nose */}
+      <ellipse cx="50" cy="62" rx="3" ry="2" fill="#2A1B3D" />
+      {/* Tongue */}
+      <path d="M46 68 Q50 74 54 68 L54 72 Q50 76 46 72 Z" fill="#FF6B5B" />
+      {/* Spot */}
+      <ellipse cx="38" cy="42" rx="6" ry="5" fill="#8B5A3C" opacity="0.7" />
+    </g>
+  ),
+
+  husky: (fill) => (
+    <g>
+      {/* Pointy ears */}
+      <path d="M30 30 L35 50 L42 38 Z" fill={fill} />
+      <path d="M70 30 L65 50 L58 38 Z" fill={fill} />
+      <path d="M32 33 L37 47 L41 40 Z" fill="#FFB3A7" opacity="0.5" />
+      <path d="M68 33 L63 47 L59 40 Z" fill="#FFB3A7" opacity="0.5" />
+      {/* Head */}
+      <circle cx="50" cy="55" r="26" fill={fill} />
+      {/* White face mask */}
+      <path d="M30 50 Q40 65 35 80 L65 80 Q60 65 70 50 Q60 40 50 40 Q40 40 30 50 Z" fill="#FFFBF4" />
+      {/* Blue eyes! */}
+      <circle cx="42" cy="52" r="3.5" fill="#6B98D6" />
+      <circle cx="58" cy="52" r="3.5" fill="#6B98D6" />
+      <circle cx="42" cy="52" r="1.8" fill="#2A1B3D" />
+      <circle cx="58" cy="52" r="1.8" fill="#2A1B3D" />
+      <circle cx="43" cy="51" r="0.8" fill="white" />
+      <circle cx="59" cy="51" r="0.8" fill="white" />
+      {/* Nose */}
+      <ellipse cx="50" cy="65" rx="3" ry="2" fill="#2A1B3D" />
+      <path d="M46 70 Q50 73 54 70" stroke="#2A1B3D" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+    </g>
+  ),
+
+  poodle: (fill) => (
+    <g>
+      {/* Fluffy ears */}
+      <circle cx="30" cy="42" r="10" fill={fill} />
+      <circle cx="70" cy="42" r="10" fill={fill} />
+      {/* Fluffy crown */}
+      <circle cx="40" cy="32" r="9" fill={fill} />
+      <circle cx="50" cy="28" r="9" fill={fill} />
+      <circle cx="60" cy="32" r="9" fill={fill} />
+      {/* Head */}
+      <circle cx="50" cy="55" r="26" fill={fill} />
+      {/* Eyes */}
+      <circle cx="42" cy="52" r="3" fill="#2A1B3D" />
+      <circle cx="58" cy="52" r="3" fill="#2A1B3D" />
+      <circle cx="43" cy="51" r="1" fill="white" />
+      <circle cx="59" cy="51" r="1" fill="white" />
+      {/* Nose */}
+      <ellipse cx="50" cy="62" rx="2.5" ry="2" fill="#2A1B3D" />
+      <path d="M47 68 Q50 71 53 68" stroke="#2A1B3D" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      {/* Bow */}
+      <path d="M40 22 L48 28 L40 34 Z" fill="#FF6B5B" />
+      <path d="M60 22 L52 28 L60 34 Z" fill="#FF6B5B" />
+      <circle cx="50" cy="28" r="2" fill="#FF6B5B" />
+    </g>
+  ),
+
+  hamster: (fill) => (
+    <g>
+      {/* Tiny ears */}
+      <circle cx="34" cy="34" r="6" fill={fill} />
+      <circle cx="66" cy="34" r="6" fill={fill} />
+      <circle cx="34" cy="34" r="3" fill="#FFB3A7" />
+      <circle cx="66" cy="34" r="3" fill="#FFB3A7" />
+      {/* Round chubby head */}
+      <ellipse cx="50" cy="56" rx="32" ry="28" fill={fill} />
+      {/* Cheek pouches */}
+      <ellipse cx="32" cy="62" rx="9" ry="7" fill="#FFFBF4" opacity="0.7" />
+      <ellipse cx="68" cy="62" rx="9" ry="7" fill="#FFFBF4" opacity="0.7" />
+      {/* Tummy */}
+      <ellipse cx="50" cy="68" rx="14" ry="8" fill="#FFFBF4" opacity="0.6" />
+      {/* Eyes - small and beady */}
+      <circle cx="42" cy="50" r="3" fill="#2A1B3D" />
+      <circle cx="58" cy="50" r="3" fill="#2A1B3D" />
+      <circle cx="43" cy="49" r="1" fill="white" />
+      <circle cx="59" cy="49" r="1" fill="white" />
+      {/* Tiny nose */}
+      <ellipse cx="50" cy="58" rx="1.5" ry="1" fill="#FF6B5B" />
+      <path d="M48 62 Q50 64 52 62" stroke="#2A1B3D" strokeWidth="1" fill="none" strokeLinecap="round" />
+    </g>
+  ),
+
+  koala: (fill) => (
+    <g>
+      {/* Big fluffy ears */}
+      <circle cx="28" cy="36" r="13" fill={fill} />
+      <circle cx="28" cy="36" r="9" fill="#FFB3A7" />
+      <circle cx="72" cy="36" r="13" fill={fill} />
+      <circle cx="72" cy="36" r="9" fill="#FFB3A7" />
+      {/* Head */}
+      <circle cx="50" cy="56" r="26" fill={fill} />
+      {/* Eyes */}
+      <circle cx="42" cy="52" r="3.5" fill="#2A1B3D" />
+      <circle cx="58" cy="52" r="3.5" fill="#2A1B3D" />
+      <circle cx="43" cy="51" r="1.2" fill="white" />
+      <circle cx="59" cy="51" r="1.2" fill="white" />
+      {/* Big black nose */}
+      <ellipse cx="50" cy="62" rx="6" ry="5" fill="#2A1B3D" />
+      <ellipse cx="48" cy="60" rx="1.5" ry="1" fill="white" opacity="0.5" />
+      {/* Mouth */}
+      <path d="M44 70 Q50 74 56 70" stroke="#2A1B3D" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+    </g>
+  ),
+
+  lion: (fill) => (
+    <g>
+      {/* Mane (fluffy bits around head) */}
+      <circle cx="20" cy="44" r="9" fill="#D4A574" />
+      <circle cx="80" cy="44" r="9" fill="#D4A574" />
+      <circle cx="22" cy="62" r="9" fill="#D4A574" />
+      <circle cx="78" cy="62" r="9" fill="#D4A574" />
+      <circle cx="30" cy="30" r="9" fill="#D4A574" />
+      <circle cx="70" cy="30" r="9" fill="#D4A574" />
+      <circle cx="50" cy="22" r="9" fill="#D4A574" />
+      <circle cx="35" cy="78" r="9" fill="#D4A574" />
+      <circle cx="65" cy="78" r="9" fill="#D4A574" />
+      {/* Ears */}
+      <circle cx="34" cy="34" r="6" fill={fill} />
+      <circle cx="66" cy="34" r="6" fill={fill} />
+      <circle cx="34" cy="34" r="3" fill="#FF6B5B" />
+      <circle cx="66" cy="34" r="3" fill="#FF6B5B" />
+      {/* Head */}
+      <circle cx="50" cy="55" r="24" fill={fill} />
+      {/* Snout */}
+      <ellipse cx="50" cy="64" rx="11" ry="8" fill="#FFFBF4" />
+      {/* Eyes */}
+      <circle cx="42" cy="51" r="3" fill="#2A1B3D" />
+      <circle cx="58" cy="51" r="3" fill="#2A1B3D" />
+      <circle cx="43" cy="50" r="1" fill="white" />
+      <circle cx="59" cy="50" r="1" fill="white" />
+      {/* Nose */}
+      <path d="M47 60 L50 62 L53 60 L51 64 L49 64 Z" fill="#2A1B3D" />
+      <path d="M44 70 Q50 74 56 70" stroke="#2A1B3D" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+    </g>
+  ),
+
+  tiger: (fill) => (
+    <g>
+      {/* Ears */}
+      <circle cx="32" cy="32" r="7" fill={fill} />
+      <circle cx="68" cy="32" r="7" fill={fill} />
+      <circle cx="32" cy="32" r="3.5" fill="#FFB3A7" />
+      <circle cx="68" cy="32" r="3.5" fill="#FFB3A7" />
+      {/* Head */}
+      <circle cx="50" cy="55" r="28" fill={fill} />
+      {/* Stripes */}
+      <path d="M28 48 Q32 52 28 56" stroke="#2A1B3D" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+      <path d="M72 48 Q68 52 72 56" stroke="#2A1B3D" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+      <path d="M30 70 Q34 72 32 76" stroke="#2A1B3D" strokeWidth="2" fill="none" strokeLinecap="round" />
+      <path d="M70 70 Q66 72 68 76" stroke="#2A1B3D" strokeWidth="2" fill="none" strokeLinecap="round" />
+      <path d="M44 30 L46 38" stroke="#2A1B3D" strokeWidth="2" fill="none" strokeLinecap="round" />
+      <path d="M56 30 L54 38" stroke="#2A1B3D" strokeWidth="2" fill="none" strokeLinecap="round" />
+      <path d="M50 30 L50 40" stroke="#2A1B3D" strokeWidth="2" fill="none" strokeLinecap="round" />
+      {/* Snout */}
+      <ellipse cx="50" cy="64" rx="11" ry="8" fill="#FFFBF4" />
+      {/* Eyes - green */}
+      <ellipse cx="42" cy="51" rx="3" ry="3.5" fill="#5FB85F" />
+      <ellipse cx="58" cy="51" rx="3" ry="3.5" fill="#5FB85F" />
+      <ellipse cx="42" cy="51" rx="1" ry="2.5" fill="#2A1B3D" />
+      <ellipse cx="58" cy="51" rx="1" ry="2.5" fill="#2A1B3D" />
+      <circle cx="43" cy="49" r="0.8" fill="white" />
+      <circle cx="59" cy="49" r="0.8" fill="white" />
+      {/* Nose */}
+      <path d="M47 60 L50 62 L53 60 L51 64 L49 64 Z" fill="#2A1B3D" />
+      <path d="M44 70 Q50 74 56 70" stroke="#2A1B3D" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+    </g>
+  ),
+
+  zebra: (fill) => (
+    <g>
+      {/* Ears */}
+      <ellipse cx="36" cy="32" rx="5" ry="9" fill={fill} />
+      <ellipse cx="64" cy="32" rx="5" ry="9" fill={fill} />
+      <ellipse cx="36" cy="32" rx="2" ry="5" fill="#FFB3A7" />
+      <ellipse cx="64" cy="32" rx="2" ry="5" fill="#FFB3A7" />
+      {/* Head */}
+      <ellipse cx="50" cy="58" rx="28" ry="26" fill={fill} />
+      {/* Black stripes */}
+      <path d="M30 44 Q35 46 30 50 Q35 52 30 56" stroke="#2A1B3D" strokeWidth="3" fill="none" strokeLinecap="round" />
+      <path d="M70 44 Q65 46 70 50 Q65 52 70 56" stroke="#2A1B3D" strokeWidth="3" fill="none" strokeLinecap="round" />
+      <path d="M28 64 Q33 67 28 70" stroke="#2A1B3D" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+      <path d="M72 64 Q67 67 72 70" stroke="#2A1B3D" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+      <path d="M44 38 L42 46" stroke="#2A1B3D" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+      <path d="M56 38 L58 46" stroke="#2A1B3D" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+      <path d="M50 36 L50 44" stroke="#2A1B3D" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+      {/* Mane */}
+      <path d="M50 30 Q48 22 46 28 M50 30 Q52 22 54 28 M50 30 Q50 20 50 30" stroke="#2A1B3D" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+      {/* Snout */}
+      <ellipse cx="50" cy="68" rx="14" ry="10" fill="#FFFBF4" />
+      {/* Eyes */}
+      <circle cx="40" cy="52" r="3" fill="#2A1B3D" />
+      <circle cx="60" cy="52" r="3" fill="#2A1B3D" />
+      <circle cx="41" cy="51" r="1" fill="white" />
+      <circle cx="61" cy="51" r="1" fill="white" />
+      {/* Nostrils */}
+      <ellipse cx="46" cy="68" rx="1.5" ry="1" fill="#2A1B3D" />
+      <ellipse cx="54" cy="68" rx="1.5" ry="1" fill="#2A1B3D" />
+    </g>
+  ),
+
+  giraffe: (fill) => (
+    <g>
+      {/* Ossicones (horns) */}
+      <ellipse cx="42" cy="20" rx="2.5" ry="6" fill={fill} />
+      <ellipse cx="58" cy="20" rx="2.5" ry="6" fill={fill} />
+      <circle cx="42" cy="16" r="3" fill="#8B5A3C" />
+      <circle cx="58" cy="16" r="3" fill="#8B5A3C" />
+      {/* Ears */}
+      <ellipse cx="32" cy="34" rx="6" ry="4" fill={fill} transform="rotate(-30 32 34)" />
+      <ellipse cx="68" cy="34" rx="6" ry="4" fill={fill} transform="rotate(30 68 34)" />
+      {/* Head */}
+      <ellipse cx="50" cy="55" rx="22" ry="28" fill={fill} />
+      {/* Spots */}
+      <ellipse cx="38" cy="48" rx="4" ry="3" fill="#A87248" />
+      <ellipse cx="62" cy="48" rx="4" ry="3" fill="#A87248" />
+      <ellipse cx="50" cy="42" rx="3.5" ry="3" fill="#A87248" />
+      <ellipse cx="40" cy="68" rx="3.5" ry="2.5" fill="#A87248" />
+      <ellipse cx="60" cy="68" rx="3.5" ry="2.5" fill="#A87248" />
+      <ellipse cx="50" cy="76" rx="3" ry="2" fill="#A87248" />
+      {/* Eyes */}
+      <circle cx="42" cy="52" r="3" fill="#2A1B3D" />
+      <circle cx="58" cy="52" r="3" fill="#2A1B3D" />
+      <circle cx="43" cy="51" r="1" fill="white" />
+      <circle cx="59" cy="51" r="1" fill="white" />
+      {/* Eyelashes */}
+      <path d="M40 49 L38 47 M42 48 L42 46 M44 49 L46 47" stroke="#2A1B3D" strokeWidth="1.2" fill="none" strokeLinecap="round" />
+      <path d="M60 49 L62 47 M58 48 L58 46 M56 49 L54 47" stroke="#2A1B3D" strokeWidth="1.2" fill="none" strokeLinecap="round" />
+      {/* Mouth */}
+      <path d="M44 72 Q50 76 56 72" stroke="#2A1B3D" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+    </g>
+  ),
+
+  butterfly: (fill) => (
+    <g>
+      {/* Body */}
+      <ellipse cx="50" cy="55" rx="3" ry="20" fill="#2A1B3D" />
+      {/* Top wings */}
+      <ellipse cx="32" cy="42" rx="18" ry="14" fill={fill} transform="rotate(-20 32 42)" />
+      <ellipse cx="68" cy="42" rx="18" ry="14" fill={fill} transform="rotate(20 68 42)" />
+      {/* Bottom wings */}
+      <ellipse cx="34" cy="68" rx="14" ry="10" fill={fill} transform="rotate(20 34 68)" />
+      <ellipse cx="66" cy="68" rx="14" ry="10" fill={fill} transform="rotate(-20 66 68)" />
+      {/* Wing patterns */}
+      <circle cx="28" cy="42" r="4" fill="#FFD166" />
+      <circle cx="72" cy="42" r="4" fill="#FFD166" />
+      <circle cx="34" cy="68" r="3" fill="#FFFBF4" />
+      <circle cx="66" cy="68" r="3" fill="#FFFBF4" />
+      <circle cx="20" cy="42" r="2" fill="#FFFBF4" />
+      <circle cx="80" cy="42" r="2" fill="#FFFBF4" />
+      {/* Antennae */}
+      <path d="M48 38 Q44 28 42 22" stroke="#2A1B3D" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      <path d="M52 38 Q56 28 58 22" stroke="#2A1B3D" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      <circle cx="42" cy="22" r="2" fill="#2A1B3D" />
+      <circle cx="58" cy="22" r="2" fill="#2A1B3D" />
+      {/* Tiny face */}
+      <circle cx="48" cy="44" r="1.2" fill="white" />
+      <circle cx="52" cy="44" r="1.2" fill="white" />
+      <path d="M48 50 Q50 52 52 50" stroke="white" strokeWidth="1" fill="none" strokeLinecap="round" />
+    </g>
+  ),
+
+  bee: (fill) => (
+    <g>
+      {/* Wings (translucent) */}
+      <ellipse cx="32" cy="40" rx="14" ry="20" fill="#B8D4F5" opacity="0.6" transform="rotate(-15 32 40)" />
+      <ellipse cx="68" cy="40" rx="14" ry="20" fill="#B8D4F5" opacity="0.6" transform="rotate(15 68 40)" />
+      {/* Body (oval) */}
+      <ellipse cx="50" cy="56" rx="24" ry="28" fill={fill} />
+      {/* Black stripes */}
+      <ellipse cx="50" cy="46" rx="22" ry="4" fill="#2A1B3D" />
+      <ellipse cx="50" cy="60" rx="22" ry="4" fill="#2A1B3D" />
+      <ellipse cx="50" cy="74" rx="18" ry="4" fill="#2A1B3D" />
+      {/* Antennae */}
+      <path d="M42 36 Q38 28 36 22" stroke="#2A1B3D" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      <path d="M58 36 Q62 28 64 22" stroke="#2A1B3D" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      <circle cx="36" cy="22" r="2.5" fill="#2A1B3D" />
+      <circle cx="64" cy="22" r="2.5" fill="#2A1B3D" />
+      {/* Eyes */}
+      <circle cx="42" cy="40" r="3" fill="#2A1B3D" />
+      <circle cx="58" cy="40" r="3" fill="#2A1B3D" />
+      <circle cx="43" cy="39" r="1" fill="white" />
+      <circle cx="59" cy="39" r="1" fill="white" />
+      {/* Cheek blush */}
+      <circle cx="36" cy="48" r="3" fill="#FF6B5B" opacity="0.4" />
+      <circle cx="64" cy="48" r="3" fill="#FF6B5B" opacity="0.4" />
+      {/* Smile */}
+      <path d="M46 52 Q50 55 54 52" stroke="#2A1B3D" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+    </g>
+  ),
+
+  mermaid: (fill) => (
+    <g>
+      {/* Hair (red) */}
+      <ellipse cx="50" cy="34" rx="22" ry="14" fill="#FF6B5B" />
+      <ellipse cx="32" cy="42" rx="6" ry="14" fill="#FF6B5B" />
+      <ellipse cx="68" cy="42" rx="6" ry="14" fill="#FF6B5B" />
+      {/* Face */}
+      <circle cx="50" cy="48" r="20" fill={fill} />
+      {/* Hair fringe */}
+      <path d="M32 36 Q40 32 50 36 Q60 32 68 36 L68 42 L32 42 Z" fill="#FF6B5B" />
+      {/* Eyes - green */}
+      <circle cx="42" cy="48" r="3" fill="#5FB85F" />
+      <circle cx="58" cy="48" r="3" fill="#5FB85F" />
+      <circle cx="42" cy="48" r="1.5" fill="#2A1B3D" />
+      <circle cx="58" cy="48" r="1.5" fill="#2A1B3D" />
+      <circle cx="43" cy="47" r="0.7" fill="white" />
+      <circle cx="59" cy="47" r="0.7" fill="white" />
+      {/* Eyelashes */}
+      <path d="M40 45 L38 43 M44 44 L44 42" stroke="#2A1B3D" strokeWidth="1" fill="none" strokeLinecap="round" />
+      <path d="M60 45 L62 43 M56 44 L56 42" stroke="#2A1B3D" strokeWidth="1" fill="none" strokeLinecap="round" />
+      {/* Cheek blush */}
+      <circle cx="38" cy="54" r="3" fill="#FF6B5B" opacity="0.4" />
+      <circle cx="62" cy="54" r="3" fill="#FF6B5B" opacity="0.4" />
+      {/* Smile */}
+      <path d="M46 56 Q50 60 54 56" stroke="#2A1B3D" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      {/* Tail (peeking from below) */}
+      <path d="M40 70 Q50 80 60 70 Q55 78 50 80 Q45 78 40 70 Z" fill="#5FB85F" />
+      <ellipse cx="50" cy="74" rx="10" ry="3" fill="#3D8B3D" />
+      {/* Shell hair clip */}
+      <circle cx="36" cy="36" r="3" fill="#FFD166" />
+      <path d="M34 36 L36 32 L38 36 L36 40 Z" fill="#FFB3A7" />
+    </g>
+  ),
 };
 
 const FILLS: Record<CompanionKey, string> = {
@@ -271,6 +613,10 @@ const FILLS: Record<CompanionKey, string> = {
   panda: '#FFFBF4', bear: '#D4A574', unicorn: '#FFF4E0', dragon: '#8BCE8B',
   monkey: '#A0826D', sloth: '#D4A574', octopus: '#D67FBA', deer: '#D4A574',
   frog: '#8BCE8B', penguin: '#2A1B3D', hedgehog: '#D4A574', turtle: '#5FB85F',
+  // v13 additions
+  dog: '#F5DEB3', husky: '#E8E8E8', poodle: '#FFFBF4', hamster: '#D4A574',
+  koala: '#A0A0A0', lion: '#FFD166', tiger: '#FF9500', zebra: '#FFFBF4',
+  giraffe: '#FFD166', butterfly: '#D67FBA', bee: '#FFD166', mermaid: '#FFE0BD',
 };
 
 export default function Companion({ character = 'bunny', mood = 'idle', size = 120 }: Props) {
@@ -320,4 +666,17 @@ export const ALL_COMPANIONS: { key: CompanionKey; name: string }[] = [
   { key: 'penguin', name: 'Waddle' },
   { key: 'hedgehog', name: 'Spike' },
   { key: 'turtle', name: 'Shelly' },
+  // v13 additions
+  { key: 'dog', name: 'Buddy' },
+  { key: 'husky', name: 'Storm' },
+  { key: 'poodle', name: 'Pearl' },
+  { key: 'hamster', name: 'Nibbles' },
+  { key: 'koala', name: 'Eucalyptus' },
+  { key: 'lion', name: 'Roar' },
+  { key: 'tiger', name: 'Stripes' },
+  { key: 'zebra', name: 'Dash' },
+  { key: 'giraffe', name: 'Tally' },
+  { key: 'butterfly', name: 'Flutter' },
+  { key: 'bee', name: 'Buzz' },
+  { key: 'mermaid', name: 'Coral' },
 ];

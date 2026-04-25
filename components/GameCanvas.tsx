@@ -293,8 +293,35 @@ const GameCanvas = forwardRef<GameCanvasHandle, Props>(function GameCanvas(
     },
   }));
 
+  // iOS Safari touch resilience for game canvas - same protections as DrawingCanvas
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = wrapperRef.current;
+    if (!el || !canDraw) return;
+    function preventGesture(e: TouchEvent) {
+      if (e.touches.length > 0) e.preventDefault();
+    }
+    el.addEventListener('touchstart', preventGesture, { passive: false });
+    el.addEventListener('touchmove', preventGesture, { passive: false });
+    return () => {
+      el.removeEventListener('touchstart', preventGesture);
+      el.removeEventListener('touchmove', preventGesture);
+    };
+  }, [canDraw]);
+
   return (
-    <div className={`relative touch-none select-none ${className}`} style={{ width, height }}>
+    <div
+      ref={wrapperRef}
+      className={`relative touch-none select-none ${className}`}
+      style={{
+        width,
+        height,
+        touchAction: 'none',
+        WebkitTouchCallout: 'none',
+        WebkitUserSelect: 'none',
+        overscrollBehavior: 'contain',
+      }}
+    >
       <canvas
         ref={canvasRef}
         onPointerDown={onPointerDown}
@@ -302,7 +329,12 @@ const GameCanvas = forwardRef<GameCanvasHandle, Props>(function GameCanvas(
         onPointerUp={(e) => endStroke(e)}
         onPointerCancel={(e) => endStroke(e)}
         className="block rounded-squircle shadow-float bg-cream-50"
-        style={{ touchAction: 'none', cursor: canDraw ? 'crosshair' : 'not-allowed' }}
+        style={{
+          touchAction: 'none',
+          WebkitTouchCallout: 'none',
+          WebkitUserSelect: 'none',
+          cursor: canDraw ? 'crosshair' : 'not-allowed',
+        }}
       />
       {!canDraw && (
         <div className="absolute top-2 left-2 bg-cream-50/90 rounded-2xl px-3 py-1 shadow-float text-sm font-bold text-ink-700">

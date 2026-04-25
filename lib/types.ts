@@ -7,7 +7,10 @@ export type CompanionKey =
   | 'bunny' | 'kitty' | 'fox' | 'owl'
   | 'panda' | 'bear' | 'unicorn' | 'dragon'
   | 'monkey' | 'sloth' | 'octopus' | 'deer'
-  | 'frog' | 'penguin' | 'hedgehog' | 'turtle';
+  | 'frog' | 'penguin' | 'hedgehog' | 'turtle'
+  | 'dog' | 'husky' | 'poodle' | 'hamster'
+  | 'koala' | 'lion' | 'tiger' | 'zebra'
+  | 'giraffe' | 'butterfly' | 'bee' | 'mermaid';
 
 export interface World {
   id: string; name: string; tagline: string; color: string; icon: string;

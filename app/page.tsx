@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import Button from '@/components/Button';
 import Companion from '@/components/Companion';
@@ -11,10 +12,15 @@ export default function LandingPage() {
       {/* Nav */}
       <nav className="relative z-10 flex items-center justify-between px-6 md:px-12 py-6">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-2xl bg-coral-500 shadow-chunky flex items-center justify-center text-2xl">
-            🎨
-          </div>
-          <span className="font-display font-bold text-xl text-ink-900">
+          <Image
+            src="/logo.png"
+            alt="Payton's Art Club"
+            width={56}
+            height={56}
+            className="rounded-2xl"
+            priority
+          />
+          <span className="font-display font-bold text-xl text-ink-900 hidden sm:inline">
             Payton's Art Club
           </span>
         </div>
@@ -27,6 +33,16 @@ export default function LandingPage() {
       <section className="relative z-10 flex-1 flex items-center justify-center px-6 py-12">
         <div className="max-w-5xl grid md:grid-cols-2 gap-12 items-center">
           <div className="text-center md:text-left">
+            {/* Logo as visual headline on small screens */}
+            <div className="md:hidden mb-6 flex justify-center">
+              <Image
+                src="/logo.png"
+                alt="Payton's Art Club"
+                width={200}
+                height={200}
+                priority
+              />
+            </div>
             <h1 className="heading-1 mb-6">
               A cozy drawing club
               <br />
@@ -52,10 +68,21 @@ export default function LandingPage() {
 
           <div className="relative flex items-center justify-center">
             <div className="absolute inset-0 bg-sparkle-300 rounded-blob opacity-40 animate-float" />
-            <div className="relative flex gap-4 items-end">
-              <div className="mt-8"><Companion character="bunny" mood="happy" size={140} /></div>
-              <Companion character="kitty" mood="cheering" size={160} />
-              <div className="mt-12"><Companion character="fox" mood="happy" size={130} /></div>
+            {/* Logo on desktop hero */}
+            <div className="relative hidden md:block">
+              <Image
+                src="/logo.png"
+                alt="Payton's Art Club"
+                width={400}
+                height={400}
+                priority
+              />
+            </div>
+            {/* Companion characters on smaller screens */}
+            <div className="relative flex gap-4 items-end md:hidden">
+              <div className="mt-8"><Companion character="bunny" mood="happy" size={100} /></div>
+              <Companion character="kitty" mood="cheering" size={120} />
+              <div className="mt-12"><Companion character="fox" mood="happy" size={90} /></div>
             </div>
           </div>
         </div>

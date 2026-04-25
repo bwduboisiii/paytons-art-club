@@ -3,6 +3,7 @@
 import { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import Button from '@/components/Button';
 import Companion from '@/components/Companion';
 import { createClient } from '@/lib/supabase/client';
@@ -80,14 +81,15 @@ function LoginInner() {
       <div className="w-full max-w-md">
         <Link
           href="/"
-          className="flex items-center gap-3 justify-center mb-8"
+          className="flex flex-col items-center justify-center mb-8"
         >
-          <div className="w-12 h-12 rounded-2xl bg-coral-500 shadow-chunky flex items-center justify-center text-2xl">
-            🎨
-          </div>
-          <span className="font-display font-bold text-xl text-ink-900">
-            Payton's Art Club
-          </span>
+          <Image
+            src="/logo.png"
+            alt="Payton's Art Club"
+            width={120}
+            height={120}
+            priority
+          />
         </Link>
 
         <div className="card-cozy p-8">

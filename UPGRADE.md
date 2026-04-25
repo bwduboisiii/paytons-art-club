@@ -1,109 +1,106 @@
-# Payton's Art Club — v11: Mobile-First UI 📱
+# Payton's Art Club — v13: Logo + Content Pack 🎨
 
 ## What's new
 
-### 📱 Genuinely mobile-friendly UX
+### 🎨 New logo wired throughout the app
 
-The app now detects whether you're on a phone or computer and shows a meaningfully different UI on each.
+The painter's-palette-with-brush logo you uploaded is now the official brand mark:
 
-**On phones (< 768px wide + touch):**
-- **Bottom nav bar** — 5-button thumb-reachable nav (Home, Play, Friends, Art, Parent) with safe-area-aware padding for iPhone notches
-- **Fullscreen lightbox** — gallery artwork opens to full screen with **swipe gestures** (left/right) to browse between drawings
-- **Floating drawing toolbar** — tools, colors, and brush size live in a bottom toolbar; tapping any opens a smooth bottom-sheet drawer
-- **Canvas takes the whole screen** — no sidebars stealing real estate
-- **Bottom-sheet modals** — anywhere a modal would normally pop up centered, on mobile it slides up from the bottom
+- **Landing page**: shows large in the hero on desktop, prominently on mobile
+- **Login page**: replaces the old emoji-and-text header with the logo
+- **Browser tab favicon**: 32x32 ICO + PNG
+- **iOS "Add to Home Screen"**: 180x180 apple-touch-icon
+- **Android PWA icon**: 192 + 512 PNG sizes
+- **Home screen** (after kid sign-in): unchanged — still focused on the kid's name + buddy. (The home page is for Payton, not for marketing the brand to her.)
 
-**On desktops/laptops (≥ 768px or no touch):**
-- Everything looks exactly like v10 (top nav, sidebars, centered modals)
-- No regression in desktop experience
+### 🐾 12 new companion avatars (16 → 28)
 
-### How device detection works
+Payton can now choose between **28 different buddies**:
 
-A new `useIsMobile()` hook checks two signals:
-1. Viewport width < 768px
-2. Touch capability (`pointer: coarse` media query or `ontouchstart`)
+Original 16: Bunny (Hoppy), Kitty (Whiskers), Fox (Rusty), Owl (Hoot), Panda (Bamboo), Bear (Honey), Unicorn (Sparkle), Dragon (Ember), Monkey (Banana), Sloth (Snooze), Octopus (Inky), Deer (Clover), Frog (Lily), Penguin (Waddle), Hedgehog (Spike), Turtle (Shelly).
 
-Both must be true for mobile UI to kick in. This avoids false positives:
-- Resized desktop windows stay desktop (no touch)
-- Laptops with touchscreens stay desktop (wide viewport)
-- Phones get mobile UI, small tablets in portrait do too
+**New in v13:**
+- 🐶 **Dog (Buddy)** — friendly cartoon dog with floppy ears and tongue
+- 🐺 **Husky (Storm)** — striking blue eyes and white face mask
+- 🐩 **Poodle (Pearl)** — fluffy crown with a red bow
+- 🐹 **Hamster (Nibbles)** — chubby cheeks and tummy
+- 🐨 **Koala (Eucalyptus)** — big fluffy ears and black nose
+- 🦁 **Lion (Roar)** — full golden mane around face
+- 🐯 **Tiger (Stripes)** — orange with green eyes and bold stripes
+- 🦓 **Zebra (Dash)** — black-and-white stripes plus mane tufts
+- 🦒 **Giraffe (Tally)** — long face with ossicones and spots, big eyelashes
+- 🦋 **Butterfly (Flutter)** — pink wings with yellow spots
+- 🐝 **Bee (Buzz)** — yellow body with translucent wings
+- 🧜 **Mermaid (Coral)** — red hair, green tail, shell hairclip
 
-The detection runs on every resize/orientation change, so rotating the phone updates the layout instantly.
+All avatars are hand-drawn SVG and animate with the same personality types (idle, happy, cheering, thinking) as the originals.
+
+### ✨ Sticker library massively expanded (~144 → ~489)
+
+The sticker tray (used on Free Draw and on Remix at the end of every lesson) now has:
+
+**6 expanded categories:**
+- **Animals** — added farm animals (cow, pig, sheep, etc.), birds (ducks, chicks, owls), and sea creatures (octopus, shark, crab, whale)
+- **Nature** — added all weather types (rain, snow, thunder, fog), landscapes (mountains, beaches, volcanoes), and more plants
+- **Food** — added more sweets (pudding, pretzel, waffle), all fruits (cherry, peach, mango, kiwi, pineapple), full meals (sushi, ramen, pasta, soup), and drinks
+- **Magic** — added princesses, wizards, castles, magic items, costumes
+- **Space** — added astronauts, robots, science instruments
+- **Faces** — added 30+ more expressions
+
+**3 brand-new categories:**
+- **💯 Emoji** — dedicated category for hearts (all colors), hand gestures, and reaction symbols
+- **🎉 Fun** — sports, music instruments, party/celebration emoji
+- **🚗 Places** — vehicles (cars, planes, boats, trains) and buildings/landmarks
 
 ---
 
 ## How to apply
 
-### Step 1: Swap folders (no SQL needed)
+### No SQL. Just code.
 
-v11 is purely a UI change. **No database migrations.**
+1. Back up v12, unzip v13, copy `.git` over
+2. `git add . && git commit -m "v13: new logo + 12 avatars + expanded sticker library" && git push`
+3. Vercel auto-deploys (~2 min). The deploy is bigger than usual because of the favicon image files — should still be quick.
+4. Hard refresh on every device
 
-1. Back up v10 folder, unzip v11, copy `.git` over
-2. `git add . && git commit -m "v11: mobile-first UI" && git push`
-3. Vercel auto-deploys in 2-3 minutes
-4. Hard refresh on desktop AND on your phone
+### Test on iPad
 
-### Step 2: Test on actual phone
+- [ ] Browser tab shows the new logo as favicon (instead of generic page icon)
+- [ ] Visit landing page (signed out) — see the big logo
+- [ ] Sign out and visit login — logo at top
+- [ ] On home → tap your buddy → "Switch buddy" → scroll through — see all 28 avatars (your existing buddy at top)
+- [ ] Pick one of the new ones (try the dog!)
+- [ ] Open Free Draw → tap stickers → see 9 categories at the bottom
+- [ ] Tap each category → scroll through new options
+- [ ] Add a few new stickers to a drawing → resize/rotate them like before
 
-This is critical. Open the live site on Payton's iPad/your phone and:
+### Test on desktop
 
-- [ ] Home screen — bottom nav appears at bottom with 5 buttons
-- [ ] Tap each bottom nav item — page navigates correctly
-- [ ] Gallery → tap an artwork — opens fullscreen, can swipe between
-- [ ] Start a lesson — canvas is big, tools/colors are bottom buttons
-- [ ] Tap "Tool" button — bottom sheet slides up with tools
-- [ ] Pick a tool — sheet closes and you're back drawing
-- [ ] Same for "Color" and "Size" buttons
-- [ ] Tap the "Done!" button at top-right of canvas — should advance
-- [ ] Free Draw works the same way
-
-### Step 3: Test desktop hasn't regressed
-
-- [ ] Open on laptop — looks identical to v10
-- [ ] Top nav still has 4 buttons (Play, Friends, Art, Parent)
-- [ ] Lessons still have left/right sidebars for tools/colors
-- [ ] Gallery lightbox is centered modal, not fullscreen
+Same checks as iPad. The logo should appear in the nav and hero sections.
 
 ---
 
-## Known rough edges
+## What I didn't change
 
-- **Tool/color pickers in the bottom sheet** scroll vertically rather than displaying as a tight grid. Functional but not perfect — phones with smaller screens may need to scroll within the sheet to find the tool they want. Refining this requires rebuilding the picker components, deferred.
-- **The companion (FloatingBuddy)** is still positioned with the desktop sidebar offset in mind. On mobile it might overlap the bottom toolbar. Acceptable for now; refining requires a bigger rework of FloatingBuddy.
-- **Canvas size on very tiny phones (320px wide)** can become smaller than ideal. Tested OK on 375px+ (iPhone SE and up).
-- **Landscape orientation** isn't specially optimized — it works because the layouts are flexible, but the bottom toolbar takes a lot of vertical space when the screen is short. Best experience is portrait.
-- **The mobile bottom nav appears on every page including the Lesson and Free Draw pages** — but those pages already have their own floating toolbar at the bottom. They use `position: fixed; z-index: 30` which competes. v11 hides the mobile bottom nav on lesson/draw pages because they have their own bottom toolbar. (Verify by inspecting — this is correct behavior.)
-
-Wait, actually I need to clarify that last bullet: the lesson/draw pages don't import MobileBottomNav, so it's not rendered there. Only the toolbar shows. That's the right behavior.
+- Database / schema / Stripe / webhooks: untouched
+- Drawing fix from v12 (iOS Safari pointer resilience): preserved
+- Mobile UI from v11: preserved
+- Lesson content: same 31 lessons across 8 worlds
 
 ---
 
-## What's NOT changed
+## Honest caveats
 
-- Backend / database / Stripe / webhooks: untouched
-- All features: same set, same behavior
-- Auth flow: same
-- Voice recording, friends, multiplayer: same code, just look better on phone now
-
----
-
-## What you should feel different
-
-**As Payton (on iPad):**
-- "I can see my whole drawing now!"
-- Tapping color buttons opens a panel that's the size of her thumb, not a tiny sidebar swatch
-- Browsing her gallery feels like swiping through Instagram
-
-**As you (on laptop):**
-- Nothing should feel different. If anything regressed on desktop, that's a bug — tell me what page
+- **The avatar SVGs are hand-drawn by me, not by an illustrator.** They follow the same simple-cartoon style as the existing 16 (geometric shapes, friendly faces) but each one is just my best approximation. If any specific one looks off, tell me which and I'll iterate.
+- **Some emoji stickers may render differently on different devices.** That's because emoji rendering is OS-controlled. iOS shows Apple-style emoji, Android shows Google-style, etc. Same set of stickers, different visual flavor per device. This is normal and unavoidable.
+- **The `🧜‍♀️` original mermaid sticker (in Magic category)** stays as the emoji version. The new `mermaid` AVATAR is the hand-drawn SVG with red hair and green tail. Two different things — the emoji is for adding to drawings, the avatar is the buddy.
 
 ---
 
-## Pass D-3 / D-4 status
+## What's still pending from your original batch
 
-We skipped ahead from the linear plan (D-3 polish, D-4 final audit) because mobile felt more important. Those passes still exist as future work:
+Your message asked for: more stickers ✅, emojis ✅, more animals ✅, more avatar options including dog ✅, drawing fix ✅ (was v12).
 
-- **D-3 polish**: sticker flicker hardening, SVG lesson cleanups, multiplayer stress notes
-- **D-4 final audit**: comprehensive gap audit pass like we did before
+**Everything you asked for is now done.**
 
-Mobile is shipped. The remaining backlog is small and not blocking anything.
+Send testing feedback when you've had a chance to deploy. If specific avatars or stickers need adjustment, tell me which and I'll iterate in a focused fix pass.

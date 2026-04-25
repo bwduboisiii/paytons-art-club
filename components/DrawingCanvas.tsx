@@ -640,6 +640,129 @@ const DrawingCanvas = forwardRef<DrawingCanvasHandle, Props>(function DrawingCan
     return null;
   }
 
+  // ============================================================
+  // iOS Safari pointer resilience
+  // ============================================================
+  // Problem: on iOS Safari, the canvas can lose pointer capture mid-stroke
+  // (browser gesture detection, edge swipe, etc), causing strokes to "break"
+  // and visually skip. We protect against this by:
+  //   1. Adding pointermove/up/cancel listeners on `window` while a stroke
+  //      is active. Even if Safari steals capture from the canvas, window
+  //      events keep firing.
+  //   2. Using getCoalescedEvents() to recover sub-frame points that would
+  //      otherwise be dropped between rAF ticks.
+  //   3. Preventing default on touchstart at the wrapper to disable Safari's
+  //      edge-swipe-back and pull-to-refresh.
+
+  // Process a single pointer event into stroke points (called from both
+  // React handler and window listener)
+  const processPointerMove = useCallback(
+    (e: PointerEvent | React.PointerEvent) => {
+      const { x, y } = canvasCoords(e.clientX, e.clientY);
+      activePointers.current.set(e.pointerId, { x, y });
+
+      const state = stickerDragState.current;
+      if (state) {
+        // (sticker logic continues to live in the React handler — stickers
+        //  don't suffer the iOS break bug because they don't need sub-frame
+        //  precision and the React handler is sufficient there)
+        return false; // not a drawing event
+      }
+
+      if (!isDrawing.current || !currentStroke.current) return false;
+
+      // Shape tools: just update second point
+      if (DRAWING_TOOLS[currentStroke.current.toolId || 'marker'].isShape) {
+        currentStroke.current.points[1] = { x, y };
+        redraw();
+        return true;
+      }
+
+      // ===== STROKE TOOLS WITH COALESCED EVENT RECOVERY =====
+      // iOS may fire one pointermove that covers 4-8 actual touch points.
+      // getCoalescedEvents returns each underlying point so the line is smooth.
+      const native = (e as any).nativeEvent || e;
+      let points: Array<{ x: number; y: number; pressure: number }> = [];
+      if (typeof (native as any).getCoalescedEvents === 'function') {
+        try {
+          const sub = (native as any).getCoalescedEvents();
+          if (sub && sub.length > 1) {
+            for (const sevt of sub) {
+              const sc = canvasCoords(sevt.clientX, sevt.clientY);
+              points.push({ x: sc.x, y: sc.y, pressure: sevt.pressure || 0.5 });
+            }
+          }
+        } catch {}
+      }
+      if (points.length === 0) {
+        points = [{ x, y, pressure: (e as any).pressure || 0.5 }];
+      }
+
+      const pts = currentStroke.current.points;
+      const threshold = tool === 'spray' ? 2.5 : 1.2;
+      let added = 0;
+      for (const p of points) {
+        const last = pts[pts.length - 1];
+        if (Math.hypot(p.x - last.x, p.y - last.y) < threshold) continue;
+        pts.push(p);
+        added++;
+      }
+      if (added > 0) redraw();
+      return true;
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [tool]
+  );
+
+  // Window-level handlers attached during active strokes. They survive
+  // even if Safari yanks pointer capture from the canvas.
+  useEffect(() => {
+    function onWinMove(e: PointerEvent) {
+      // Only process if this pointerId is one we started tracking
+      if (!activePointers.current.has(e.pointerId)) return;
+      // Sticker drags continue to be handled by the React handler (it's
+      // already attached to a child element so it won't lose capture for
+      // simple drag operations)
+      if (stickerDragState.current) return;
+      if (!isDrawing.current || !currentStroke.current) return;
+      processPointerMove(e);
+    }
+    function onWinUp(e: PointerEvent) {
+      if (!activePointers.current.has(e.pointerId)) return;
+      activePointers.current.delete(e.pointerId);
+      if (!isDrawing.current || !currentStroke.current) return;
+      // Finalize stroke
+      isDrawing.current = false;
+      const finished = currentStroke.current;
+      currentStroke.current = null;
+      shapeStart.current = null;
+      setStrokes((prev) => {
+        const next = [...prev, finished];
+        return next.length > UNDO_CAP ? next.slice(-UNDO_CAP) : next;
+      });
+      onStroke?.();
+    }
+    function onWinCancel(e: PointerEvent) {
+      // Important: on iOS Safari, pointercancel fires when the OS thinks the
+      // touch became a system gesture. We do NOT want to end the stroke here
+      // — instead we just ignore it and rely on pointerup to end normally.
+      // If the user really did lift their finger, pointerup fires too.
+      // But we DO need to remove the pointer from the active set if it
+      // was a stray touch (e.g. palm rest).
+      if (e.pointerType === 'touch' && activePointers.current.size > 1) {
+        activePointers.current.delete(e.pointerId);
+      }
+    }
+    window.addEventListener('pointermove', onWinMove, { passive: false });
+    window.addEventListener('pointerup', onWinUp);
+    window.addEventListener('pointercancel', onWinCancel);
+    return () => {
+      window.removeEventListener('pointermove', onWinMove);
+      window.removeEventListener('pointerup', onWinUp);
+      window.removeEventListener('pointercancel', onWinCancel);
+    };
+  }, [processPointerMove, onStroke]);
+
   function onPointerDown(e: React.PointerEvent<HTMLCanvasElement>) {
     e.preventDefault();
     const { x, y } = canvasCoords(e.clientX, e.clientY);
@@ -765,7 +888,6 @@ const DrawingCanvas = forwardRef<DrawingCanvasHandle, Props>(function DrawingCan
           )
         );
       } else if (state.mode === 'resize') {
-        // Distance from sticker center to pointer controls scale
         const dist = Math.hypot(x - state.startStickerX, y - state.startStickerY);
         const startDist = Math.hypot(
           state.startX - state.startStickerX,
@@ -813,29 +935,16 @@ const DrawingCanvas = forwardRef<DrawingCanvasHandle, Props>(function DrawingCan
       return;
     }
 
-    if (!isDrawing.current || !currentStroke.current) return;
-
-    // Shape tools: just update the second point
-    if (DRAWING_TOOLS[currentStroke.current.toolId || 'marker'].isShape) {
-      currentStroke.current.points[1] = { x, y };
-      redraw();
-      return;
-    }
-
-    const pts = currentStroke.current.points;
-    const last = pts[pts.length - 1];
-    const threshold = tool === 'spray' ? 2.5 : 1.2;
-    if (Math.hypot(x - last.x, y - last.y) < threshold) return;
-    pts.push({ x, y, pressure: e.pressure || 0.5 });
-    redraw();
+    // For drawing strokes, delegate to processPointerMove which handles
+    // coalesced events for iOS Safari resilience.
+    processPointerMove(e);
   }
 
   function endStroke(e?: React.PointerEvent<HTMLCanvasElement>) {
     if (e) activePointers.current.delete(e.pointerId);
 
-    // End sticker drag
+    // End sticker drag (stickers stay on React handler — no iOS issues there)
     if (stickerDragState.current) {
-      // If pinch and we dropped below 2 fingers, end
       if (
         stickerDragState.current.mode === 'pinch' &&
         activePointers.current.size >= 2
@@ -849,6 +958,8 @@ const DrawingCanvas = forwardRef<DrawingCanvasHandle, Props>(function DrawingCan
       return;
     }
 
+    // Drawing strokes are ended by the window-level pointerup handler.
+    // This React handler is just a fallback for non-touch cases.
     if (!isDrawing.current || !currentStroke.current) return;
     isDrawing.current = false;
     const finished = currentStroke.current;
@@ -948,10 +1059,41 @@ const DrawingCanvas = forwardRef<DrawingCanvasHandle, Props>(function DrawingCan
     setSelectedStickerIdx((i) => (i === null ? null : i + 1));
   }
 
+  // iOS Safari: prevent native gestures (swipe-back, pull-to-refresh, double-tap-zoom)
+  // by attaching a non-passive touchstart listener on the wrapper. React's
+  // synthetic events default to passive: true on touch events, so we use a ref
+  // and addEventListener directly.
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = wrapperRef.current;
+    if (!el) return;
+    function preventGesture(e: TouchEvent) {
+      // Only prevent on touches that start INSIDE the canvas wrapper.
+      // We don't want to break scrolling outside the canvas.
+      if (e.touches.length > 0) {
+        e.preventDefault();
+      }
+    }
+    el.addEventListener('touchstart', preventGesture, { passive: false });
+    el.addEventListener('touchmove', preventGesture, { passive: false });
+    return () => {
+      el.removeEventListener('touchstart', preventGesture);
+      el.removeEventListener('touchmove', preventGesture);
+    };
+  }, []);
+
   return (
     <div
+      ref={wrapperRef}
       className={`relative touch-none select-none ${className}`}
-      style={{ width, height }}
+      style={{
+        width,
+        height,
+        touchAction: 'none',
+        WebkitTouchCallout: 'none',
+        WebkitUserSelect: 'none',
+        overscrollBehavior: 'contain',
+      }}
     >
       <canvas
         ref={canvasRef}
@@ -960,7 +1102,11 @@ const DrawingCanvas = forwardRef<DrawingCanvasHandle, Props>(function DrawingCan
         onPointerUp={(e) => endStroke(e)}
         onPointerCancel={(e) => endStroke(e)}
         className="block rounded-squircle shadow-float bg-cream-50"
-        style={{ touchAction: 'none' }}
+        style={{
+          touchAction: 'none',
+          WebkitTouchCallout: 'none',
+          WebkitUserSelect: 'none',
+        }}
       />
       {/* Sticker action buttons (appear when sticker is selected) */}
       {selectedStickerIdx !== null && (
