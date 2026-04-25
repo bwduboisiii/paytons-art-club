@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, Suspense } from 'react';
+import { useState, Suspense, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -35,6 +35,26 @@ function LoginInner() {
   const [displayName, setDisplayName] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [checkingSession, setCheckingSession] = useState(true);
+  // v19: parent/child signup choice. If 'kid' is picked, show a friendly
+  // redirect message asking to get a grown-up's help.
+  const [signupRole, setSignupRole] = useState<'unknown' | 'parent' | 'kid'>('unknown');
+
+  // v19: "Remember me" — if the user already has a session, take them straight
+  // to the app instead of showing the empty login form. Supabase persists
+  // sessions by default in localStorage, so this works automatically across
+  // page reloads, browser restarts, etc.
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        const next = params.get('next') || '/app';
+        router.replace(next);
+      } else {
+        setCheckingSession(false);
+      }
+    });
+  }, [router, params]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -76,6 +96,17 @@ function LoginInner() {
     }
   }
 
+  if (checkingSession) {
+    return (
+      <main className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <Companion character="bunny" mood="thinking" size={80} />
+          <p className="mt-4 text-ink-500">Checking…</p>
+        </div>
+      </main>
+    );
+  }
+
   return (
     <main className="min-h-screen flex items-center justify-center px-6 py-12">
       <div className="w-full max-w-md">
@@ -105,6 +136,63 @@ function LoginInner() {
               : 'Sign in to keep creating.'}
           </p>
 
+          {/* v19: parent/kid gate before showing signup form */}
+          {mode === 'signup' && signupRole === 'unknown' && (
+            <div className="space-y-4">
+              <p className="text-center font-bold text-ink-900 mb-2">
+                Quick question first — who's signing up?
+              </p>
+              <button
+                type="button"
+                onClick={() => setSignupRole('parent')}
+                className="w-full p-4 rounded-2xl border-4 border-coral-300 bg-coral-300/20 hover:bg-coral-300/40 text-left transition-colors"
+              >
+                <div className="font-display font-bold text-lg text-ink-900">👩 I'm a grown-up</div>
+                <div className="text-sm text-ink-700">I'll set up an account and add my kid(s).</div>
+              </button>
+              <button
+                type="button"
+                onClick={() => setSignupRole('kid')}
+                className="w-full p-4 rounded-2xl border-4 border-sparkle-300 bg-sparkle-300/20 hover:bg-sparkle-300/40 text-left transition-colors"
+              >
+                <div className="font-display font-bold text-lg text-ink-900">🧒 I'm a kid</div>
+                <div className="text-sm text-ink-700">I want to draw!</div>
+              </button>
+              <button
+                type="button"
+                onClick={() => setMode('login')}
+                className="w-full text-center text-sm text-ink-500 hover:text-ink-900 mt-4"
+              >
+                Already have an account? Sign in →
+              </button>
+            </div>
+          )}
+
+          {/* v19: friendly redirect for kids */}
+          {mode === 'signup' && signupRole === 'kid' && (
+            <div className="text-center space-y-4">
+              <div className="text-6xl mb-2">🐰💕</div>
+              <p className="font-display font-bold text-lg text-ink-900">
+                Yay! Welcome to Payton's Art Club!
+              </p>
+              <p className="text-ink-700">
+                A grown-up needs to set up your account first. Show this screen to a parent or guardian and ask them to help you sign up — it only takes a minute!
+              </p>
+              <p className="text-sm text-ink-500">
+                (For grown-ups: tap "I'm a grown-up" below to continue.)
+              </p>
+              <Button
+                variant="secondary"
+                size="lg"
+                onClick={() => setSignupRole('unknown')}
+              >
+                ← Go back
+              </Button>
+            </div>
+          )}
+
+          {/* Original signup/login form — only shown to parents or for login */}
+          {(mode === 'login' || (mode === 'signup' && signupRole === 'parent')) && (
           <form onSubmit={handleSubmit} className="space-y-4">
             {mode === 'signup' && (
               <div>
@@ -178,6 +266,7 @@ function LoginInner() {
                 : 'Sign In'}
             </Button>
           </form>
+          )}
 
           <div className="mt-6 text-center text-sm text-ink-700">
             {mode === 'signup' ? (

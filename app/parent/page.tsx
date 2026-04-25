@@ -10,6 +10,7 @@ import { createClient } from '@/lib/supabase/client';
 import { useKidStore } from '@/lib/store';
 import { removeFriend, markFriendshipsSeen } from '@/lib/friends';
 import { useEntitlement } from '@/lib/useEntitlement';
+import PasswordConfirm from '@/components/PasswordConfirm';
 import { useIsMobile } from '@/lib/useIsMobile';
 import MobileBottomNav from '@/components/MobileBottomNav';
 import type { Kid, FriendInfo } from '@/lib/types';
@@ -84,6 +85,9 @@ function SubscriptionSection() {
   const { entitlement, loading, refresh } = useEntitlement();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // v19: password gate state. When set to a function, that function will run
+  // after the user confirms their password.
+  const [pendingAction, setPendingAction] = useState<null | (() => void)>(null);
 
   // If Stripe isn't configured on this environment, hide the whole card —
   // there's nothing to subscribe to.
@@ -99,7 +103,8 @@ function SubscriptionSection() {
     );
   }
 
-  async function startCheckout() {
+  // v19: actual checkout request, runs after password confirmation
+  async function doCheckout() {
     setBusy(true);
     setError(null);
     try {
@@ -115,7 +120,8 @@ function SubscriptionSection() {
     }
   }
 
-  async function openPortal() {
+  // v19: actual portal request, runs after password confirmation
+  async function doPortal() {
     setBusy(true);
     setError(null);
     try {
@@ -131,9 +137,19 @@ function SubscriptionSection() {
     }
   }
 
+  // v19: button handlers — open password gate first, run action after confirm
+  function startCheckout() {
+    setPendingAction(() => doCheckout);
+  }
+
+  function openPortal() {
+    setPendingAction(() => doPortal);
+  }
+
   // Not subscribed — show upsell
   if (!entitlement.hasPremium) {
     return (
+      <>
       <div className="card-cozy p-6 mb-6 bg-gradient-to-br from-sparkle-300/30 to-coral-300/30">
         <h3 className="heading-3 mb-2">⭐ Unlock all bonus worlds</h3>
         <p className="text-ink-700 mb-4">
@@ -150,6 +166,14 @@ function SubscriptionSection() {
           </p>
         )}
       </div>
+      <PasswordConfirm
+        open={pendingAction !== null}
+        onClose={() => setPendingAction(null)}
+        onConfirmed={() => { pendingAction?.(); setPendingAction(null); }}
+        title="Confirm to start trial"
+        subtitle="Just confirming it's you, not a curious kiddo."
+      />
+      </>
     );
   }
 
@@ -170,6 +194,7 @@ function SubscriptionSection() {
     : entitlement.currentPeriodEnd;
 
   return (
+    <>
     <div className="card-cozy p-6 mb-6 bg-meadow-300/30">
       <div className="flex items-start gap-3 flex-wrap">
         <div className="flex-1 min-w-[220px]">
@@ -195,6 +220,14 @@ function SubscriptionSection() {
         </p>
       )}
     </div>
+    <PasswordConfirm
+      open={pendingAction !== null}
+      onClose={() => setPendingAction(null)}
+      onConfirmed={() => { pendingAction?.(); setPendingAction(null); }}
+      title="Confirm to manage billing"
+      subtitle="Just confirming it's you, not a curious kiddo."
+    />
+    </>
   );
 }
 

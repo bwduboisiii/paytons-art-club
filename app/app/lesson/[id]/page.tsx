@@ -50,7 +50,7 @@ export default function LessonPage({ params }: { params: { id: string } }) {
   const startTime = useRef(Date.now());
   const isMobile = useIsMobile();
   const [canvasSize, setCanvasSize] = useState({ width: 800, height: 600 });
-  const [buddyMood, setBuddyMood] = useState<'happy' | 'cheering' | 'thinking' | 'idle'>('happy');
+  // v19: removed buddyMood state — buddy stays 'happy' to avoid parent re-renders during strokes
 
   useEffect(() => {
     function resize() {
@@ -112,10 +112,11 @@ export default function LessonPage({ params }: { params: { id: string } }) {
   const currentStep = lesson.steps[stepIdx];
   const isLastStep = stepIdx === lesson.steps.length - 1;
 
-  function onStrokeComplete() {
-    setBuddyMood('cheering');
-    setTimeout(() => setBuddyMood('happy'), 500);
-  }
+  // v19: stable callback (no state updates inside) so React.memo on DrawingCanvas
+  // works. Buddy mood reaction was triggering parent re-renders on every stroke.
+  const onStrokeComplete = useCallback(() => {
+    // Intentionally empty.
+  }, []);
 
   function handleFinishDrawing() { setPhase('remix'); }
 
@@ -261,26 +262,14 @@ export default function LessonPage({ params }: { params: { id: string } }) {
               )}
 
               <div className="flex-1 flex items-center justify-center overflow-hidden px-2 md:px-4">
-                <div className="relative">
-                  <DrawingCanvas
-                    ref={canvasRef}
-                    width={canvasSize.width} height={canvasSize.height}
-                    color={color} brushWidth={brushWidth} tool={tool}
-                    referencePaths={phase === 'drawing' ? referencePaths : []}
-                    traceMode={phase === 'drawing' && lesson.guidance_level.startsWith('trace')}
-                    onStroke={onStrokeComplete}
-                  />
-                  {/* Buddy anchored bottom-left of canvas during drawing/remix */}
-                  {(phase === 'drawing' || phase === 'remix') && activeKid && (
-                    <div className="absolute bottom-2 left-2 z-10 pointer-events-none">
-                      <FloatingBuddy
-                        character={activeKid.avatar_key as any}
-                        mood={buddyMood} message={buddyMessage}
-                        anchored
-                      />
-                    </div>
-                  )}
-                </div>
+                <DrawingCanvas
+                  ref={canvasRef}
+                  width={canvasSize.width} height={canvasSize.height}
+                  color={color} brushWidth={brushWidth} tool={tool}
+                  referencePaths={phase === 'drawing' ? referencePaths : []}
+                  traceMode={phase === 'drawing' && lesson.guidance_level.startsWith('trace')}
+                  onStroke={onStrokeComplete}
+                />
               </div>
 
               {!isMobile && (
@@ -409,6 +398,16 @@ export default function LessonPage({ params }: { params: { id: string } }) {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* v19: buddy as separate fixed sibling outside canvas DOM tree */}
+      {(phase === 'drawing' || phase === 'remix') && activeKid && (
+        <FloatingBuddy
+          character={activeKid.avatar_key as any}
+          mood="happy"
+          message={buddyMessage}
+          defaultCollapsed={false}
+        />
+      )}
     </main>
   );
 }

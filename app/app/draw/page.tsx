@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Button from '@/components/Button';
@@ -36,7 +36,8 @@ export default function FreeDrawPage() {
   const [voiceRecorderOpen, setVoiceRecorderOpen] = useState(false);
   const [voiceSaved, setVoiceSaved] = useState(false);
   const [title, setTitle] = useState('My Masterpiece');
-  const [buddyMood, setBuddyMood] = useState<'happy' | 'cheering' | 'thinking' | 'idle'>('happy');
+  // v19: removed buddyMood state — buddy is always 'happy' now to avoid
+  // parent re-renders during strokes.
 
   useEffect(() => {
     function resize() {
@@ -76,10 +77,13 @@ export default function FreeDrawPage() {
     return () => window.removeEventListener('beforeunload', handler);
   }, [savedId]);
 
-  function onStrokeComplete() {
-    setBuddyMood('cheering');
-    setTimeout(() => setBuddyMood('happy'), 500);
-  }
+  // v19: stable callback (no state updates inside) so React.memo on DrawingCanvas
+  // works. Buddy mood reaction was triggering parent re-renders on every stroke
+  // which races with in-flight stroke rendering. Buddy stays in 'happy' mode now.
+  const onStrokeComplete = useCallback(() => {
+    // Intentionally empty. If we want to react to strokes later, do it via
+    // a ref-based mechanism that doesn't trigger re-renders during strokes.
+  }, []);
 
   async function handleSave() {
     setSaving(true); setSaveError(null);
@@ -187,30 +191,12 @@ export default function FreeDrawPage() {
         )}
 
         <div className="flex-1 flex flex-col items-center justify-center overflow-hidden px-2 md:px-4 relative">
-          <div className="relative">
-            <DrawingCanvas
-              ref={canvasRef}
-              width={canvasSize.width} height={canvasSize.height}
-              color={color} brushWidth={brushWidth} tool={tool}
-              onStroke={onStrokeComplete}
-            />
-            {/* Buddy anchored to bottom-left of the canvas itself */}
-            {activeKid && (
-              <div className="absolute bottom-2 left-2 z-10 pointer-events-none">
-                <FloatingBuddy
-                  character={activeKid.avatar_key as any}
-                  mood={buddyMood}
-                  defaultCollapsed={false}
-                  anchored
-                  encouragements={[
-                    'Wow! So creative!', 'I love this!', 'Try a new tool!',
-                    'Keep going!', 'Beautiful!', '✨ Magical! ✨',
-                    'More colors, more colors!', 'You\'re an artist!',
-                  ]}
-                />
-              </div>
-            )}
-          </div>
+          <DrawingCanvas
+            ref={canvasRef}
+            width={canvasSize.width} height={canvasSize.height}
+            color={color} brushWidth={brushWidth} tool={tool}
+            onStroke={onStrokeComplete}
+          />
         </div>
 
         {!isMobile && (
@@ -253,6 +239,20 @@ export default function FreeDrawPage() {
               <span className="text-[10px] font-bold text-ink-900 mt-0.5">Stickers</span>
             </button>
           }
+        />
+      )}
+
+      {/* v19: buddy back as separate fixed sibling — outside canvas DOM tree */}
+      {activeKid && (
+        <FloatingBuddy
+          character={activeKid.avatar_key as any}
+          mood="happy"
+          defaultCollapsed={false}
+          encouragements={[
+            'Wow! So creative!', 'I love this!', 'Try a new tool!',
+            'Keep going!', 'Beautiful!', '✨ Magical! ✨',
+            'More colors, more colors!', 'You\'re an artist!',
+          ]}
         />
       )}
     </main>

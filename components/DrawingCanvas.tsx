@@ -7,6 +7,7 @@ import {
   useImperativeHandle,
   forwardRef,
   useCallback,
+  memo,
 } from 'react';
 import type { Stroke, PlacedSticker, CanvasState } from '@/lib/types';
 import { DRAWING_TOOLS, type DrawingToolId } from '@/lib/drawingTools';
@@ -1117,4 +1118,9 @@ const DrawingCanvas = forwardRef<DrawingCanvasHandle, Props>(function DrawingCan
   );
 });
 
-export default DrawingCanvas;
+// v19: React.memo prevents re-renders when parent state changes that don't
+// affect canvas props. Critical for preventing mid-stroke render races caused
+// by parent state updates (e.g. setBuddyMood after a stroke).
+const MemoizedDrawingCanvas = memo(DrawingCanvas);
+
+export default MemoizedDrawingCanvas;
