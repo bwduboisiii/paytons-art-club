@@ -1,168 +1,109 @@
-# Payton's Art Club — v10 / Pass D-2: Stripe Premium Tier 💳
+# Payton's Art Club — v11: Mobile-First UI 📱
 
 ## What's new
 
-### For kids
-- **Lock icons on bonus worlds** when the parent hasn't subscribed. Dino Land, Fairy Garden, Food Friends, and Vehicle Village now show 🔒 Unlock instead of ⭐ Bonus.
-- **Kid-friendly upsell screen** when they try to enter a locked world: *"{World name} is a bonus world! Ask a grown-up to unlock."* — with a big button that takes them to the parent dashboard.
+### 📱 Genuinely mobile-friendly UX
 
-### For parents
-- **Subscription section on parent dashboard** with three states:
-  - **Not subscribed**: "Start free trial" button (7-day trial, then $4.99/month)
-  - **Active / Trialing**: Shows status + renewal/trial-end date + "Manage subscription" button (opens Stripe billing portal)
-  - **Past due**: Flags payment issue but keeps premium access (Stripe's normal grace period)
-- **Automatic status updates** via Stripe webhook — when someone subscribes/cancels/upgrades, the app reflects it within seconds.
-- **Success and cancel banners** after returning from Stripe checkout.
+The app now detects whether you're on a phone or computer and shows a meaningfully different UI on each.
 
-### Graceful degradation 🎁
-**If you don't configure Stripe, nothing breaks.** The premium gating is silently disabled — all worlds stay free, no upsell screens, no subscription section on the parent dashboard. The app behaves exactly like v9 until you actually set up Stripe. **You can deploy v10 safely today and add Stripe later.**
+**On phones (< 768px wide + touch):**
+- **Bottom nav bar** — 5-button thumb-reachable nav (Home, Play, Friends, Art, Parent) with safe-area-aware padding for iPhone notches
+- **Fullscreen lightbox** — gallery artwork opens to full screen with **swipe gestures** (left/right) to browse between drawings
+- **Floating drawing toolbar** — tools, colors, and brush size live in a bottom toolbar; tapping any opens a smooth bottom-sheet drawer
+- **Canvas takes the whole screen** — no sidebars stealing real estate
+- **Bottom-sheet modals** — anywhere a modal would normally pop up centered, on mobile it slides up from the bottom
+
+**On desktops/laptops (≥ 768px or no touch):**
+- Everything looks exactly like v10 (top nav, sidebars, centered modals)
+- No regression in desktop experience
+
+### How device detection works
+
+A new `useIsMobile()` hook checks two signals:
+1. Viewport width < 768px
+2. Touch capability (`pointer: coarse` media query or `ontouchstart`)
+
+Both must be true for mobile UI to kick in. This avoids false positives:
+- Resized desktop windows stay desktop (no touch)
+- Laptops with touchscreens stay desktop (wide viewport)
+- Phones get mobile UI, small tablets in portrait do too
+
+The detection runs on every resize/orientation change, so rotating the phone updates the layout instantly.
 
 ---
 
 ## How to apply
 
-### Step 1: Run the Stripe schema SQL
+### Step 1: Swap folders (no SQL needed)
 
-1. Supabase → SQL Editor → **New query**
-2. Paste contents of `supabase/stripe_schema.sql`
-3. Click **Run**
-4. Should say "Success"
+v11 is purely a UI change. **No database migrations.**
 
-This creates: `parents` table with RLS, `my_entitlement` view, signup trigger, backfills existing users.
+1. Back up v10 folder, unzip v11, copy `.git` over
+2. `git add . && git commit -m "v11: mobile-first UI" && git push`
+3. Vercel auto-deploys in 2-3 minutes
+4. Hard refresh on desktop AND on your phone
 
-### Step 2: Deploy the code (Stripe-free mode)
+### Step 2: Test on actual phone
 
-At this point you can already ship v10. Stripe is not required.
+This is critical. Open the live site on Payton's iPad/your phone and:
 
-1. Back up v9 folder, unzip v10, copy `.git` over
-2. `git add . && git commit -m "v10: stripe premium tier (graceful degradation)" && git push`
-3. Vercel will auto-deploy in 2-3 minutes
-4. Hard refresh live site
+- [ ] Home screen — bottom nav appears at bottom with 5 buttons
+- [ ] Tap each bottom nav item — page navigates correctly
+- [ ] Gallery → tap an artwork — opens fullscreen, can swipe between
+- [ ] Start a lesson — canvas is big, tools/colors are bottom buttons
+- [ ] Tap "Tool" button — bottom sheet slides up with tools
+- [ ] Pick a tool — sheet closes and you're back drawing
+- [ ] Same for "Color" and "Size" buttons
+- [ ] Tap the "Done!" button at top-right of canvas — should advance
+- [ ] Free Draw works the same way
 
-**After this step, everything works exactly like v9.** Free mode, all worlds accessible, no upsells.
+### Step 3: Test desktop hasn't regressed
 
-### Step 3 (OPTIONAL): Set up Stripe
-
-Do this only if you actually want to start charging for premium. Skip if Payton is the only user.
-
-#### 3a. Create a Stripe account
-
-1. Go to https://stripe.com → Sign up
-2. Use test mode initially (toggle in dashboard top-right). Test mode lets you use fake card numbers.
-
-#### 3b. Create the product + price
-
-1. Stripe Dashboard → **Products** → **Add product**
-2. Name: "Payton's Art Club Premium"
-3. Pricing: Recurring, $4.99 USD, billed monthly
-4. Save. Copy the **Price ID** (starts with `price_...`) — you'll need it
-
-#### 3c. Get your API keys
-
-1. Stripe Dashboard → **Developers** → **API keys**
-2. Copy:
-   - **Publishable key** (starts with `pk_test_...` or `pk_live_...`)
-   - **Secret key** (starts with `sk_test_...` or `sk_live_...`)
-
-#### 3d. Add environment variables to Vercel
-
-1. Vercel → your project → Settings → **Environment Variables**
-2. Add these:
-
-```
-NEXT_PUBLIC_STRIPE_PUBLIC_KEY=pk_test_...
-STRIPE_SECRET_KEY=sk_test_...
-STRIPE_PRICE_ID=price_...
-SUPABASE_SERVICE_ROLE_KEY=<from Supabase settings → API → service_role>
-NEXT_PUBLIC_SITE_URL=https://your-site.vercel.app
-```
-
-3. Apply to: Production (and Preview if you want trial there too)
-4. Redeploy the project so env vars take effect
-
-#### 3e. Set up the webhook
-
-This is the critical step for subscriptions to actually activate. Without the webhook, users can pay but their `has_premium` flag never flips.
-
-1. Stripe Dashboard → **Developers** → **Webhooks** → **Add endpoint**
-2. **Endpoint URL**: `https://your-site.vercel.app/api/stripe/webhook`
-3. **Events to listen for** (click "Select events" and add these):
-   - `checkout.session.completed`
-   - `customer.subscription.created`
-   - `customer.subscription.updated`
-   - `customer.subscription.deleted`
-   - `invoice.payment_failed`
-4. Click **Add endpoint**
-5. On the endpoint detail page, find **Signing secret** → Reveal → Copy it (starts with `whsec_...`)
-6. Add to Vercel env vars: `STRIPE_WEBHOOK_SECRET=whsec_...`
-7. Redeploy so the webhook handler can verify signatures
-
-#### 3f. Test the full flow
-
-Using Stripe **test mode**:
-
-1. Go to your live parent dashboard
-2. Scroll to subscription section → "Start free trial"
-3. Stripe Checkout opens
-4. Use Stripe test card: **4242 4242 4242 4242**, any future expiry, any CVC, any zip
-5. Complete checkout — should redirect back with "🎉 Subscription started!" banner
-6. Wait ~5 seconds, refresh the page — subscription section should show "⭐ Premium active"
-7. Go to home → premium worlds should no longer say 🔒 Unlock
-8. Click a premium world → should load lessons (not the upsell)
-
-If the banner shows but premium doesn't activate: webhook issue. Stripe Dashboard → Developers → Webhooks → click your endpoint → look at recent deliveries. If all 4xx/5xx: check your STRIPE_WEBHOOK_SECRET is correct and redeployed.
-
-#### 3g. Going live
-
-When ready to charge real money:
-
-1. Stripe Dashboard → toggle from Test to Live mode
-2. Re-create your product + price in Live mode (test-mode products don't carry over)
-3. Replace env vars in Vercel with `pk_live_...` and `sk_live_...` keys
-4. Re-create the webhook endpoint in Live mode with a new signing secret
-5. Redeploy
+- [ ] Open on laptop — looks identical to v10
+- [ ] Top nav still has 4 buttons (Play, Friends, Art, Parent)
+- [ ] Lessons still have left/right sidebars for tools/colors
+- [ ] Gallery lightbox is centered modal, not fullscreen
 
 ---
 
-## Known limitations / rough edges
+## Known rough edges
 
-- **App Store compliance**: If you ever wrap this as an iOS/Android app, Apple/Google require their in-app purchase (30% cut). This Stripe setup only works for the web version. If you plan to publish to app stores, plan separately for IAP.
-- **Stripe Tax**: I enabled automatic tax collection. Depending on your jurisdiction, Stripe may charge a small additional fee (~0.5%) for tax handling.
-- **No usage-based pricing**: Flat $4.99/month. If you want tiered or usage-based pricing later, Stripe supports it but needs schema changes.
-- **Webhook race**: On first subscribe, there's a brief window (~1-5s) between Stripe Checkout redirecting back and the webhook firing. During that window, the parent dashboard may still show "Start free trial." The UI auto-refreshes on focus/visibility change — usually resolves itself.
-- **Shared family access**: Premium is stored on the parent row, so all kids under that parent get access together. If two parents share the app (different auth accounts), they each need their own subscription. There's no "family sharing" flow.
-- **No proration preview**: If you change the price later, existing subscribers' changes happen through Stripe's standard proration. I don't surface it in-app.
-- **No invoicing UI**: Parents see status + portal link. For invoice downloads, they go through the Stripe portal.
+- **Tool/color pickers in the bottom sheet** scroll vertically rather than displaying as a tight grid. Functional but not perfect — phones with smaller screens may need to scroll within the sheet to find the tool they want. Refining this requires rebuilding the picker components, deferred.
+- **The companion (FloatingBuddy)** is still positioned with the desktop sidebar offset in mind. On mobile it might overlap the bottom toolbar. Acceptable for now; refining requires a bigger rework of FloatingBuddy.
+- **Canvas size on very tiny phones (320px wide)** can become smaller than ideal. Tested OK on 375px+ (iPhone SE and up).
+- **Landscape orientation** isn't specially optimized — it works because the layouts are flexible, but the bottom toolbar takes a lot of vertical space when the screen is short. Best experience is portrait.
+- **The mobile bottom nav appears on every page including the Lesson and Free Draw pages** — but those pages already have their own floating toolbar at the bottom. They use `position: fixed; z-index: 30` which competes. v11 hides the mobile bottom nav on lesson/draw pages because they have their own bottom toolbar. (Verify by inspecting — this is correct behavior.)
 
----
-
-## What happens if you DON'T set up Stripe
-
-Nothing. Exactly like v9. The `stripeConfigured` flag is derived from `NEXT_PUBLIC_STRIPE_PUBLIC_KEY` being present. If it's empty, `hasEffectivePremium()` returns `true` for everyone, every world is accessible, and the subscription section on the parent dashboard is hidden entirely.
-
-You can deploy v10 today, decide in a month whether to sell access, and flip it on by adding env vars. No code changes.
+Wait, actually I need to clarify that last bullet: the lesson/draw pages don't import MobileBottomNav, so it's not rendered there. Only the toolbar shows. That's the right behavior.
 
 ---
 
-## What's NOT in this pass
+## What's NOT changed
 
-- **Pass D-3: Polish** (sticker flicker deep fix, SVG lesson cleanups, multiplayer stress notes)
-- **Pass D-4: Final gap audit + packaging**
-
-Both independent from Stripe. Can ship in either order.
+- Backend / database / Stripe / webhooks: untouched
+- All features: same set, same behavior
+- Auth flow: same
+- Voice recording, friends, multiplayer: same code, just look better on phone now
 
 ---
 
-## Bigger picture
+## What you should feel different
 
-With v10, Payton's Art Club is now a real SaaS product if you want it to be:
-- Custom drawing engine + 31 lessons + 15 tools + 16 avatars
-- Multi-kid profiles + parent dashboard + math-gated parent zone
-- Friend system with codes and shared galleries
-- Real-time multiplayer draw-and-guess game
-- Voice recording attached to artwork
-- Subscription-based premium tier with 7-day trial
+**As Payton (on iPad):**
+- "I can see my whole drawing now!"
+- Tapping color buttons opens a panel that's the size of her thumb, not a tiny sidebar swatch
+- Browsing her gallery feels like swiping through Instagram
 
-That's a shippable product. If you want to share it with other families, the infrastructure is there. If Payton remains the only user, none of this costs you anything — Supabase free tier covers you until thousands of users, and Stripe only charges fees on real transactions.
+**As you (on laptop):**
+- Nothing should feel different. If anything regressed on desktop, that's a bug — tell me what page
 
-Good work. Whatever you decide to do with this, you built something real.
+---
+
+## Pass D-3 / D-4 status
+
+We skipped ahead from the linear plan (D-3 polish, D-4 final audit) because mobile felt more important. Those passes still exist as future work:
+
+- **D-3 polish**: sticker flicker hardening, SVG lesson cleanups, multiplayer stress notes
+- **D-4 final audit**: comprehensive gap audit pass like we did before
+
+Mobile is shipped. The remaining backlog is small and not blocking anything.

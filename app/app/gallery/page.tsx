@@ -7,10 +7,13 @@ import Button from '@/components/Button';
 import Companion from '@/components/Companion';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import VoicePlayer from '@/components/VoicePlayer';
+import MobileBottomNav from '@/components/MobileBottomNav';
 import { useKidStore } from '@/lib/store';
+import { useIsMobile } from '@/lib/useIsMobile';
 import { createClient } from '@/lib/supabase/client';
 import type { Artwork } from '@/lib/types';
 import { formatRelativeDate } from '@/lib/utils';
+import clsx from 'clsx';
 
 interface GalleryItem extends Artwork {
   signed_url?: string;
@@ -22,6 +25,7 @@ const URL_TTL_SECONDS = 60 * 60; // 1 hour
 
 export default function GalleryPage() {
   const activeKid = useKidStore((s) => s.activeKid);
+  const isMobile = useIsMobile();
   const [items, setItems] = useState<GalleryItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
@@ -231,15 +235,38 @@ export default function GalleryPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-ink-900/85 backdrop-blur-sm flex items-center justify-center p-4"
+            className={clsx(
+              'fixed inset-0 z-50 bg-ink-900/85 backdrop-blur-sm flex items-stretch md:items-center justify-center',
+              isMobile ? 'p-0' : 'p-4'
+            )}
             onClick={() => setLightboxIdx(null)}
           >
             <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
+              initial={isMobile ? { y: '100%' } : { scale: 0.9, opacity: 0 }}
+              animate={isMobile ? { y: 0 } : { scale: 1, opacity: 1 }}
+              exit={isMobile ? { y: '100%' } : { scale: 0.9, opacity: 0 }}
+              transition={
+                isMobile ? { type: 'spring', damping: 30, stiffness: 300 } : undefined
+              }
+              drag={isMobile ? 'x' : false}
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.3}
+              onDragEnd={(_, info) => {
+                if (!isMobile) return;
+                // Swipe left = next, swipe right = previous
+                if (info.offset.x < -80 && lightboxIdx < items.length - 1) {
+                  setLightboxIdx(lightboxIdx + 1);
+                } else if (info.offset.x > 80 && lightboxIdx > 0) {
+                  setLightboxIdx(lightboxIdx - 1);
+                }
+              }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-cream-50 rounded-squircle shadow-float max-w-3xl w-full max-h-[90vh] flex flex-col"
+              className={clsx(
+                'bg-cream-50 flex flex-col',
+                isMobile
+                  ? 'w-full h-full pb-[env(safe-area-inset-bottom)]'
+                  : 'rounded-squircle shadow-float max-w-3xl w-full max-h-[90vh]'
+              )}
             >
               <div className="flex items-center justify-between p-4 border-b-2 border-cream-100">
                 <div>
@@ -248,23 +275,31 @@ export default function GalleryPage() {
                   </h2>
                   <p className="text-xs text-ink-500">
                     {formatRelativeDate(items[lightboxIdx].created_at)}
+                    {isMobile && items.length > 1 && (
+                      <span className="ml-2 text-ink-400">
+                        · {lightboxIdx + 1} of {items.length}
+                      </span>
+                    )}
                   </p>
                 </div>
                 <button
                   onClick={() => setLightboxIdx(null)}
-                  className="w-10 h-10 rounded-full hover:bg-cream-100 transition-colors"
+                  className="w-10 h-10 rounded-full hover:bg-cream-100 transition-colors text-xl"
                   aria-label="Close"
                 >
                   ✕
                 </button>
               </div>
-              <div className="flex-1 overflow-auto p-6 flex flex-col items-center justify-center gap-4 bg-cream-100">
+              <div className="flex-1 overflow-auto p-4 md:p-6 flex flex-col items-center justify-center gap-4 bg-cream-100">
                 {items[lightboxIdx].signed_url && (
                   /* eslint-disable-next-line @next/next/no-img-element */
                   <img
                     src={items[lightboxIdx].signed_url}
                     alt={items[lightboxIdx].title || 'Artwork'}
-                    className="max-w-full max-h-[55vh] rounded-2xl shadow-float"
+                    className={clsx(
+                      'max-w-full rounded-2xl shadow-float',
+                      isMobile ? 'max-h-[45vh]' : 'max-h-[55vh]'
+                    )}
                   />
                 )}
                 {items[lightboxIdx].voice_signed_url && (
@@ -273,6 +308,11 @@ export default function GalleryPage() {
                     durationSec={items[lightboxIdx].voice_note_duration_seconds}
                     variant="full"
                   />
+                )}
+                {isMobile && items.length > 1 && (
+                  <p className="text-xs text-ink-500 italic">
+                    ← swipe to browse →
+                  </p>
                 )}
               </div>
               <div className="p-4 border-t-2 border-cream-100 flex flex-wrap justify-center gap-2">
@@ -318,6 +358,9 @@ export default function GalleryPage() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {isMobile && <div className="h-20" aria-hidden />}
+      {isMobile && <MobileBottomNav />}
     </main>
   );
 }

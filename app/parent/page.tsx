@@ -10,6 +10,8 @@ import { createClient } from '@/lib/supabase/client';
 import { useKidStore } from '@/lib/store';
 import { removeFriend, markFriendshipsSeen } from '@/lib/friends';
 import { useEntitlement } from '@/lib/useEntitlement';
+import { useIsMobile } from '@/lib/useIsMobile';
+import MobileBottomNav from '@/components/MobileBottomNav';
 import type { Kid, FriendInfo } from '@/lib/types';
 import clsx from 'clsx';
 
@@ -198,6 +200,7 @@ function SubscriptionSection() {
 
 export default function ParentPage() {
   const router = useRouter();
+  const isMobile = useIsMobile();
   // Read checkout query param from URL directly (avoids useSearchParams which
   // would require Suspense wrapping in Next.js 14 static generation).
   const [checkoutStatus, setCheckoutStatus] = useState<string | null>(null);
@@ -642,6 +645,9 @@ export default function ParentPage() {
           </Button>
         </div>
       </section>
+
+      {isMobile && <div className="h-20" aria-hidden />}
+      {isMobile && <MobileBottomNav />}
     </main>
   );
 }

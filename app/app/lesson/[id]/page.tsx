@@ -9,6 +9,7 @@ import Companion from '@/components/Companion';
 import ColorPaletteVertical from '@/components/ColorPaletteVertical';
 import BrushSizer from '@/components/BrushSizer';
 import ToolPickerVertical from '@/components/ToolPickerVertical';
+import MobileDrawingToolbar from '@/components/MobileDrawingToolbar';
 import FloatingBuddy from '@/components/FloatingBuddy';
 import StickerTray from '@/components/StickerTray';
 import VoiceRecorder from '@/components/VoiceRecorder';
@@ -16,6 +17,7 @@ import Confetti from '@/components/Confetti';
 import DrawingCanvas, { type DrawingCanvasHandle } from '@/components/DrawingCanvas';
 import { getLesson } from '@/lib/lessons';
 import { useKidStore } from '@/lib/store';
+import { useIsMobile } from '@/lib/useIsMobile';
 import { createClient } from '@/lib/supabase/client';
 import { safeUUID, MAX_ARTWORK_BYTES } from '@/lib/utils';
 import type { DrawingToolId } from '@/lib/drawingTools';
@@ -45,18 +47,31 @@ export default function LessonPage({ params }: { params: { id: string } }) {
   const [voiceNoteSaved, setVoiceNoteSaved] = useState(false);
   const [voiceSkipped, setVoiceSkipped] = useState(false);
   const startTime = useRef(Date.now());
+  const isMobile = useIsMobile();
   const [canvasSize, setCanvasSize] = useState({ width: 800, height: 600 });
   const [buddyMood, setBuddyMood] = useState<'happy' | 'cheering' | 'thinking' | 'idle'>('happy');
 
   useEffect(() => {
     function resize() {
-      const availW = window.innerWidth - SIDEBAR_W * 2 - 40 - 32;
-      const availH = window.innerHeight - 120 - 72 - 32;
+      const mobile = window.innerWidth < 768;
+      let availW: number;
+      let availH: number;
+      if (mobile) {
+        // Mobile: full-width, top header (~110px) + progress dots (~24px) + bottom toolbar (~90px) + safe areas
+        availW = window.innerWidth - 16;
+        availH = window.innerHeight - 110 - 24 - 90 - 16;
+      } else {
+        availW = window.innerWidth - SIDEBAR_W * 2 - 40 - 32;
+        availH = window.innerHeight - 120 - 72 - 32;
+      }
       const ratio = 4 / 3;
       let w = Math.min(availW, availH * ratio, 1100);
       let h = w / ratio;
       if (h > availH) { h = availH; w = h * ratio; }
-      setCanvasSize({ width: Math.max(400, w), height: Math.max(300, h) });
+      setCanvasSize({
+        width: Math.max(mobile ? 280 : 400, w),
+        height: Math.max(mobile ? 210 : 300, h),
+      });
     }
     resize();
     window.addEventListener('resize', resize);
@@ -243,13 +258,15 @@ export default function LessonPage({ params }: { params: { id: string } }) {
               </div>
             )}
 
-            {/* Main area: left tools | canvas | right colors */}
+            {/* Main area: left tools | canvas | right colors (desktop) or fullscreen canvas (mobile) */}
             <div className="flex-1 flex overflow-hidden min-h-0">
-              <aside className="shrink-0 bg-cream-100/60 border-r-2 border-cream-200 flex flex-col py-2" style={{ width: SIDEBAR_W }}>
-                <ToolPickerVertical value={tool} onChange={setTool} className="flex-1" />
-              </aside>
+              {!isMobile && (
+                <aside className="shrink-0 bg-cream-100/60 border-r-2 border-cream-200 flex flex-col py-2" style={{ width: SIDEBAR_W }}>
+                  <ToolPickerVertical value={tool} onChange={setTool} className="flex-1" />
+                </aside>
+              )}
 
-              <div className="flex-1 flex items-center justify-center overflow-hidden px-4">
+              <div className="flex-1 flex items-center justify-center overflow-hidden px-2 md:px-4">
                 <DrawingCanvas
                   ref={canvasRef}
                   width={canvasSize.width} height={canvasSize.height}
@@ -260,30 +277,72 @@ export default function LessonPage({ params }: { params: { id: string } }) {
                 />
               </div>
 
-              <aside className="shrink-0 bg-cream-100/60 border-l-2 border-cream-200 flex flex-col py-2 px-1" style={{ width: SIDEBAR_W }}>
-                <ColorPaletteVertical selected={color} onChange={setColor} className="flex-1" />
-              </aside>
+              {!isMobile && (
+                <aside className="shrink-0 bg-cream-100/60 border-l-2 border-cream-200 flex flex-col py-2 px-1" style={{ width: SIDEBAR_W }}>
+                  <ColorPaletteVertical selected={color} onChange={setColor} className="flex-1" />
+                </aside>
+              )}
             </div>
 
-            {/* Bottom utility row */}
-            <div className="shrink-0 px-4 py-2 bg-cream-100/60 border-t-2 border-cream-200 flex items-center gap-2 flex-wrap justify-center">
-              <BrushSizer value={brushWidth} onChange={setBrushWidth} />
-              <Button variant="secondary" size="md" onClick={() => canvasRef.current?.undo()}>↶</Button>
-              {phase === 'remix' && (
-                <Button variant="sparkle" size="md" onClick={() => setShowStickerTray(true)}>+ Stickers</Button>
-              )}
-              {phase === 'drawing' ? (
-                !isLastStep ? (
-                  <Button variant="primary" size="lg" onClick={() => setStepIdx((i) => i + 1)}>Next →</Button>
+            {/* Desktop bottom utility row — hidden on mobile (mobile uses floating toolbar below) */}
+            {!isMobile && (
+              <div className="shrink-0 px-4 py-2 bg-cream-100/60 border-t-2 border-cream-200 flex items-center gap-2 flex-wrap justify-center">
+                <BrushSizer value={brushWidth} onChange={setBrushWidth} />
+                <Button variant="secondary" size="md" onClick={() => canvasRef.current?.undo()}>↶</Button>
+                {phase === 'remix' && (
+                  <Button variant="sparkle" size="md" onClick={() => setShowStickerTray(true)}>+ Stickers</Button>
+                )}
+                {phase === 'drawing' ? (
+                  !isLastStep ? (
+                    <Button variant="primary" size="lg" onClick={() => setStepIdx((i) => i + 1)}>Next →</Button>
+                  ) : (
+                    <Button variant="meadow" size="lg" onClick={handleFinishDrawing}>Done! ✨</Button>
+                  )
                 ) : (
-                  <Button variant="meadow" size="lg" onClick={handleFinishDrawing}>Done! ✨</Button>
-                )
-              ) : (
-                <Button variant="primary" size="lg" onClick={handleSaveAndReward} disabled={saving}>
-                  {saving ? 'Saving...' : 'All done! 🎉'}
-                </Button>
-              )}
-            </div>
+                  <Button variant="primary" size="lg" onClick={handleSaveAndReward} disabled={saving}>
+                    {saving ? 'Saving...' : 'All done! 🎉'}
+                  </Button>
+                )}
+              </div>
+            )}
+
+            {/* Mobile floating toolbar */}
+            {isMobile && (
+              <MobileDrawingToolbar
+                tool={tool}
+                onToolChange={setTool}
+                color={color}
+                onColorChange={setColor}
+                brushWidth={brushWidth}
+                onBrushWidthChange={setBrushWidth}
+                onUndo={() => canvasRef.current?.undo()}
+                leftSlot={
+                  phase === 'remix' ? (
+                    <button
+                      onClick={() => setShowStickerTray(true)}
+                      className="flex flex-col items-center justify-center rounded-2xl bg-sparkle-300 active:bg-sparkle-400 px-3 py-2 min-w-[56px]"
+                      aria-label="Stickers"
+                    >
+                      <span className="text-2xl leading-none">✨</span>
+                      <span className="text-[10px] font-bold text-ink-900 mt-0.5">Stickers</span>
+                    </button>
+                  ) : undefined
+                }
+                primaryAction={
+                  phase === 'drawing' ? (
+                    !isLastStep ? (
+                      <Button variant="primary" size="md" onClick={() => setStepIdx((i) => i + 1)}>Next →</Button>
+                    ) : (
+                      <Button variant="meadow" size="md" onClick={handleFinishDrawing}>Done! ✨</Button>
+                    )
+                  ) : (
+                    <Button variant="primary" size="md" onClick={handleSaveAndReward} disabled={saving}>
+                      {saving ? 'Saving...' : 'Done! 🎉'}
+                    </Button>
+                  )
+                }
+              />
+            )}
           </motion.div>
         )}
 

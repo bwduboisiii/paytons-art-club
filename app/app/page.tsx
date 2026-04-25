@@ -13,7 +13,9 @@ import { getDailyLesson } from '@/lib/lessons';
 import { useKidStore } from '@/lib/store';
 import { countUnseenFriendships } from '@/lib/friends';
 import { useEntitlement, hasEffectivePremium } from '@/lib/useEntitlement';
+import { useIsMobile } from '@/lib/useIsMobile';
 import { createClient } from '@/lib/supabase/client';
+import MobileBottomNav from '@/components/MobileBottomNav';
 import type { Kid, World } from '@/lib/types';
 import clsx from 'clsx';
 
@@ -68,6 +70,7 @@ export default function HomePage() {
   const router = useRouter();
   const { activeKid, setActiveKid } = useKidStore();
   const { entitlement } = useEntitlement();
+  const isMobile = useIsMobile();
   const [kids, setKids] = useState<Kid[]>([]);
   const [loading, setLoading] = useState(true);
   const [showBuddyModal, setShowBuddyModal] = useState(false);
@@ -178,15 +181,18 @@ export default function HomePage() {
               </div>
             </Link>
           )}
-          <Link href="/app/game"><Button variant="meadow" size="sm">🎮 Play Game</Button></Link>
-          <Link href="/app/friends"><Button variant="secondary" size="sm">👯 Friends</Button></Link>
-          <Link href="/app/gallery"><Button variant="secondary" size="sm">🖼️ Gallery</Button></Link>
-          <Link href="/parent" className="relative">
-            <Button variant="ghost" size="sm">🔒 Parent</Button>
-            {unseenFriends > 0 && (
-              <span className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-coral-500 ring-2 ring-cream-50" aria-label={`${unseenFriends} new friendships to review`} />
-            )}
-          </Link>
+          {/* Desktop-only top nav — mobile uses MobileBottomNav at the bottom */}
+          <div className="hidden md:flex gap-2 md:gap-3 items-center">
+            <Link href="/app/game"><Button variant="meadow" size="sm">🎮 Play Game</Button></Link>
+            <Link href="/app/friends"><Button variant="secondary" size="sm">👯 Friends</Button></Link>
+            <Link href="/app/gallery"><Button variant="secondary" size="sm">🖼️ Gallery</Button></Link>
+            <Link href="/parent" className="relative">
+              <Button variant="ghost" size="sm">🔒 Parent</Button>
+              {unseenFriends > 0 && (
+                <span className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-coral-500 ring-2 ring-cream-50" aria-label={`${unseenFriends} new friendships to review`} />
+              )}
+            </Link>
+          </div>
         </div>
       </header>
 
@@ -255,12 +261,17 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Spacer so content doesn't hide behind the mobile bottom nav */}
+      {isMobile && <div className="h-20" aria-hidden />}
+
       <BuddyChangeModal
         open={showBuddyModal}
         onClose={() => setShowBuddyModal(false)}
         kids={kids}
         onKidSwitch={(k) => setActiveKid(k)}
       />
+
+      {isMobile && <MobileBottomNav unseenFriends={unseenFriends} />}
     </main>
   );
 }

@@ -7,7 +7,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Button from '@/components/Button';
 import Companion from '@/components/Companion';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import MobileBottomNav from '@/components/MobileBottomNav';
 import { useKidStore } from '@/lib/store';
+import { useIsMobile } from '@/lib/useIsMobile';
 import {
   listFriends,
   addFriendByCode,
@@ -21,6 +23,7 @@ import clsx from 'clsx';
 export default function FriendsPage() {
   const router = useRouter();
   const { activeKid, setActiveKid } = useKidStore();
+  const isMobile = useIsMobile();
   const [kid, setKid] = useState<Kid | null>(null);
   const [friends, setFriends] = useState<FriendInfo[]>([]);
   const [loading, setLoading] = useState(true);
@@ -281,6 +284,9 @@ export default function FriendsPage() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {isMobile && <div className="h-20" aria-hidden />}
+      {isMobile && <MobileBottomNav />}
     </main>
   );
 }

@@ -5,13 +5,16 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Button from '@/components/Button';
 import Companion from '@/components/Companion';
+import MobileBottomNav from '@/components/MobileBottomNav';
 import { useKidStore } from '@/lib/store';
+import { useIsMobile } from '@/lib/useIsMobile';
 import { createClient } from '@/lib/supabase/client';
 import { generateRoomCode } from '@/lib/gameTypes';
 
 export default function GameLandingPage() {
   const router = useRouter();
   const activeKid = useKidStore((s) => s.activeKid);
+  const isMobile = useIsMobile();
   const [joinCode, setJoinCode] = useState('');
   const [creating, setCreating] = useState(false);
   const [joining, setJoining] = useState(false);
@@ -145,6 +148,9 @@ export default function GameLandingPage() {
           </Link>
         </div>
       </section>
+
+      {isMobile && <div className="h-20" aria-hidden />}
+      {isMobile && <MobileBottomNav />}
     </main>
   );
 }
