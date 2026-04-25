@@ -80,12 +80,15 @@ export default function FloatingBuddy({
 
   // When anchored=true, parent positions us — use inline-block, no fixed classes.
   // When anchored=false (default), use fixed positioning at bottom-left of viewport.
+  // v19b: shifted left position so the buddy doesn't overlap the desktop left
+  // toolbar (76px wide). On mobile (no left toolbar) we keep the close-to-edge
+  // position. md: breakpoint matches the toolbar visibility on draw/lesson pages.
   const wrapperClass = anchored
     ? 'pointer-events-none'
-    : 'fixed left-4 bottom-24 md:bottom-20 z-40 pointer-events-none';
+    : 'fixed left-4 md:left-28 bottom-24 md:bottom-20 z-40 pointer-events-none';
   const collapsedWrapperClass = anchored
     ? 'pointer-events-none'
-    : 'fixed left-0 bottom-24 md:bottom-20 z-40 pointer-events-none';
+    : 'fixed left-0 md:left-24 bottom-24 md:bottom-20 z-40 pointer-events-none';
 
   // COLLAPSED MODE: tab on the edge
   if (collapsed) {
