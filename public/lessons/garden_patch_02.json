@@ -1,0 +1,99 @@
+{
+  "id": "garden_patch_02",
+  "world_id": "garden_patch",
+  "order_index": 2,
+  "title": "Apple Tree",
+  "subject": "apple_tree",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": false,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "apple_tree_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Tree trunk",
+      "companion_line": "A tall brown trunk in the middle!",
+      "reference_paths": [
+        "M 380 480 l 0 -100",
+        "M 420 480 l 0 -100",
+        "M 380 380 l 40 0"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Big leafy top",
+      "companion_line": "A big puffy cloud of leaves on top!",
+      "reference_paths": [
+        "M 380 480 l 0 -100",
+        "M 420 480 l 0 -100",
+        "M 380 380 l 40 0",
+        "M 400 250 m -110 0 a 110 90 0 1 0 220 0 a 110 90 0 1 0 -220 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Three apples",
+      "companion_line": "Three round red apples in the leaves!",
+      "reference_paths": [
+        "M 380 480 l 0 -100",
+        "M 420 480 l 0 -100",
+        "M 380 380 l 40 0",
+        "M 400 250 m -110 0 a 110 90 0 1 0 220 0 a 110 90 0 1 0 -220 0",
+        "M 340 250 m -18 0 a 18 18 0 1 0 36 0 a 18 18 0 1 0 -36 0",
+        "M 400 280 m -18 0 a 18 18 0 1 0 36 0 a 18 18 0 1 0 -36 0",
+        "M 460 250 m -18 0 a 18 18 0 1 0 36 0 a 18 18 0 1 0 -36 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Apple stems",
+      "companion_line": "Tiny stems on each apple!",
+      "reference_paths": [
+        "M 380 480 l 0 -100",
+        "M 420 480 l 0 -100",
+        "M 380 380 l 40 0",
+        "M 400 250 m -110 0 a 110 90 0 1 0 220 0 a 110 90 0 1 0 -220 0",
+        "M 340 250 m -18 0 a 18 18 0 1 0 36 0 a 18 18 0 1 0 -36 0",
+        "M 400 280 m -18 0 a 18 18 0 1 0 36 0 a 18 18 0 1 0 -36 0",
+        "M 460 250 m -18 0 a 18 18 0 1 0 36 0 a 18 18 0 1 0 -36 0",
+        "M 340 232 l 0 -10",
+        "M 400 262 l 0 -10",
+        "M 460 232 l 0 -10"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s5",
+      "instruction": "Grass below",
+      "companion_line": "A few blades of grass at the base!",
+      "reference_paths": [
+        "M 380 480 l 0 -100",
+        "M 420 480 l 0 -100",
+        "M 380 380 l 40 0",
+        "M 400 250 m -110 0 a 110 90 0 1 0 220 0 a 110 90 0 1 0 -220 0",
+        "M 340 250 m -18 0 a 18 18 0 1 0 36 0 a 18 18 0 1 0 -36 0",
+        "M 400 280 m -18 0 a 18 18 0 1 0 36 0 a 18 18 0 1 0 -36 0",
+        "M 460 250 m -18 0 a 18 18 0 1 0 36 0 a 18 18 0 1 0 -36 0",
+        "M 340 232 l 0 -10",
+        "M 400 262 l 0 -10",
+        "M 460 232 l 0 -10",
+        "M 350 480 l -5 -15",
+        "M 360 480 l 0 -12",
+        "M 440 480 l 5 -15",
+        "M 450 480 l 0 -12"
+      ],
+      "show_ghost": true
+    }
+  ]
+}

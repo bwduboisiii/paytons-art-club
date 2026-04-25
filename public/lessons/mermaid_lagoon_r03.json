@@ -1,0 +1,70 @@
+{
+  "id": "mermaid_lagoon_r03",
+  "world_id": "mermaid_lagoon",
+  "order_index": 102,
+  "title": "Treasure Chest",
+  "subject": "treasure",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": false,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "treasure_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Chest body",
+      "companion_line": "A wide rectangle chest base!",
+      "reference_paths": [
+        "M 280 470 l 0 -110 l 240 0 l 0 110 z"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Curved lid",
+      "companion_line": "A curvy lid on top!",
+      "reference_paths": [
+        "M 280 470 l 0 -110 l 240 0 l 0 110 z",
+        "M 280 360 q 120 -80 240 0 z"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Lock and bands",
+      "companion_line": "A round lock and metal bands!",
+      "reference_paths": [
+        "M 280 470 l 0 -110 l 240 0 l 0 110 z",
+        "M 280 360 q 120 -80 240 0 z",
+        "M 400 410 m -15 0 a 15 15 0 1 0 30 0 a 15 15 0 1 0 -30 0",
+        "M 280 380 l 240 0",
+        "M 400 380 l 0 -50"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Coins spilling out!",
+      "companion_line": "Gold coins peeking out the top!",
+      "reference_paths": [
+        "M 280 470 l 0 -110 l 240 0 l 0 110 z",
+        "M 280 360 q 120 -80 240 0 z",
+        "M 400 410 m -15 0 a 15 15 0 1 0 30 0 a 15 15 0 1 0 -30 0",
+        "M 280 380 l 240 0",
+        "M 400 380 l 0 -50",
+        "M 320 360 m -10 0 a 10 8 0 1 0 20 0 a 10 8 0 1 0 -20 0",
+        "M 360 350 m -10 0 a 10 8 0 1 0 20 0 a 10 8 0 1 0 -20 0",
+        "M 440 350 m -10 0 a 10 8 0 1 0 20 0 a 10 8 0 1 0 -20 0",
+        "M 480 360 m -10 0 a 10 8 0 1 0 20 0 a 10 8 0 1 0 -20 0"
+      ],
+      "show_ghost": true
+    }
+  ]
+}

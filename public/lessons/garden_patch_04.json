@@ -1,0 +1,92 @@
+{
+  "id": "garden_patch_04",
+  "world_id": "garden_patch",
+  "order_index": 4,
+  "title": "Mushroom House",
+  "subject": "mushroom",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": false,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "mushroom_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Mushroom cap",
+      "companion_line": "Big rounded mushroom top!",
+      "reference_paths": [
+        "M 280 360 q 120 -180 240 0 z"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Mushroom stem",
+      "companion_line": "A short fat stem below.",
+      "reference_paths": [
+        "M 280 360 q 120 -180 240 0 z",
+        "M 340 360 l 0 110",
+        "M 460 360 l 0 110",
+        "M 340 470 q 60 20 120 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Polka dots!",
+      "companion_line": "Spots on top of our mushroom!",
+      "reference_paths": [
+        "M 280 360 q 120 -180 240 0 z",
+        "M 340 360 l 0 110",
+        "M 460 360 l 0 110",
+        "M 340 470 q 60 20 120 0",
+        "M 350 290 m -15 0 a 15 15 0 1 0 30 0 a 15 15 0 1 0 -30 0",
+        "M 450 290 m -15 0 a 15 15 0 1 0 30 0 a 15 15 0 1 0 -30 0",
+        "M 400 250 m -12 0 a 12 12 0 1 0 24 0 a 12 12 0 1 0 -24 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Tiny door",
+      "companion_line": "A little door on the stem!",
+      "reference_paths": [
+        "M 280 360 q 120 -180 240 0 z",
+        "M 340 360 l 0 110",
+        "M 460 360 l 0 110",
+        "M 340 470 q 60 20 120 0",
+        "M 350 290 m -15 0 a 15 15 0 1 0 30 0 a 15 15 0 1 0 -30 0",
+        "M 450 290 m -15 0 a 15 15 0 1 0 30 0 a 15 15 0 1 0 -30 0",
+        "M 400 250 m -12 0 a 12 12 0 1 0 24 0 a 12 12 0 1 0 -24 0",
+        "M 380 410 q 0 -30 20 -30 q 20 0 20 30 l 0 60 l -40 0 z"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s5",
+      "instruction": "Mushroom face",
+      "companion_line": "Add a friendly face on the cap!",
+      "reference_paths": [
+        "M 280 360 q 120 -180 240 0 z",
+        "M 340 360 l 0 110",
+        "M 460 360 l 0 110",
+        "M 340 470 q 60 20 120 0",
+        "M 350 290 m -15 0 a 15 15 0 1 0 30 0 a 15 15 0 1 0 -30 0",
+        "M 450 290 m -15 0 a 15 15 0 1 0 30 0 a 15 15 0 1 0 -30 0",
+        "M 400 250 m -12 0 a 12 12 0 1 0 24 0 a 12 12 0 1 0 -24 0",
+        "M 380 410 q 0 -30 20 -30 q 20 0 20 30 l 0 60 l -40 0 z",
+        "M 370 320 m -5 0 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0",
+        "M 430 320 m -5 0 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0",
+        "M 380 340 q 20 12 40 0"
+      ],
+      "show_ghost": true
+    }
+  ]
+}

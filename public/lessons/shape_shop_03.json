@@ -1,0 +1,105 @@
+{
+  "id": "shape_shop_03",
+  "world_id": "shape_shop",
+  "order_index": 3,
+  "title": "Star Bright",
+  "subject": "star",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": false,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "star_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Top point",
+      "companion_line": "Start at the top point of our star.",
+      "reference_paths": [
+        "M 400 240 l 30 90"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "To the right corner",
+      "companion_line": "Down to the right side.",
+      "reference_paths": [
+        "M 400 240 l 30 90",
+        "M 430 330 l 90 10"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "To the bottom right",
+      "companion_line": "Now angle down to the bottom right point.",
+      "reference_paths": [
+        "M 400 240 l 30 90",
+        "M 430 330 l 90 10",
+        "M 520 340 l -70 60",
+        "M 450 400 l 25 90"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "To the bottom left",
+      "companion_line": "Across to the bottom left point.",
+      "reference_paths": [
+        "M 400 240 l 30 90",
+        "M 430 330 l 90 10",
+        "M 520 340 l -70 60",
+        "M 450 400 l 25 90",
+        "M 475 490 l -75 -50",
+        "M 400 440 l -75 50"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s5",
+      "instruction": "Close it up",
+      "companion_line": "Now back up to where we started.",
+      "reference_paths": [
+        "M 400 240 l 30 90",
+        "M 430 330 l 90 10",
+        "M 520 340 l -70 60",
+        "M 450 400 l 25 90",
+        "M 475 490 l -75 -50",
+        "M 400 440 l -75 50",
+        "M 325 490 l 25 -90",
+        "M 350 400 l -70 -60",
+        "M 280 340 l 90 -10",
+        "M 370 330 l 30 -90"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s6",
+      "instruction": "Twinkle face",
+      "companion_line": "A sparkly face in the middle!",
+      "reference_paths": [
+        "M 400 240 l 30 90",
+        "M 430 330 l 90 10",
+        "M 520 340 l -70 60",
+        "M 450 400 l 25 90",
+        "M 475 490 l -75 -50",
+        "M 400 440 l -75 50",
+        "M 325 490 l 25 -90",
+        "M 350 400 l -70 -60",
+        "M 280 340 l 90 -10",
+        "M 370 330 l 30 -90",
+        "M 380 380 m -5 0 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0",
+        "M 420 380 m -5 0 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0",
+        "M 388 410 q 12 8 24 0"
+      ],
+      "show_ghost": true
+    }
+  ]
+}

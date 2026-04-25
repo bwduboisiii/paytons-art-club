@@ -1,0 +1,64 @@
+{
+  "id": "sparkle_kingdom_r04",
+  "world_id": "sparkle_kingdom",
+  "order_index": 103,
+  "title": "Princess Bow",
+  "subject": "bow",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": false,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "bow_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Center knot",
+      "companion_line": "Little knot in the middle!",
+      "reference_paths": [
+        "M 400 360 m -15 0 a 15 20 0 1 0 30 0 a 15 20 0 1 0 -30 0"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Left bow loop",
+      "companion_line": "Big curly loop on the left!",
+      "reference_paths": [
+        "M 400 360 m -15 0 a 15 20 0 1 0 30 0 a 15 20 0 1 0 -30 0",
+        "M 385 360 q -80 -50 -90 0 q 0 60 90 20"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Right bow loop",
+      "companion_line": "Matching loop on the right!",
+      "reference_paths": [
+        "M 400 360 m -15 0 a 15 20 0 1 0 30 0 a 15 20 0 1 0 -30 0",
+        "M 385 360 q -80 -50 -90 0 q 0 60 90 20",
+        "M 415 360 q 80 -50 90 0 q 0 60 -90 20"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Bow tails",
+      "companion_line": "Two ribbon tails dangling down!",
+      "reference_paths": [
+        "M 400 360 m -15 0 a 15 20 0 1 0 30 0 a 15 20 0 1 0 -30 0",
+        "M 385 360 q -80 -50 -90 0 q 0 60 90 20",
+        "M 415 360 q 80 -50 90 0 q 0 60 -90 20",
+        "M 390 380 q -10 60 -30 80",
+        "M 410 380 q 10 60 30 80"
+      ],
+      "show_ghost": true
+    }
+  ]
+}

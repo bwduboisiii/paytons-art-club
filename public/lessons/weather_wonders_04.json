@@ -1,0 +1,68 @@
+{
+  "id": "weather_wonders_04",
+  "world_id": "weather_wonders",
+  "order_index": 4,
+  "title": "Snowflake",
+  "subject": "snowflake",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": false,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "snowflake_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Big plus shape",
+      "companion_line": "Start with a tall line up and down.",
+      "reference_paths": [
+        "M 400 220 l 0 280"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Add a sideways line",
+      "companion_line": "Now a line going across — like a plus sign!",
+      "reference_paths": [
+        "M 400 220 l 0 280",
+        "M 260 360 l 280 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Diagonal lines",
+      "companion_line": "Two more lines crossing at angles — a star!",
+      "reference_paths": [
+        "M 400 220 l 0 280",
+        "M 260 360 l 280 0",
+        "M 300 260 l 200 200",
+        "M 500 260 l -200 200"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Decorate the tips",
+      "companion_line": "Tiny lines branching off each point — like little arrows!",
+      "reference_paths": [
+        "M 400 220 l 0 280",
+        "M 260 360 l 280 0",
+        "M 300 260 l 200 200",
+        "M 500 260 l -200 200",
+        "M 400 240 l -15 20 m 15 -20 l 15 20",
+        "M 400 480 l -15 -20 m 15 20 l 15 -20",
+        "M 280 360 l 20 -15 m -20 15 l 20 15",
+        "M 520 360 l -20 -15 m 20 15 l -20 15"
+      ],
+      "show_ghost": true
+    }
+  ]
+}

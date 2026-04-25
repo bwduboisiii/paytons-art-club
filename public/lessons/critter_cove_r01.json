@@ -1,0 +1,68 @@
+{
+  "id": "critter_cove_r01",
+  "world_id": "critter_cove",
+  "order_index": 100,
+  "title": "Sleepy Sloth",
+  "subject": "sloth",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": false,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "sloth_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Round sloth face",
+      "companion_line": "Big round sloth face!",
+      "reference_paths": [
+        "M 400 360 m -110 0 a 110 110 0 1 0 220 0 a 110 110 0 1 0 -220 0"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Closed sleepy eyes",
+      "companion_line": "Sloths are always sleepy — closed eyes!",
+      "reference_paths": [
+        "M 400 360 m -110 0 a 110 110 0 1 0 220 0 a 110 110 0 1 0 -220 0",
+        "M 350 340 q 15 -8 30 0",
+        "M 420 340 q 15 -8 30 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Dark eye patches",
+      "companion_line": "Big dark patches around the eyes!",
+      "reference_paths": [
+        "M 400 360 m -110 0 a 110 110 0 1 0 220 0 a 110 110 0 1 0 -220 0",
+        "M 350 340 q 15 -8 30 0",
+        "M 420 340 q 15 -8 30 0",
+        "M 365 320 m -25 0 a 25 18 0 1 0 50 0 a 25 18 0 1 0 -50 0",
+        "M 435 320 m -25 0 a 25 18 0 1 0 50 0 a 25 18 0 1 0 -50 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Sweet smile",
+      "companion_line": "A peaceful little smile.",
+      "reference_paths": [
+        "M 400 360 m -110 0 a 110 110 0 1 0 220 0 a 110 110 0 1 0 -220 0",
+        "M 350 340 q 15 -8 30 0",
+        "M 420 340 q 15 -8 30 0",
+        "M 365 320 m -25 0 a 25 18 0 1 0 50 0 a 25 18 0 1 0 -50 0",
+        "M 435 320 m -25 0 a 25 18 0 1 0 50 0 a 25 18 0 1 0 -50 0",
+        "M 380 400 q 20 15 40 0"
+      ],
+      "show_ghost": true
+    }
+  ]
+}

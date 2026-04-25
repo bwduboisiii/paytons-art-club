@@ -1,0 +1,64 @@
+{
+  "id": "shape_shop_04",
+  "world_id": "shape_shop",
+  "order_index": 4,
+  "title": "Mr. Heart",
+  "subject": "heart",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": false,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "heart_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Left bump",
+      "companion_line": "Hearts start with a round bump on the left!",
+      "reference_paths": [
+        "M 400 320 q -50 -60 -100 0 q 0 50 100 110"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Right bump",
+      "companion_line": "Now a matching bump on the right!",
+      "reference_paths": [
+        "M 400 320 q -50 -60 -100 0 q 0 50 100 110",
+        "M 400 320 q 50 -60 100 0 q 0 50 -100 110"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Smile inside",
+      "companion_line": "Tiny smile inside our heart!",
+      "reference_paths": [
+        "M 400 320 q -50 -60 -100 0 q 0 50 100 110",
+        "M 400 320 q 50 -60 100 0 q 0 50 -100 110",
+        "M 380 370 q 20 15 40 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Sparkle eyes",
+      "companion_line": "Two sparkle eyes!",
+      "reference_paths": [
+        "M 400 320 q -50 -60 -100 0 q 0 50 100 110",
+        "M 400 320 q 50 -60 100 0 q 0 50 -100 110",
+        "M 380 370 q 20 15 40 0",
+        "M 370 350 m -5 0 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0",
+        "M 430 350 m -5 0 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0"
+      ],
+      "show_ghost": true
+    }
+  ]
+}

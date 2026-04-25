@@ -1,0 +1,73 @@
+{
+  "id": "sparkle_kingdom_r03",
+  "world_id": "sparkle_kingdom",
+  "order_index": 102,
+  "title": "Crown Jewel",
+  "subject": "crown",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": false,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "crown_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Crown band",
+      "companion_line": "A wide rectangle base for the crown!",
+      "reference_paths": [
+        "M 270 440 l 0 -50 l 260 0 l 0 50 z"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Three points",
+      "companion_line": "Three pointy tops!",
+      "reference_paths": [
+        "M 270 440 l 0 -50 l 260 0 l 0 50 z",
+        "M 270 390 l 50 -90 l 50 90",
+        "M 370 390 l 30 -110 l 30 110",
+        "M 430 390 l 50 -90 l 50 90"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Round jewels on tips",
+      "companion_line": "Round jewels on each point!",
+      "reference_paths": [
+        "M 270 440 l 0 -50 l 260 0 l 0 50 z",
+        "M 270 390 l 50 -90 l 50 90",
+        "M 370 390 l 30 -110 l 30 110",
+        "M 430 390 l 50 -90 l 50 90",
+        "M 320 295 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 400 275 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 480 295 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Big center jewel",
+      "companion_line": "A diamond in the middle of the band!",
+      "reference_paths": [
+        "M 270 440 l 0 -50 l 260 0 l 0 50 z",
+        "M 270 390 l 50 -90 l 50 90",
+        "M 370 390 l 30 -110 l 30 110",
+        "M 430 390 l 50 -90 l 50 90",
+        "M 320 295 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 400 275 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 480 295 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 380 415 l 20 -20 l 20 20 l -20 20 z"
+      ],
+      "show_ghost": true
+    }
+  ]
+}

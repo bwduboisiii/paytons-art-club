@@ -1,0 +1,86 @@
+{
+  "id": "pet_parade_02",
+  "world_id": "pet_parade",
+  "order_index": 2,
+  "title": "Mittens the Cat",
+  "subject": "cat",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": false,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "cat_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Round cat head",
+      "companion_line": "Big circle for Mittens' head!",
+      "reference_paths": [
+        "M 400 340 m -120 0 a 120 120 0 1 0 240 0 a 120 120 0 1 0 -240 0"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Pointy triangle ears",
+      "companion_line": "Two pointy triangles on top — those are her ears!",
+      "reference_paths": [
+        "M 400 340 m -120 0 a 120 120 0 1 0 240 0 a 120 120 0 1 0 -240 0",
+        "M 320 240 l 30 -80 l 50 60 z",
+        "M 480 240 l -30 -80 l -50 60 z"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Big curious eyes",
+      "companion_line": "Two oval eyes — cats have such big eyes!",
+      "reference_paths": [
+        "M 400 340 m -120 0 a 120 120 0 1 0 240 0 a 120 120 0 1 0 -240 0",
+        "M 320 240 l 30 -80 l 50 60 z",
+        "M 480 240 l -30 -80 l -50 60 z",
+        "M 360 320 m -12 0 a 12 18 0 1 0 24 0 a 12 18 0 1 0 -24 0",
+        "M 440 320 m -12 0 a 12 18 0 1 0 24 0 a 12 18 0 1 0 -24 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Tiny pink nose",
+      "companion_line": "A little triangle nose — pink and tiny!",
+      "reference_paths": [
+        "M 400 340 m -120 0 a 120 120 0 1 0 240 0 a 120 120 0 1 0 -240 0",
+        "M 320 240 l 30 -80 l 50 60 z",
+        "M 480 240 l -30 -80 l -50 60 z",
+        "M 360 320 m -12 0 a 12 18 0 1 0 24 0 a 12 18 0 1 0 -24 0",
+        "M 440 320 m -12 0 a 12 18 0 1 0 24 0 a 12 18 0 1 0 -24 0",
+        "M 390 380 l 10 -8 l 10 8 z"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s5",
+      "instruction": "Whiskers!",
+      "companion_line": "Now the best part — whiskers on each side!",
+      "reference_paths": [
+        "M 400 340 m -120 0 a 120 120 0 1 0 240 0 a 120 120 0 1 0 -240 0",
+        "M 320 240 l 30 -80 l 50 60 z",
+        "M 480 240 l -30 -80 l -50 60 z",
+        "M 360 320 m -12 0 a 12 18 0 1 0 24 0 a 12 18 0 1 0 -24 0",
+        "M 440 320 m -12 0 a 12 18 0 1 0 24 0 a 12 18 0 1 0 -24 0",
+        "M 390 380 l 10 -8 l 10 8 z",
+        "M 320 380 l -50 -10",
+        "M 320 395 l -50 5",
+        "M 480 380 l 50 -10",
+        "M 480 395 l 50 5"
+      ],
+      "show_ghost": true
+    }
+  ]
+}

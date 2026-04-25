@@ -1,0 +1,88 @@
+{
+  "id": "bug_buddies_02",
+  "world_id": "bug_buddies",
+  "order_index": 2,
+  "title": "Lulu Ladybug",
+  "subject": "ladybug",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": false,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "ladybug_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Round dome body",
+      "companion_line": "Half-circle — that's the ladybug's shell!",
+      "reference_paths": [
+        "M 280 380 q 0 -120 120 -120 q 120 0 120 120 z"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Center line",
+      "companion_line": "A straight line down the middle — that's where the wings open!",
+      "reference_paths": [
+        "M 280 380 q 0 -120 120 -120 q 120 0 120 120 z",
+        "M 400 260 l 0 120"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Spots!",
+      "companion_line": "Now the famous spots — three on each side!",
+      "reference_paths": [
+        "M 280 380 q 0 -120 120 -120 q 120 0 120 120 z",
+        "M 400 260 l 0 120",
+        "M 330 290 m -12 0 a 12 12 0 1 0 24 0 a 12 12 0 1 0 -24 0",
+        "M 350 340 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 470 290 m -12 0 a 12 12 0 1 0 24 0 a 12 12 0 1 0 -24 0",
+        "M 450 340 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Cute head",
+      "companion_line": "A round little head poking up!",
+      "reference_paths": [
+        "M 280 380 q 0 -120 120 -120 q 120 0 120 120 z",
+        "M 400 260 l 0 120",
+        "M 330 290 m -12 0 a 12 12 0 1 0 24 0 a 12 12 0 1 0 -24 0",
+        "M 350 340 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 470 290 m -12 0 a 12 12 0 1 0 24 0 a 12 12 0 1 0 -24 0",
+        "M 450 340 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 400 230 m -45 0 a 45 35 0 1 0 90 0 a 45 35 0 1 0 -90 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s5",
+      "instruction": "Antennae and face",
+      "companion_line": "Two antennae and a little smile!",
+      "reference_paths": [
+        "M 280 380 q 0 -120 120 -120 q 120 0 120 120 z",
+        "M 400 260 l 0 120",
+        "M 330 290 m -12 0 a 12 12 0 1 0 24 0 a 12 12 0 1 0 -24 0",
+        "M 350 340 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 470 290 m -12 0 a 12 12 0 1 0 24 0 a 12 12 0 1 0 -24 0",
+        "M 450 340 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 400 230 m -45 0 a 45 35 0 1 0 90 0 a 45 35 0 1 0 -90 0",
+        "M 380 200 q -10 -25 -15 -35",
+        "M 420 200 q 10 -25 15 -35",
+        "M 380 230 m -5 0 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0",
+        "M 420 230 m -5 0 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0"
+      ],
+      "show_ghost": true
+    }
+  ]
+}

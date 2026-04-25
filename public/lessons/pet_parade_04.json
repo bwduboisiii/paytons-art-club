@@ -1,0 +1,85 @@
+{
+  "id": "pet_parade_04",
+  "world_id": "pet_parade",
+  "order_index": 4,
+  "title": "Pip the Hamster",
+  "subject": "hamster",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": false,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "hamster_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Chubby round body",
+      "companion_line": "Hamsters are round and squishy — big oval body!",
+      "reference_paths": [
+        "M 400 360 m -130 0 a 130 110 0 1 0 260 0 a 130 110 0 1 0 -260 0"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Tiny round ears",
+      "companion_line": "Two little round ears on top.",
+      "reference_paths": [
+        "M 400 360 m -130 0 a 130 110 0 1 0 260 0 a 130 110 0 1 0 -260 0",
+        "M 330 270 m -20 0 a 20 20 0 1 0 40 0 a 20 20 0 1 0 -40 0",
+        "M 470 270 m -20 0 a 20 20 0 1 0 40 0 a 20 20 0 1 0 -40 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Bright eyes",
+      "companion_line": "Two shiny dots for eyes!",
+      "reference_paths": [
+        "M 400 360 m -130 0 a 130 110 0 1 0 260 0 a 130 110 0 1 0 -260 0",
+        "M 330 270 m -20 0 a 20 20 0 1 0 40 0 a 20 20 0 1 0 -40 0",
+        "M 470 270 m -20 0 a 20 20 0 1 0 40 0 a 20 20 0 1 0 -40 0",
+        "M 360 340 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 440 340 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Cute little nose",
+      "companion_line": "A teeny tiny pink nose!",
+      "reference_paths": [
+        "M 400 360 m -130 0 a 130 110 0 1 0 260 0 a 130 110 0 1 0 -260 0",
+        "M 330 270 m -20 0 a 20 20 0 1 0 40 0 a 20 20 0 1 0 -40 0",
+        "M 470 270 m -20 0 a 20 20 0 1 0 40 0 a 20 20 0 1 0 -40 0",
+        "M 360 340 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 440 340 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 395 380 m -7 0 a 7 5 0 1 0 14 0 a 7 5 0 1 0 -14 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s5",
+      "instruction": "Cheek pouches!",
+      "companion_line": "Hamsters store food in their cheeks — make them puffy!",
+      "reference_paths": [
+        "M 400 360 m -130 0 a 130 110 0 1 0 260 0 a 130 110 0 1 0 -260 0",
+        "M 330 270 m -20 0 a 20 20 0 1 0 40 0 a 20 20 0 1 0 -40 0",
+        "M 470 270 m -20 0 a 20 20 0 1 0 40 0 a 20 20 0 1 0 -40 0",
+        "M 360 340 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 440 340 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 395 380 m -7 0 a 7 5 0 1 0 14 0 a 7 5 0 1 0 -14 0",
+        "M 290 380 q -10 30 20 40",
+        "M 510 380 q 10 30 -20 40",
+        "M 380 410 q 20 15 40 0"
+      ],
+      "show_ghost": true
+    }
+  ]
+}

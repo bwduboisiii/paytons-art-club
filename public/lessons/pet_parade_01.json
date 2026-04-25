@@ -1,0 +1,87 @@
+{
+  "id": "pet_parade_01",
+  "world_id": "pet_parade",
+  "order_index": 1,
+  "title": "Buddy the Puppy",
+  "subject": "puppy",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": false,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "puppy_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Round puppy head",
+      "companion_line": "Let's start with a big circle for our puppy's head!",
+      "reference_paths": [
+        "M 400 340 m -130 0 a 130 130 0 1 0 260 0 a 130 130 0 1 0 -260 0"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Two floppy ears",
+      "companion_line": "Now floppy ears that hang down on each side.",
+      "reference_paths": [
+        "M 400 340 m -130 0 a 130 130 0 1 0 260 0 a 130 130 0 1 0 -260 0",
+        "M 290 290 q -40 80 0 140 q 30 -20 30 -100",
+        "M 510 290 q 40 80 0 140 q -30 -20 -30 -100"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Bright happy eyes",
+      "companion_line": "Two big round eyes — make them shiny!",
+      "reference_paths": [
+        "M 400 340 m -130 0 a 130 130 0 1 0 260 0 a 130 130 0 1 0 -260 0",
+        "M 290 290 q -40 80 0 140 q 30 -20 30 -100",
+        "M 510 290 q 40 80 0 140 q -30 -20 -30 -100",
+        "M 360 320 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 440 320 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Cute snout and nose",
+      "companion_line": "A round nose and a sweet little smile!",
+      "reference_paths": [
+        "M 400 340 m -130 0 a 130 130 0 1 0 260 0 a 130 130 0 1 0 -260 0",
+        "M 290 290 q -40 80 0 140 q 30 -20 30 -100",
+        "M 510 290 q 40 80 0 140 q -30 -20 -30 -100",
+        "M 360 320 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 440 320 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 400 380 m -25 0 a 25 25 0 1 0 50 0 a 25 25 0 1 0 -50 0",
+        "M 400 370 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 380 405 q 20 15 40 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s5",
+      "instruction": "Pink tongue",
+      "companion_line": "Pop out a happy pink tongue! Pant pant!",
+      "reference_paths": [
+        "M 400 340 m -130 0 a 130 130 0 1 0 260 0 a 130 130 0 1 0 -260 0",
+        "M 290 290 q -40 80 0 140 q 30 -20 30 -100",
+        "M 510 290 q 40 80 0 140 q -30 -20 -30 -100",
+        "M 360 320 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 440 320 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 400 380 m -25 0 a 25 25 0 1 0 50 0 a 25 25 0 1 0 -50 0",
+        "M 400 370 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 380 405 q 20 15 40 0",
+        "M 390 405 q 10 25 20 0 q 0 15 -20 0 z"
+      ],
+      "show_ghost": true
+    }
+  ]
+}

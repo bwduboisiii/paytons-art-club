@@ -1,0 +1,75 @@
+{
+  "id": "mermaid_lagoon_r01",
+  "world_id": "mermaid_lagoon",
+  "order_index": 100,
+  "title": "Seashell",
+  "subject": "shell",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": false,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "shell_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Shell base",
+      "companion_line": "Curve like an open fan!",
+      "reference_paths": [
+        "M 280 460 q 120 -200 240 0 z"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Shell ridges",
+      "companion_line": "Lines that fan out from the bottom!",
+      "reference_paths": [
+        "M 280 460 q 120 -200 240 0 z",
+        "M 400 460 l -50 -180",
+        "M 400 460 l 0 -200",
+        "M 400 460 l 50 -180",
+        "M 400 460 l -100 -120",
+        "M 400 460 l 100 -120"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Pearl on top",
+      "companion_line": "A shiny pearl peeking out!",
+      "reference_paths": [
+        "M 280 460 q 120 -200 240 0 z",
+        "M 400 460 l -50 -180",
+        "M 400 460 l 0 -200",
+        "M 400 460 l 50 -180",
+        "M 400 460 l -100 -120",
+        "M 400 460 l 100 -120",
+        "M 400 280 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Sparkle",
+      "companion_line": "Add a twinkle to the pearl!",
+      "reference_paths": [
+        "M 280 460 q 120 -200 240 0 z",
+        "M 400 460 l -50 -180",
+        "M 400 460 l 0 -200",
+        "M 400 460 l 50 -180",
+        "M 400 460 l -100 -120",
+        "M 400 460 l 100 -120",
+        "M 400 280 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 396 274 m -2 0 a 2 2 0 1 0 4 0 a 2 2 0 1 0 -4 0"
+      ],
+      "show_ghost": true
+    }
+  ]
+}

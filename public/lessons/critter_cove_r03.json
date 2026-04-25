@@ -1,0 +1,80 @@
+{
+  "id": "critter_cove_r03",
+  "world_id": "critter_cove",
+  "order_index": 102,
+  "title": "Penguin Pal",
+  "subject": "penguin",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": false,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "penguin_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Black body",
+      "companion_line": "Egg-shaped penguin body!",
+      "reference_paths": [
+        "M 400 380 m -90 0 a 90 110 0 1 0 180 0 a 90 110 0 1 0 -180 0"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "White tummy",
+      "companion_line": "White oval on the front — that's the tummy!",
+      "reference_paths": [
+        "M 400 380 m -90 0 a 90 110 0 1 0 180 0 a 90 110 0 1 0 -180 0",
+        "M 400 400 m -55 0 a 55 80 0 1 0 110 0 a 55 80 0 1 0 -110 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Two eyes",
+      "companion_line": "Two little eyes on the head!",
+      "reference_paths": [
+        "M 400 380 m -90 0 a 90 110 0 1 0 180 0 a 90 110 0 1 0 -180 0",
+        "M 400 400 m -55 0 a 55 80 0 1 0 110 0 a 55 80 0 1 0 -110 0",
+        "M 375 320 m -7 0 a 7 7 0 1 0 14 0 a 7 7 0 1 0 -14 0",
+        "M 425 320 m -7 0 a 7 7 0 1 0 14 0 a 7 7 0 1 0 -14 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Orange beak",
+      "companion_line": "A little triangle beak!",
+      "reference_paths": [
+        "M 400 380 m -90 0 a 90 110 0 1 0 180 0 a 90 110 0 1 0 -180 0",
+        "M 400 400 m -55 0 a 55 80 0 1 0 110 0 a 55 80 0 1 0 -110 0",
+        "M 375 320 m -7 0 a 7 7 0 1 0 14 0 a 7 7 0 1 0 -14 0",
+        "M 425 320 m -7 0 a 7 7 0 1 0 14 0 a 7 7 0 1 0 -14 0",
+        "M 390 350 l 10 -8 l 10 8 z"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s5",
+      "instruction": "Two flippers",
+      "companion_line": "Two flippers on the sides!",
+      "reference_paths": [
+        "M 400 380 m -90 0 a 90 110 0 1 0 180 0 a 90 110 0 1 0 -180 0",
+        "M 400 400 m -55 0 a 55 80 0 1 0 110 0 a 55 80 0 1 0 -110 0",
+        "M 375 320 m -7 0 a 7 7 0 1 0 14 0 a 7 7 0 1 0 -14 0",
+        "M 425 320 m -7 0 a 7 7 0 1 0 14 0 a 7 7 0 1 0 -14 0",
+        "M 390 350 l 10 -8 l 10 8 z",
+        "M 310 380 q -25 30 -10 60",
+        "M 490 380 q 25 30 10 60"
+      ],
+      "show_ghost": true
+    }
+  ]
+}

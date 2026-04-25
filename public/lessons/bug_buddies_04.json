@@ -1,0 +1,90 @@
+{
+  "id": "bug_buddies_04",
+  "world_id": "bug_buddies",
+  "order_index": 4,
+  "title": "Speedy Snail",
+  "subject": "snail",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": false,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "snail_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Snail body curve",
+      "companion_line": "A long curve that scoops up at the end — that's the body!",
+      "reference_paths": [
+        "M 250 440 q 100 -20 250 -10 q 50 5 80 -20"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Big spiral shell",
+      "companion_line": "Now a big spiral on the back!",
+      "reference_paths": [
+        "M 250 440 q 100 -20 250 -10 q 50 5 80 -20",
+        "M 380 360 m -70 0 a 70 70 0 1 0 140 0 a 70 70 0 1 0 -140 0",
+        "M 380 360 m -45 0 a 45 45 0 1 0 90 0 a 45 45 0 1 0 -90 0",
+        "M 380 360 m -20 0 a 20 20 0 1 0 40 0 a 20 20 0 1 0 -20 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Snail head",
+      "companion_line": "A little round head peeking out!",
+      "reference_paths": [
+        "M 250 440 q 100 -20 250 -10 q 50 5 80 -20",
+        "M 380 360 m -70 0 a 70 70 0 1 0 140 0 a 70 70 0 1 0 -140 0",
+        "M 380 360 m -45 0 a 45 45 0 1 0 90 0 a 45 45 0 1 0 -90 0",
+        "M 380 360 m -20 0 a 20 20 0 1 0 40 0 a 20 20 0 1 0 -20 0",
+        "M 565 410 m -25 0 a 25 25 0 1 0 50 0 a 25 25 0 1 0 -50 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Eye stalks",
+      "companion_line": "Two long eye stalks waving up!",
+      "reference_paths": [
+        "M 250 440 q 100 -20 250 -10 q 50 5 80 -20",
+        "M 380 360 m -70 0 a 70 70 0 1 0 140 0 a 70 70 0 1 0 -140 0",
+        "M 380 360 m -45 0 a 45 45 0 1 0 90 0 a 45 45 0 1 0 -90 0",
+        "M 380 360 m -20 0 a 20 20 0 1 0 40 0 a 20 20 0 1 0 -20 0",
+        "M 565 410 m -25 0 a 25 25 0 1 0 50 0 a 25 25 0 1 0 -50 0",
+        "M 555 390 q -5 -30 -15 -40",
+        "M 580 390 q 5 -30 15 -40",
+        "M 540 350 m -6 0 a 6 6 0 1 0 12 0 a 6 6 0 1 0 -12 0",
+        "M 595 350 m -6 0 a 6 6 0 1 0 12 0 a 6 6 0 1 0 -12 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s5",
+      "instruction": "Smile",
+      "companion_line": "A happy little smile!",
+      "reference_paths": [
+        "M 250 440 q 100 -20 250 -10 q 50 5 80 -20",
+        "M 380 360 m -70 0 a 70 70 0 1 0 140 0 a 70 70 0 1 0 -140 0",
+        "M 380 360 m -45 0 a 45 45 0 1 0 90 0 a 45 45 0 1 0 -90 0",
+        "M 380 360 m -20 0 a 20 20 0 1 0 40 0 a 20 20 0 1 0 -20 0",
+        "M 565 410 m -25 0 a 25 25 0 1 0 50 0 a 25 25 0 1 0 -50 0",
+        "M 555 390 q -5 -30 -15 -40",
+        "M 580 390 q 5 -30 15 -40",
+        "M 540 350 m -6 0 a 6 6 0 1 0 12 0 a 6 6 0 1 0 -12 0",
+        "M 595 350 m -6 0 a 6 6 0 1 0 12 0 a 6 6 0 1 0 -12 0",
+        "M 555 415 q 10 8 20 0"
+      ],
+      "show_ghost": true
+    }
+  ]
+}

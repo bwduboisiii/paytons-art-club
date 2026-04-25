@@ -1,0 +1,90 @@
+{
+  "id": "weather_wonders_03",
+  "world_id": "weather_wonders",
+  "order_index": 3,
+  "title": "Rainbow Bridge",
+  "subject": "rainbow",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": false,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "rainbow_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Outer red arch",
+      "companion_line": "Big rainbow arch — start with red on the outside!",
+      "reference_paths": [
+        "M 200 460 q 200 -300 400 0"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Orange arch",
+      "companion_line": "Now orange just below it!",
+      "reference_paths": [
+        "M 200 460 q 200 -300 400 0",
+        "M 230 460 q 170 -260 340 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Yellow arch",
+      "companion_line": "Yellow next!",
+      "reference_paths": [
+        "M 200 460 q 200 -300 400 0",
+        "M 230 460 q 170 -260 340 0",
+        "M 260 460 q 140 -220 280 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Green arch",
+      "companion_line": "Green!",
+      "reference_paths": [
+        "M 200 460 q 200 -300 400 0",
+        "M 230 460 q 170 -260 340 0",
+        "M 260 460 q 140 -220 280 0",
+        "M 290 460 q 110 -180 220 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s5",
+      "instruction": "Blue arch",
+      "companion_line": "Blue, almost done!",
+      "reference_paths": [
+        "M 200 460 q 200 -300 400 0",
+        "M 230 460 q 170 -260 340 0",
+        "M 260 460 q 140 -220 280 0",
+        "M 290 460 q 110 -180 220 0",
+        "M 320 460 q 80 -140 160 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s6",
+      "instruction": "Purple arch",
+      "companion_line": "Last one, purple at the bottom!",
+      "reference_paths": [
+        "M 200 460 q 200 -300 400 0",
+        "M 230 460 q 170 -260 340 0",
+        "M 260 460 q 140 -220 280 0",
+        "M 290 460 q 110 -180 220 0",
+        "M 320 460 q 80 -140 160 0",
+        "M 350 460 q 50 -100 100 0"
+      ],
+      "show_ghost": true
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "id": "shape_shop_01",
+  "world_id": "shape_shop",
+  "order_index": 1,
+  "title": "Mr. Square",
+  "subject": "square",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": false,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "square_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Top line",
+      "companion_line": "Squares have 4 equal sides! Start with a line across the top.",
+      "reference_paths": [
+        "M 280 280 l 240 0"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Right side",
+      "companion_line": "Now down the right side.",
+      "reference_paths": [
+        "M 280 280 l 240 0",
+        "M 520 280 l 0 240"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Bottom line",
+      "companion_line": "Across the bottom!",
+      "reference_paths": [
+        "M 280 280 l 240 0",
+        "M 520 280 l 0 240",
+        "M 520 520 l -240 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Left side",
+      "companion_line": "And back up to close the shape.",
+      "reference_paths": [
+        "M 280 280 l 240 0",
+        "M 520 280 l 0 240",
+        "M 520 520 l -240 0",
+        "M 280 520 l 0 -240"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s5",
+      "instruction": "Add a happy face",
+      "companion_line": "Give Mr. Square some life!",
+      "reference_paths": [
+        "M 280 280 l 240 0",
+        "M 520 280 l 0 240",
+        "M 520 520 l -240 0",
+        "M 280 520 l 0 -240",
+        "M 360 380 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 440 380 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 360 440 q 40 30 80 0"
+      ],
+      "show_ghost": true
+    }
+  ]
+}

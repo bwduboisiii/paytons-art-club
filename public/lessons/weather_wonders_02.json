@@ -1,0 +1,78 @@
+{
+  "id": "weather_wonders_02",
+  "world_id": "weather_wonders",
+  "order_index": 2,
+  "title": "Fluffy Cloud",
+  "subject": "cloud",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": false,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "cloud_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "First cloud bump",
+      "companion_line": "Start with a big bumpy circle on the left.",
+      "reference_paths": [
+        "M 320 360 m -60 0 a 60 60 0 1 0 120 0 a 60 60 0 1 0 -120 0"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Second bump",
+      "companion_line": "Add another bump in the middle, a bit higher!",
+      "reference_paths": [
+        "M 320 360 m -60 0 a 60 60 0 1 0 120 0 a 60 60 0 1 0 -120 0",
+        "M 410 320 m -70 0 a 70 70 0 1 0 140 0 a 70 70 0 1 0 -140 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Third bump",
+      "companion_line": "One more bump on the right.",
+      "reference_paths": [
+        "M 320 360 m -60 0 a 60 60 0 1 0 120 0 a 60 60 0 1 0 -120 0",
+        "M 410 320 m -70 0 a 70 70 0 1 0 140 0 a 70 70 0 1 0 -140 0",
+        "M 510 360 m -55 0 a 55 55 0 1 0 110 0 a 55 55 0 1 0 -110 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Connect the bottom",
+      "companion_line": "Now draw a flat-ish line under all three bumps.",
+      "reference_paths": [
+        "M 320 360 m -60 0 a 60 60 0 1 0 120 0 a 60 60 0 1 0 -120 0",
+        "M 410 320 m -70 0 a 70 70 0 1 0 140 0 a 70 70 0 1 0 -140 0",
+        "M 510 360 m -55 0 a 55 55 0 1 0 110 0 a 55 55 0 1 0 -110 0",
+        "M 260 380 q 130 30 310 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s5",
+      "instruction": "Sleepy face",
+      "companion_line": "Two closed eyes and a peaceful smile.",
+      "reference_paths": [
+        "M 320 360 m -60 0 a 60 60 0 1 0 120 0 a 60 60 0 1 0 -120 0",
+        "M 410 320 m -70 0 a 70 70 0 1 0 140 0 a 70 70 0 1 0 -140 0",
+        "M 510 360 m -55 0 a 55 55 0 1 0 110 0 a 55 55 0 1 0 -110 0",
+        "M 260 380 q 130 30 310 0",
+        "M 360 340 q 10 -8 20 0",
+        "M 440 340 q 10 -8 20 0",
+        "M 390 370 q 20 12 40 0"
+      ],
+      "show_ghost": true
+    }
+  ]
+}

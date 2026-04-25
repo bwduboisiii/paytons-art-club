@@ -1,0 +1,88 @@
+{
+  "id": "mermaid_lagoon_r04",
+  "world_id": "mermaid_lagoon",
+  "order_index": 103,
+  "title": "Coral Reef",
+  "subject": "coral",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": false,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "coral_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Tall coral branches",
+      "companion_line": "Branchy coral reaching up!",
+      "reference_paths": [
+        "M 350 480 l 0 -100",
+        "M 350 380 l -30 -60",
+        "M 350 380 l 30 -50",
+        "M 350 380 l 0 -80"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Round coral blob",
+      "companion_line": "A round bumpy coral!",
+      "reference_paths": [
+        "M 350 480 l 0 -100",
+        "M 350 380 l -30 -60",
+        "M 350 380 l 30 -50",
+        "M 350 380 l 0 -80",
+        "M 460 440 m -50 0 a 50 30 0 1 0 100 0 a 50 30 0 1 0 -100 0",
+        "M 430 425 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 470 415 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 500 425 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Sea grass",
+      "companion_line": "Wavy sea grass swaying!",
+      "reference_paths": [
+        "M 350 480 l 0 -100",
+        "M 350 380 l -30 -60",
+        "M 350 380 l 30 -50",
+        "M 350 380 l 0 -80",
+        "M 460 440 m -50 0 a 50 30 0 1 0 100 0 a 50 30 0 1 0 -100 0",
+        "M 430 425 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 470 415 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 500 425 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 240 480 q 10 -40 0 -80 q -10 -10 0 -30",
+        "M 270 480 q 5 -50 -10 -80 q -5 -10 5 -30"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Bubbles floating up",
+      "companion_line": "Pretty bubbles rising!",
+      "reference_paths": [
+        "M 350 480 l 0 -100",
+        "M 350 380 l -30 -60",
+        "M 350 380 l 30 -50",
+        "M 350 380 l 0 -80",
+        "M 460 440 m -50 0 a 50 30 0 1 0 100 0 a 50 30 0 1 0 -100 0",
+        "M 430 425 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 470 415 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 500 425 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 240 480 q 10 -40 0 -80 q -10 -10 0 -30",
+        "M 270 480 q 5 -50 -10 -80 q -5 -10 5 -30",
+        "M 580 380 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 600 320 m -5 0 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0",
+        "M 580 260 m -3 0 a 3 3 0 1 0 6 0 a 3 3 0 1 0 -6 0"
+      ],
+      "show_ghost": true
+    }
+  ]
+}

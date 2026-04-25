@@ -1,0 +1,82 @@
+{
+  "id": "critter_cove_r04",
+  "world_id": "critter_cove",
+  "order_index": 103,
+  "title": "Foxy Friend",
+  "subject": "fox",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": false,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "fox_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Fox face shape",
+      "companion_line": "A pointy fox face!",
+      "reference_paths": [
+        "M 290 320 l 110 -50 l 110 50 q 0 100 -110 130 q -110 -30 -110 -130 z"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Pointy ears",
+      "companion_line": "Two big triangle ears!",
+      "reference_paths": [
+        "M 290 320 l 110 -50 l 110 50 q 0 100 -110 130 q -110 -30 -110 -130 z",
+        "M 290 320 l 30 -100 l 60 50",
+        "M 510 320 l -30 -100 l -60 50"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "White cheeks and snout",
+      "companion_line": "A pale chin area!",
+      "reference_paths": [
+        "M 290 320 l 110 -50 l 110 50 q 0 100 -110 130 q -110 -30 -110 -130 z",
+        "M 290 320 l 30 -100 l 60 50",
+        "M 510 320 l -30 -100 l -60 50",
+        "M 400 380 l -50 60 q 50 30 100 0 z"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Bright eyes",
+      "companion_line": "Two bright fox eyes!",
+      "reference_paths": [
+        "M 290 320 l 110 -50 l 110 50 q 0 100 -110 130 q -110 -30 -110 -130 z",
+        "M 290 320 l 30 -100 l 60 50",
+        "M 510 320 l -30 -100 l -60 50",
+        "M 400 380 l -50 60 q 50 30 100 0 z",
+        "M 360 340 m -10 0 a 10 12 0 1 0 20 0 a 10 12 0 1 0 -20 0",
+        "M 440 340 m -10 0 a 10 12 0 1 0 20 0 a 10 12 0 1 0 -20 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s5",
+      "instruction": "Black nose tip",
+      "companion_line": "A little black nose!",
+      "reference_paths": [
+        "M 290 320 l 110 -50 l 110 50 q 0 100 -110 130 q -110 -30 -110 -130 z",
+        "M 290 320 l 30 -100 l 60 50",
+        "M 510 320 l -30 -100 l -60 50",
+        "M 400 380 l -50 60 q 50 30 100 0 z",
+        "M 360 340 m -10 0 a 10 12 0 1 0 20 0 a 10 12 0 1 0 -20 0",
+        "M 440 340 m -10 0 a 10 12 0 1 0 20 0 a 10 12 0 1 0 -20 0",
+        "M 395 410 m -8 0 a 8 6 0 1 0 16 0 a 8 6 0 1 0 -16 0"
+      ],
+      "show_ghost": true
+    }
+  ]
+}

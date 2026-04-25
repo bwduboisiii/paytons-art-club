@@ -1,0 +1,69 @@
+{
+  "id": "star_hop_r04",
+  "world_id": "star_hop",
+  "order_index": 103,
+  "title": "UFO",
+  "subject": "ufo",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": false,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "ufo_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Saucer body",
+      "companion_line": "Wide flat saucer shape!",
+      "reference_paths": [
+        "M 240 380 q 160 60 320 0 q -160 -40 -320 0 z"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Glass dome on top",
+      "companion_line": "A clear dome on top for passengers!",
+      "reference_paths": [
+        "M 240 380 q 160 60 320 0 q -160 -40 -320 0 z",
+        "M 320 380 q 80 -100 160 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Lights underneath",
+      "companion_line": "Three glowing lights below!",
+      "reference_paths": [
+        "M 240 380 q 160 60 320 0 q -160 -40 -320 0 z",
+        "M 320 380 q 80 -100 160 0",
+        "M 320 410 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 400 425 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 480 410 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Beam of light",
+      "companion_line": "A beam shining down!",
+      "reference_paths": [
+        "M 240 380 q 160 60 320 0 q -160 -40 -320 0 z",
+        "M 320 380 q 80 -100 160 0",
+        "M 320 410 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 400 425 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 480 410 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 370 425 l -40 80",
+        "M 430 425 l 40 80",
+        "M 330 505 l 140 0"
+      ],
+      "show_ghost": true
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "id": "critter_cove_r02",
+  "world_id": "critter_cove",
+  "order_index": 101,
+  "title": "Hedgehog Hugs",
+  "subject": "hedgehog",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": false,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "hedgehog_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Round body",
+      "companion_line": "A round little hedgehog body!",
+      "reference_paths": [
+        "M 400 380 m -110 0 a 110 90 0 1 0 220 0 a 110 90 0 1 0 -220 0"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Pointy spikes",
+      "companion_line": "Pokey spikes on top!",
+      "reference_paths": [
+        "M 400 380 m -110 0 a 110 90 0 1 0 220 0 a 110 90 0 1 0 -220 0",
+        "M 320 340 l 0 -25",
+        "M 340 320 l 0 -30",
+        "M 370 305 l 0 -30",
+        "M 400 300 l 0 -32",
+        "M 430 305 l 0 -30",
+        "M 460 320 l 0 -30",
+        "M 480 340 l 0 -25"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Pointy snout",
+      "companion_line": "A pointy face on the side!",
+      "reference_paths": [
+        "M 400 380 m -110 0 a 110 90 0 1 0 220 0 a 110 90 0 1 0 -220 0",
+        "M 320 340 l 0 -25",
+        "M 340 320 l 0 -30",
+        "M 370 305 l 0 -30",
+        "M 400 300 l 0 -32",
+        "M 430 305 l 0 -30",
+        "M 460 320 l 0 -30",
+        "M 480 340 l 0 -25",
+        "M 290 380 l -30 -10 l 0 30 z"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Tiny eye and smile",
+      "companion_line": "A bright eye and tiny smile!",
+      "reference_paths": [
+        "M 400 380 m -110 0 a 110 90 0 1 0 220 0 a 110 90 0 1 0 -220 0",
+        "M 320 340 l 0 -25",
+        "M 340 320 l 0 -30",
+        "M 370 305 l 0 -30",
+        "M 400 300 l 0 -32",
+        "M 430 305 l 0 -30",
+        "M 460 320 l 0 -30",
+        "M 480 340 l 0 -25",
+        "M 290 380 l -30 -10 l 0 30 z",
+        "M 320 370 m -5 0 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0",
+        "M 280 395 q 5 5 10 0"
+      ],
+      "show_ghost": true
+    }
+  ]
+}

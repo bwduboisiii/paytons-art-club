@@ -1,0 +1,88 @@
+{
+  "id": "weather_wonders_01",
+  "world_id": "weather_wonders",
+  "order_index": 1,
+  "title": "Sunny Sun",
+  "subject": "sun",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": false,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "sun_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Big round sun",
+      "companion_line": "Let's draw a big bright circle — our sun!",
+      "reference_paths": [
+        "M 400 360 m -100 0 a 100 100 0 1 0 200 0 a 100 100 0 1 0 -200 0"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Sun rays",
+      "companion_line": "Now bright rays shooting out!",
+      "reference_paths": [
+        "M 400 360 m -100 0 a 100 100 0 1 0 200 0 a 100 100 0 1 0 -200 0",
+        "M 400 240 l 0 -60",
+        "M 400 480 l 0 60",
+        "M 280 360 l -60 0",
+        "M 520 360 l 60 0",
+        "M 320 280 l -45 -45",
+        "M 480 440 l 45 45",
+        "M 480 280 l 45 -45",
+        "M 320 440 l -45 45"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Happy eyes",
+      "companion_line": "Two cheery eyes!",
+      "reference_paths": [
+        "M 400 360 m -100 0 a 100 100 0 1 0 200 0 a 100 100 0 1 0 -200 0",
+        "M 400 240 l 0 -60",
+        "M 400 480 l 0 60",
+        "M 280 360 l -60 0",
+        "M 520 360 l 60 0",
+        "M 320 280 l -45 -45",
+        "M 480 440 l 45 45",
+        "M 480 280 l 45 -45",
+        "M 320 440 l -45 45",
+        "M 370 340 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 430 340 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Big smile and rosy cheeks",
+      "companion_line": "A huge sunshine smile!",
+      "reference_paths": [
+        "M 400 360 m -100 0 a 100 100 0 1 0 200 0 a 100 100 0 1 0 -200 0",
+        "M 400 240 l 0 -60",
+        "M 400 480 l 0 60",
+        "M 280 360 l -60 0",
+        "M 520 360 l 60 0",
+        "M 320 280 l -45 -45",
+        "M 480 440 l 45 45",
+        "M 480 280 l 45 -45",
+        "M 320 440 l -45 45",
+        "M 370 340 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 430 340 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 370 380 q 30 25 60 0",
+        "M 340 370 m -10 0 a 10 8 0 1 0 20 0 a 10 8 0 1 0 -20 0",
+        "M 460 370 m -10 0 a 10 8 0 1 0 20 0 a 10 8 0 1 0 -20 0"
+      ],
+      "show_ghost": true
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "id": "bug_buddies_01",
+  "world_id": "bug_buddies",
+  "order_index": 1,
+  "title": "Buzzy Bee",
+  "subject": "bee",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": false,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "bee_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Round bee body",
+      "companion_line": "Let's draw a chubby oval body for our bee!",
+      "reference_paths": [
+        "M 400 360 m -110 0 a 110 90 0 1 0 220 0 a 110 90 0 1 0 -220 0"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Black stripes",
+      "companion_line": "Bees have stripes — draw two curvy lines across the body!",
+      "reference_paths": [
+        "M 400 360 m -110 0 a 110 90 0 1 0 220 0 a 110 90 0 1 0 -220 0",
+        "M 310 340 q 90 30 180 0",
+        "M 310 380 q 90 30 180 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Two see-through wings",
+      "companion_line": "Pretty wings on top — like ovals!",
+      "reference_paths": [
+        "M 400 360 m -110 0 a 110 90 0 1 0 220 0 a 110 90 0 1 0 -220 0",
+        "M 310 340 q 90 30 180 0",
+        "M 310 380 q 90 30 180 0",
+        "M 350 280 q -50 -40 -10 -80 q 30 20 30 60",
+        "M 450 280 q 50 -40 10 -80 q -30 20 -30 60"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Happy bee face",
+      "companion_line": "Two big eyes and a smile!",
+      "reference_paths": [
+        "M 400 360 m -110 0 a 110 90 0 1 0 220 0 a 110 90 0 1 0 -220 0",
+        "M 310 340 q 90 30 180 0",
+        "M 310 380 q 90 30 180 0",
+        "M 350 280 q -50 -40 -10 -80 q 30 20 30 60",
+        "M 450 280 q 50 -40 10 -80 q -30 20 -30 60",
+        "M 370 340 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 430 340 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 380 380 q 20 15 40 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s5",
+      "instruction": "Tiny antennae",
+      "companion_line": "Two little antennae waving hello!",
+      "reference_paths": [
+        "M 400 360 m -110 0 a 110 90 0 1 0 220 0 a 110 90 0 1 0 -220 0",
+        "M 310 340 q 90 30 180 0",
+        "M 310 380 q 90 30 180 0",
+        "M 350 280 q -50 -40 -10 -80 q 30 20 30 60",
+        "M 450 280 q 50 -40 10 -80 q -30 20 -30 60",
+        "M 370 340 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 430 340 m -10 0 a 10 10 0 1 0 20 0 a 10 10 0 1 0 -20 0",
+        "M 380 380 q 20 15 40 0",
+        "M 380 280 q -5 -30 -15 -40",
+        "M 420 280 q 5 -30 15 -40",
+        "M 365 240 m -5 0 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0",
+        "M 435 240 m -5 0 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0"
+      ],
+      "show_ghost": true
+    }
+  ]
+}

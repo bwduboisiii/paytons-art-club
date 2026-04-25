@@ -1,0 +1,90 @@
+{
+  "id": "mermaid_lagoon_r02",
+  "world_id": "mermaid_lagoon",
+  "order_index": 101,
+  "title": "Friendly Octopus",
+  "subject": "octopus",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": false,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "octopus_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Round octopus head",
+      "companion_line": "A big rounded dome head!",
+      "reference_paths": [
+        "M 400 320 m -90 0 a 90 80 0 1 0 180 0 a 90 80 0 1 0 -180 0"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Eight arms",
+      "companion_line": "Eight wavy arms reaching out!",
+      "reference_paths": [
+        "M 400 320 m -90 0 a 90 80 0 1 0 180 0 a 90 80 0 1 0 -180 0",
+        "M 320 380 q -20 50 -40 80",
+        "M 350 400 q -10 60 -10 90",
+        "M 380 410 q -5 60 0 90",
+        "M 420 410 q 5 60 0 90",
+        "M 450 400 q 10 60 10 90",
+        "M 480 380 q 20 50 40 80",
+        "M 340 395 q -30 30 -50 50",
+        "M 460 395 q 30 30 50 50"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Big eyes",
+      "companion_line": "Two huge eyes!",
+      "reference_paths": [
+        "M 400 320 m -90 0 a 90 80 0 1 0 180 0 a 90 80 0 1 0 -180 0",
+        "M 320 380 q -20 50 -40 80",
+        "M 350 400 q -10 60 -10 90",
+        "M 380 410 q -5 60 0 90",
+        "M 420 410 q 5 60 0 90",
+        "M 450 400 q 10 60 10 90",
+        "M 480 380 q 20 50 40 80",
+        "M 340 395 q -30 30 -50 50",
+        "M 460 395 q 30 30 50 50",
+        "M 360 290 m -15 0 a 15 15 0 1 0 30 0 a 15 15 0 1 0 -30 0",
+        "M 440 290 m -15 0 a 15 15 0 1 0 30 0 a 15 15 0 1 0 -30 0",
+        "M 360 290 m -6 0 a 6 6 0 1 0 12 0 a 6 6 0 1 0 -12 0",
+        "M 440 290 m -6 0 a 6 6 0 1 0 12 0 a 6 6 0 1 0 -12 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Smile",
+      "companion_line": "A goofy smile!",
+      "reference_paths": [
+        "M 400 320 m -90 0 a 90 80 0 1 0 180 0 a 90 80 0 1 0 -180 0",
+        "M 320 380 q -20 50 -40 80",
+        "M 350 400 q -10 60 -10 90",
+        "M 380 410 q -5 60 0 90",
+        "M 420 410 q 5 60 0 90",
+        "M 450 400 q 10 60 10 90",
+        "M 480 380 q 20 50 40 80",
+        "M 340 395 q -30 30 -50 50",
+        "M 460 395 q 30 30 50 50",
+        "M 360 290 m -15 0 a 15 15 0 1 0 30 0 a 15 15 0 1 0 -30 0",
+        "M 440 290 m -15 0 a 15 15 0 1 0 30 0 a 15 15 0 1 0 -30 0",
+        "M 360 290 m -6 0 a 6 6 0 1 0 12 0 a 6 6 0 1 0 -12 0",
+        "M 440 290 m -6 0 a 6 6 0 1 0 12 0 a 6 6 0 1 0 -12 0",
+        "M 380 340 q 20 12 40 0"
+      ],
+      "show_ghost": true
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "id": "pet_parade_03",
+  "world_id": "pet_parade",
+  "order_index": 3,
+  "title": "Goldie the Fish",
+  "subject": "fish",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": false,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "fish_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Oval fish body",
+      "companion_line": "Let's draw a big oval — that's Goldie's body!",
+      "reference_paths": [
+        "M 380 340 m -120 0 a 120 80 0 1 0 240 0 a 120 80 0 1 0 -240 0"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Fancy tail fin",
+      "companion_line": "A swooshy tail at the back!",
+      "reference_paths": [
+        "M 380 340 m -120 0 a 120 80 0 1 0 240 0 a 120 80 0 1 0 -240 0",
+        "M 500 340 l 100 -60 l -30 60 l 30 60 z"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Top fin",
+      "companion_line": "A little fin on top to help her swim!",
+      "reference_paths": [
+        "M 380 340 m -120 0 a 120 80 0 1 0 240 0 a 120 80 0 1 0 -240 0",
+        "M 500 340 l 100 -60 l -30 60 l 30 60 z",
+        "M 350 260 q 30 -50 80 -10"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Big shiny eye",
+      "companion_line": "One big eye — fish only show one!",
+      "reference_paths": [
+        "M 380 340 m -120 0 a 120 80 0 1 0 240 0 a 120 80 0 1 0 -240 0",
+        "M 500 340 l 100 -60 l -30 60 l 30 60 z",
+        "M 350 260 q 30 -50 80 -10",
+        "M 320 330 m -15 0 a 15 15 0 1 0 30 0 a 15 15 0 1 0 -30 0",
+        "M 320 330 m -7 0 a 7 7 0 1 0 14 0 a 7 7 0 1 0 -14 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s5",
+      "instruction": "Smiley mouth and bubbles",
+      "companion_line": "A tiny smile and some bubbles popping up!",
+      "reference_paths": [
+        "M 380 340 m -120 0 a 120 80 0 1 0 240 0 a 120 80 0 1 0 -240 0",
+        "M 500 340 l 100 -60 l -30 60 l 30 60 z",
+        "M 350 260 q 30 -50 80 -10",
+        "M 320 330 m -15 0 a 15 15 0 1 0 30 0 a 15 15 0 1 0 -30 0",
+        "M 320 330 m -7 0 a 7 7 0 1 0 14 0 a 7 7 0 1 0 -14 0",
+        "M 270 360 q 10 15 25 5",
+        "M 230 280 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 200 240 m -5 0 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0"
+      ],
+      "show_ghost": true
+    }
+  ]
+}

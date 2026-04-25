@@ -1,0 +1,67 @@
+{
+  "id": "star_hop_r03",
+  "world_id": "star_hop",
+  "order_index": 102,
+  "title": "Saturn Spin",
+  "subject": "saturn",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": false,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "saturn_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Big planet",
+      "companion_line": "Round Saturn planet!",
+      "reference_paths": [
+        "M 400 360 m -90 0 a 90 90 0 1 0 180 0 a 90 90 0 1 0 -180 0"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Famous ring!",
+      "companion_line": "Now Saturn's beautiful ring around it!",
+      "reference_paths": [
+        "M 400 360 m -90 0 a 90 90 0 1 0 180 0 a 90 90 0 1 0 -180 0",
+        "M 240 360 q 160 -60 320 0 q -160 60 -320 0 z"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Surface stripes",
+      "companion_line": "Curvy bands of color across!",
+      "reference_paths": [
+        "M 400 360 m -90 0 a 90 90 0 1 0 180 0 a 90 90 0 1 0 -180 0",
+        "M 240 360 q 160 -60 320 0 q -160 60 -320 0 z",
+        "M 320 330 q 80 20 160 0",
+        "M 320 390 q 80 20 160 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Happy face",
+      "companion_line": "Two eyes and a smile!",
+      "reference_paths": [
+        "M 400 360 m -90 0 a 90 90 0 1 0 180 0 a 90 90 0 1 0 -180 0",
+        "M 240 360 q 160 -60 320 0 q -160 60 -320 0 z",
+        "M 320 330 q 80 20 160 0",
+        "M 320 390 q 80 20 160 0",
+        "M 370 350 m -6 0 a 6 6 0 1 0 12 0 a 6 6 0 1 0 -12 0",
+        "M 430 350 m -6 0 a 6 6 0 1 0 12 0 a 6 6 0 1 0 -12 0",
+        "M 380 380 q 20 12 40 0"
+      ],
+      "show_ghost": true
+    }
+  ]
+}

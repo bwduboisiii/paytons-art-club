@@ -1,0 +1,75 @@
+{
+  "id": "star_hop_r01",
+  "world_id": "star_hop",
+  "order_index": 100,
+  "title": "Friendly Alien",
+  "subject": "alien",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": false,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "alien_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Alien head",
+      "companion_line": "A big rounded alien head!",
+      "reference_paths": [
+        "M 400 320 m -110 0 a 110 130 0 1 0 220 0 a 110 130 0 1 0 -220 0"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Three eyes!",
+      "companion_line": "Aliens have three eyes — go big!",
+      "reference_paths": [
+        "M 400 320 m -110 0 a 110 130 0 1 0 220 0 a 110 130 0 1 0 -220 0",
+        "M 350 290 m -18 0 a 18 18 0 1 0 36 0 a 18 18 0 1 0 -36 0",
+        "M 400 270 m -18 0 a 18 18 0 1 0 36 0 a 18 18 0 1 0 -36 0",
+        "M 450 290 m -18 0 a 18 18 0 1 0 36 0 a 18 18 0 1 0 -36 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Antennae",
+      "companion_line": "Two long antennae!",
+      "reference_paths": [
+        "M 400 320 m -110 0 a 110 130 0 1 0 220 0 a 110 130 0 1 0 -220 0",
+        "M 350 290 m -18 0 a 18 18 0 1 0 36 0 a 18 18 0 1 0 -36 0",
+        "M 400 270 m -18 0 a 18 18 0 1 0 36 0 a 18 18 0 1 0 -36 0",
+        "M 450 290 m -18 0 a 18 18 0 1 0 36 0 a 18 18 0 1 0 -36 0",
+        "M 360 200 l -10 -50",
+        "M 440 200 l 10 -50",
+        "M 350 145 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 450 145 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Friendly smile",
+      "companion_line": "A wide smile!",
+      "reference_paths": [
+        "M 400 320 m -110 0 a 110 130 0 1 0 220 0 a 110 130 0 1 0 -220 0",
+        "M 350 290 m -18 0 a 18 18 0 1 0 36 0 a 18 18 0 1 0 -36 0",
+        "M 400 270 m -18 0 a 18 18 0 1 0 36 0 a 18 18 0 1 0 -36 0",
+        "M 450 290 m -18 0 a 18 18 0 1 0 36 0 a 18 18 0 1 0 -36 0",
+        "M 360 200 l -10 -50",
+        "M 440 200 l 10 -50",
+        "M 350 145 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 450 145 m -8 0 a 8 8 0 1 0 16 0 a 8 8 0 1 0 -16 0",
+        "M 360 380 q 40 30 80 0"
+      ],
+      "show_ghost": true
+    }
+  ]
+}

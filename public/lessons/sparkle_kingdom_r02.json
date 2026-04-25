@@ -1,0 +1,84 @@
+{
+  "id": "sparkle_kingdom_r02",
+  "world_id": "sparkle_kingdom",
+  "order_index": 101,
+  "title": "Tiny Castle",
+  "subject": "castle",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": false,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "castle_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Castle base",
+      "companion_line": "A wide rectangle for the castle base!",
+      "reference_paths": [
+        "M 280 480 l 0 -120 l 240 0 l 0 120 z"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Tower tops",
+      "companion_line": "Two tall towers!",
+      "reference_paths": [
+        "M 280 480 l 0 -120 l 240 0 l 0 120 z",
+        "M 280 360 l 0 -100 l 60 0 l 0 100",
+        "M 460 360 l 0 -100 l 60 0 l 0 100"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Crown shapes on towers",
+      "companion_line": "Pointy zigzag tops!",
+      "reference_paths": [
+        "M 280 480 l 0 -120 l 240 0 l 0 120 z",
+        "M 280 360 l 0 -100 l 60 0 l 0 100",
+        "M 460 360 l 0 -100 l 60 0 l 0 100",
+        "M 280 260 l 0 -15 l 15 0 l 0 -15 l 15 0 l 0 15 l 15 0 l 0 15",
+        "M 460 260 l 0 -15 l 15 0 l 0 -15 l 15 0 l 0 15 l 15 0 l 0 15"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Castle door",
+      "companion_line": "A big arched door in the middle!",
+      "reference_paths": [
+        "M 280 480 l 0 -120 l 240 0 l 0 120 z",
+        "M 280 360 l 0 -100 l 60 0 l 0 100",
+        "M 460 360 l 0 -100 l 60 0 l 0 100",
+        "M 280 260 l 0 -15 l 15 0 l 0 -15 l 15 0 l 0 15 l 15 0 l 0 15",
+        "M 460 260 l 0 -15 l 15 0 l 0 -15 l 15 0 l 0 15 l 15 0 l 0 15",
+        "M 370 480 l 0 -60 q 30 -40 60 0 l 0 60"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s5",
+      "instruction": "Flag on top",
+      "companion_line": "A pretty flag flying!",
+      "reference_paths": [
+        "M 280 480 l 0 -120 l 240 0 l 0 120 z",
+        "M 280 360 l 0 -100 l 60 0 l 0 100",
+        "M 460 360 l 0 -100 l 60 0 l 0 100",
+        "M 280 260 l 0 -15 l 15 0 l 0 -15 l 15 0 l 0 15 l 15 0 l 0 15",
+        "M 460 260 l 0 -15 l 15 0 l 0 -15 l 15 0 l 0 15 l 15 0 l 0 15",
+        "M 370 480 l 0 -60 q 30 -40 60 0 l 0 60",
+        "M 400 360 l 0 -40",
+        "M 400 320 l 30 10 l -30 10"
+      ],
+      "show_ghost": true
+    }
+  ]
+}

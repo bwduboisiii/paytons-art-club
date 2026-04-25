@@ -1,0 +1,68 @@
+{
+  "id": "sparkle_kingdom_r01",
+  "world_id": "sparkle_kingdom",
+  "order_index": 100,
+  "title": "Magic Wand",
+  "subject": "wand",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": false,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "wand_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Long wand stick",
+      "companion_line": "A long magic wand stick!",
+      "reference_paths": [
+        "M 320 480 l 200 -200"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Five-point star at the tip",
+      "companion_line": "A big star at the top!",
+      "reference_paths": [
+        "M 320 480 l 200 -200",
+        "M 520 280 l 15 25 l 28 5 l -22 22 l 5 30 l -26 -14 l -26 14 l 5 -30 l -22 -22 l 28 -5 z"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Sparkles around the star",
+      "companion_line": "Magic sparkles around it!",
+      "reference_paths": [
+        "M 320 480 l 200 -200",
+        "M 520 280 l 15 25 l 28 5 l -22 22 l 5 30 l -26 -14 l -26 14 l 5 -30 l -22 -22 l 28 -5 z",
+        "M 480 240 l 0 -15 m -8 8 l 16 0",
+        "M 580 320 l 0 -12 m -7 6 l 14 0",
+        "M 560 220 l 0 -10 m -5 5 l 10 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Wand handle wraps",
+      "companion_line": "Pretty ribbons on the handle!",
+      "reference_paths": [
+        "M 320 480 l 200 -200",
+        "M 520 280 l 15 25 l 28 5 l -22 22 l 5 30 l -26 -14 l -26 14 l 5 -30 l -22 -22 l 28 -5 z",
+        "M 480 240 l 0 -15 m -8 8 l 16 0",
+        "M 580 320 l 0 -12 m -7 6 l 14 0",
+        "M 560 220 l 0 -10 m -5 5 l 10 0",
+        "M 340 470 q 10 5 -5 -15",
+        "M 360 450 q 10 5 -5 -15"
+      ],
+      "show_ghost": true
+    }
+  ]
+}

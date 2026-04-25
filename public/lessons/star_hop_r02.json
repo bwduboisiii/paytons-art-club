@@ -1,0 +1,69 @@
+{
+  "id": "star_hop_r02",
+  "world_id": "star_hop",
+  "order_index": 101,
+  "title": "Astronaut Helmet",
+  "subject": "astronaut",
+  "guidance_level": "trace_loose",
+  "estimated_minutes": 4,
+  "is_premium": false,
+  "palette": [
+    "#2A1B3D",
+    "#FF8E80",
+    "#FFD166",
+    "#8FB8E8",
+    "#8BCE8B",
+    "#D67FBA"
+  ],
+  "completion_sticker": "astronaut_gold",
+  "steps": [
+    {
+      "id": "s1",
+      "instruction": "Round helmet",
+      "companion_line": "Big round space helmet!",
+      "reference_paths": [
+        "M 400 360 m -110 0 a 110 110 0 1 0 220 0 a 110 110 0 1 0 -220 0"
+      ],
+      "show_ghost": false
+    },
+    {
+      "id": "s2",
+      "instruction": "Visor",
+      "companion_line": "A wide visor where the face shows!",
+      "reference_paths": [
+        "M 400 360 m -110 0 a 110 110 0 1 0 220 0 a 110 110 0 1 0 -220 0",
+        "M 320 340 q 80 -40 160 0 q 0 60 -160 0 z"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s3",
+      "instruction": "Smiling astronaut face",
+      "companion_line": "Eyes and smile inside the visor!",
+      "reference_paths": [
+        "M 400 360 m -110 0 a 110 110 0 1 0 220 0 a 110 110 0 1 0 -220 0",
+        "M 320 340 q 80 -40 160 0 q 0 60 -160 0 z",
+        "M 370 340 m -7 0 a 7 7 0 1 0 14 0 a 7 7 0 1 0 -14 0",
+        "M 430 340 m -7 0 a 7 7 0 1 0 14 0 a 7 7 0 1 0 -14 0",
+        "M 380 365 q 20 12 40 0"
+      ],
+      "show_ghost": true
+    },
+    {
+      "id": "s4",
+      "instruction": "Antenna and stars",
+      "companion_line": "Antenna and floating stars!",
+      "reference_paths": [
+        "M 400 360 m -110 0 a 110 110 0 1 0 220 0 a 110 110 0 1 0 -220 0",
+        "M 320 340 q 80 -40 160 0 q 0 60 -160 0 z",
+        "M 370 340 m -7 0 a 7 7 0 1 0 14 0 a 7 7 0 1 0 -14 0",
+        "M 430 340 m -7 0 a 7 7 0 1 0 14 0 a 7 7 0 1 0 -14 0",
+        "M 380 365 q 20 12 40 0",
+        "M 400 250 l 0 -30",
+        "M 250 300 l 5 -10 l 5 10 l 10 0 l -8 8 l 3 12 l -10 -7 l -10 7 l 3 -12 l -8 -8 l 10 0 z",
+        "M 540 280 l 4 -8 l 4 8 l 8 0 l -6 6 l 2 10 l -8 -5 l -8 5 l 2 -10 l -6 -6 l 8 0 z"
+      ],
+      "show_ghost": true
+    }
+  ]
+}
