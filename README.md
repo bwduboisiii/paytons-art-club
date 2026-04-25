@@ -178,10 +178,11 @@ Each avatar: hand-drawn SVG, 4 mood animations (idle, happy, cheering, thinking)
 | v10-hotfix-1 | Fixed Suspense boundary error in `/parent` |
 | v10-hotfix-2 | Disabled automatic_tax (no business address required) |
 | v11 | Mobile-first UI (bottom nav, sheets, fullscreen lightbox) |
-| v12 | iOS Safari drawing fix (lines stopped breaking on iPad) |
+| v12 | iOS Safari drawing fix (incomplete — caused new bugs, see v15) |
 | v13 | New logo, 12 new avatars (28 total), ~489 stickers across 9 categories |
 | v14a | 5 new free worlds + hidden daily-rotation pool (36 lessons) |
 | v14b | 5 new premium worlds + 20 lessons |
+| **v15** | **Real drawing fix — removed buggy duplicate event handling, added rAF batching** |
 
 ---
 

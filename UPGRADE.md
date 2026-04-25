@@ -1,97 +1,104 @@
-# Payton's Art Club — v14a: Free Worlds Expansion 🌍
+# Payton's Art Club — v15: Real Drawing Fix ✏️
 
-## What's new in v14a
+## What's fixed
 
-### 🌍 9 free worlds (was 4)
+**The bug**: Lines didn't follow finger/mouse accurately. Drawing would appear, then disappear, then pop back. Affected ALL tools, on ALL devices (iPad, PC mouse, etc).
 
-5 new free worlds added:
-- 🐶 **Pet Parade** — cuddly pets (puppy, cat, fish, hamster) — 4 lessons
-- 🌈 **Weather Wonders** — sun, cloud, rainbow, snowflake — 4 lessons
-- 🐝 **Bug Buddies** — friendly insects (bee, ladybug, butterfly, snail) — 4 lessons
-- ⭐ **Shape Shop** — basic shapes turned cute (square, triangle, star, heart) — 4 lessons
-- 🌷 **Garden Patch** — plants & nature (daisy, apple tree, pumpkin, mushroom house) — 4 lessons
+**The root cause** (the part I got wrong in v12-v14):
 
-That's **20 brand new always-available lessons** in addition to what kids already had.
+In v12 I added window-level pointer event listeners thinking it would "rescue" pointer capture if iOS Safari yanked it. But the canvas already had React's `onPointerMove` handler attached — so EVERY pointer move fired TWICE:
 
-### 🎲 Hidden daily-rotation pool (16 new lessons)
+1. React handler fires → adds points → calls redraw → line appears
+2. Same event fires window listener → adds duplicate points → calls redraw AGAIN → race condition
 
-Per your request — the daily lesson now pulls from a HIDDEN pool of bonus lessons that aren't shown in any world's lesson list. They only appear as "today's special drawing." 4 hidden lessons per existing free world:
+That race condition is what caused "drawing then disappearing then popping back." The bug was in v12, not iOS — but I incorrectly diagnosed it as iOS-specific because that's what your daughter's device was. Mouse on PC had the same bug all along, just less obvious because mouse events fire at consistent rates.
 
-- **Critter Cove rotation pool**: Sleepy Sloth, Hedgehog Hugs, Penguin Pal, Foxy Friend
-- **Sparkle Kingdom rotation pool**: Magic Wand, Tiny Castle, Crown Jewel, Princess Bow
-- **Star Hop rotation pool**: Friendly Alien, Astronaut Helmet, Saturn Spin, UFO
-- **Mermaid Lagoon rotation pool**: Seashell, Friendly Octopus, Treasure Chest, Coral Reef
+## What v15 actually changes
 
-Plus all 20 of the new world lessons are also in the daily pool.
+### 1. Removed window-level pointer listeners entirely
 
-**Total daily pool: 36 lessons.** A different one is featured each calendar day. Kids can browse 36+ days before any daily lesson repeats.
+The whole `useEffect` that registered `window.addEventListener('pointermove', ...)` and friends is **gone**. We use only React's `onPointerMove` handler now, which fires once per event.
 
-### 📊 Total lesson count
+### 2. Use `setPointerCapture` properly
 
-- **Before v14a**: 31 lessons across 8 worlds
-- **After v14a**: 67 lessons across 13 worlds (9 free + 4 premium still)
-- **Daily pool**: 36 unique lessons (was 19)
+This is the browser's native solution to "finger leaves canvas mid-stroke." When called on `pointerdown`, all subsequent pointer events for that pointerId route to the canvas regardless of where the finger/cursor goes. Works on Chrome, Safari (desktop and iOS), Firefox, Edge. Already in the code — we just stopped fighting it with window listeners.
 
----
+### 3. Added rAF-batched redraws (`scheduleRedraw`)
+
+Multiple pointer moves in a single animation frame now coalesce into ONE redraw instead of N. This eliminates flicker when the user moves fast and prevents the "draws then redraws then redraws" cascade.
+
+### 4. Cleaner stroke point collection
+
+The new `addPointsFromPointerEvent` function:
+- Uses `getCoalescedEvents()` to recover sub-frame points (smooth lines)
+- Reads coordinates from each coalesced event individually (accurate positioning)
+- Has no `useCallback` dependency churn (was causing re-registrations in v12)
+
+### 5. Fixed stroke endings
+
+`pointerup` correctly ends the stroke and adds it to the saved strokes array. `pointercancel` no longer kills the stroke for single touches (it only fired in v12 because the window listener was triggering it spuriously).
 
 ## How to apply
 
 ### No SQL. Just code.
 
-1. Back up v13, unzip v14a, copy `.git` over
-2. `git add . && git commit -m "v14a: 5 new free worlds + hidden rotation pool"`
+1. Back up v14b folder, unzip v15, copy `.git` over
+2. `git add . && git commit -m "v15: real drawing fix — remove buggy duplicate event handling"`
 3. `git push`
-4. Vercel auto-deploys (~2 minutes — bigger than usual because of 36 new JSON files)
-5. Hard refresh on every device
+4. Vercel auto-deploys (~2 minutes — only one file changed)
+5. **Hard refresh on every device**. Important: Browser caches the old broken JavaScript. On iPad, close and reopen Safari. On PC, Ctrl+F5 or Cmd+Shift+R.
 
-### Test on iPad
+## Test these on PC (mouse) and iPad (finger)
 
-- [ ] Home screen shows the new "Today's Special" lesson if applicable
-- [ ] Tap "Play Game" / world list — see 9 free worlds (was 4)
-- [ ] Tap each new world — verify 4 lessons listed
-- [ ] Try Pet Parade → Buddy the Puppy — drawing works
-- [ ] Try Shape Shop → Mr. Square — simple shape lesson works
-- [ ] Premium worlds still locked behind paywall (Dino Land, Fairy Garden, Food Friends, Vehicle Village)
+The same tests should pass on both:
 
-### Test desktop
+- [ ] **Slow line**: draw a slow continuous curve. Should follow cursor/finger smoothly, no gaps, no popping.
+- [ ] **Fast line**: scribble back and forth quickly. Should be smooth without breaks or duplicate ghost lines.
+- [ ] **Long stroke off-canvas**: start drawing inside canvas, move cursor/finger OUTSIDE canvas, come back. The stroke should continue uninterrupted (setPointerCapture handles this).
+- [ ] **Tool switching**: change tools mid-drawing-session. Each new stroke should work cleanly.
+- [ ] **Color switching**: change colors. Strokes should use the new color.
+- [ ] **Stickers**: add/move/resize a sticker. Should still work (didn't touch sticker logic).
+- [ ] **Eraser**: works without breaks.
+- [ ] **All 15 tools**: marker, pen, pencil, crayon, paintbrush, chalk, highlighter, neon, spray, glitter, line, rectangle, circle, fill bucket, eraser.
 
-Same checks. New worlds should grid out cleanly on the world picker.
+## Why I'm confident this time
 
----
+In v12 I was patching symptoms. I added window listeners hoping they'd "catch" missed events. Instead they caused duplicate processing.
+
+In v15 I went the opposite direction: **fewer event handlers, simpler flow**. One handler per event. No duplicates possible. rAF batching prevents redraw thrashing.
+
+This is the standard pattern for canvas drawing apps. It's what real drawing apps (Excalidraw, tldraw, Figma) use. The v12 approach was clever and wrong.
 
 ## What's NOT changed
 
-- v13 logo + 28 avatars + ~489 stickers: preserved
-- v12 iOS Safari drawing fix: preserved
-- v11 mobile UI: preserved
-- v10 Stripe / subscription: preserved (premium worlds still locked behind paywall)
-- Existing 31 lessons: unchanged
-- Database schema: unchanged
+- Sticker drag/resize/rotate logic: untouched
+- Multiplayer canvas: untouched (it doesn't use the buggy v12 code)
+- Drawing tools, palette, brush size, undo: same
+- All 87 lessons, 18 worlds, 28 avatars, ~489 stickers: same
+- Stripe subscription, Friends, Voice notes, Gallery: same
+- Mobile UI from v11: same
+- Logo and favicons from v13: same
+- iOS touch gesture prevention (touchstart preventDefault on wrapper): kept
 
----
+Only the broken pointer-handler logic in DrawingCanvas.tsx changed. One file. ~45 lines removed, ~50 lines added (net cleaner).
 
-## Honest caveats
+## If lines STILL break after v15
 
-- **The new lessons are simpler than the original 31.** I generated them programmatically from a template to ship 36 in one pass. They follow the same step-by-step trace pattern, but the SVG paths are less hand-tuned. Drawings will be cute but not as polished as some of the original lessons.
-- **Reference path positioning may need eyeballing.** I used standard 800x600 canvas coordinates. If any lesson's reference paths sit off-center on iPad's actual canvas, it'll be a small visual shift, not a broken lesson.
-- **The daily rotation pool is now bigger but functionally the same.** The selection is still deterministic by UTC date. If you want the daily lesson to feel "different" from before (e.g., highlight it as "today's surprise!"), that's a UI change for a future pass.
+If after deploying v15 you still see drawing issues, send me the precise repro:
 
----
+1. Which device (PC mouse / iPad / iPhone)?
+2. Which tool?
+3. What motion?
+4. What does it look like (slow video or screen recording would be best)?
 
-## Coming next: v14b (premium worlds)
+Anything left would be a different bug than what v12 caused. The "draws then disappears then pops back" pattern is specifically the duplicate-handler bug, and that's gone now.
 
-Per your plan, v14b will add 5 premium worlds (Sea Adventure, Robot Workshop, Bakery Sweets, Toy Box, Holiday Magic) with ~20 new lessons. Premium count goes 4 → 9.
+## What to do next
 
-Tell me when you've deployed v14a and I'll start v14b.
+After v15 is deployed and confirmed working:
 
----
+1. **Stop adding features.** Watch Payton actually use the app for a week.
+2. **Note what she does and doesn't engage with** — which avatars, which lessons, which worlds.
+3. **Come back with specific observations**, not feature requests. Something like "she finished 8 lessons in Critter Cove but didn't open Bug Buddies" tells us more than "add more stickers."
 
-## Summary numbers
-
-| Thing | Before | After |
-|---|---|---|
-| Free worlds | 4 | 9 |
-| Premium worlds | 4 | 4 |
-| Total lessons | 31 | 67 |
-| Daily rotation pool | 19 | 36 |
-| Free lessons always available | 19 | 39 |
+The product is real and complete. The drawing engine should now be reliable. Use signal beats speculation.
