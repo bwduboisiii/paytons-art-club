@@ -11,14 +11,12 @@ interface Props {
   message?: string;
   mood?: 'happy' | 'cheering' | 'thinking' | 'idle';
   /**
-   * Pixels from right edge. Use this on drawing pages to push the buddy
-   * past the right-side color sidebar so it doesn't cover colors.
-   * Default 16 (1rem) matches the old `right-4` behavior.
+   * @deprecated Kept for backwards compatibility. Buddy now lives bottom-left
+   * by default so it doesn't block the right-side color sidebar at all.
    */
   offsetRight?: number;
   /**
-   * Start in collapsed (peek tab) mode. Good default for drawing pages
-   * where screen space is precious.
+   * Start in collapsed (peek tab) mode.
    */
   defaultCollapsed?: boolean;
 }
@@ -66,20 +64,19 @@ export default function FloatingBuddy({
 
   const currentLine = message || encouragements[lineIdx];
 
-  // Collapsed mode: tiny tab peeking from the right edge (ignores offsetRight
-  // on purpose — tab always hugs the actual right edge so it stays easy to grab)
+  // Collapsed mode: tiny tab peeking from the bottom-left edge
   if (collapsed) {
     return (
       <motion.button
-        initial={{ x: 80 }}
+        initial={{ x: -80 }}
         animate={{ x: 0 }}
-        exit={{ x: 80 }}
+        exit={{ x: -80 }}
         onClick={() => setCollapsed(false)}
         aria-label="Show buddy"
-        className="fixed right-0 top-1/2 -translate-y-1/2 z-40 bg-coral-500 hover:bg-coral-400 rounded-l-2xl p-2 shadow-chunky active:translate-x-1 transition-transform"
+        className="fixed left-0 bottom-24 md:bottom-20 z-40 bg-coral-500 hover:bg-coral-400 rounded-r-2xl p-2 shadow-chunky active:-translate-x-1 transition-transform"
       >
-        <div className="w-12 h-12 rounded-xl bg-cream-50 flex items-center justify-center overflow-hidden">
-          <Companion character={character} mood="idle" size={48} />
+        <div className="w-12 h-16 rounded-xl bg-cream-50 flex items-end justify-center overflow-hidden">
+          <Companion character={character} mood="idle" size={42} />
         </div>
         <span className="block text-[10px] font-bold text-white mt-1">Hi!</span>
       </motion.button>
@@ -88,13 +85,12 @@ export default function FloatingBuddy({
 
   return (
     <motion.div
-      initial={{ x: 120, opacity: 0 }}
+      initial={{ x: -120, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       transition={{ type: 'spring', damping: 18 }}
-      className="fixed top-1/2 -translate-y-1/2 z-40 pointer-events-none"
-      style={{ right: offsetRight }}
+      className="fixed left-4 bottom-24 md:bottom-20 z-40 pointer-events-none"
     >
-      <div className="flex flex-col items-end gap-2 pointer-events-auto">
+      <div className="flex flex-col items-start gap-2 pointer-events-auto">
         <AnimatePresence mode="wait">
           {showBubble && currentLine && (
             <motion.div
@@ -108,20 +104,22 @@ export default function FloatingBuddy({
               <p className="text-sm font-display font-bold text-ink-900 leading-tight">
                 {currentLine}
               </p>
-              <div className="absolute -bottom-2 right-6 w-4 h-4 bg-cream-50 border-r-4 border-b-4 border-coral-300 rotate-45" />
+              {/* Bubble tail pointing down to buddy on left side */}
+              <div className="absolute -bottom-2 left-6 w-4 h-4 bg-cream-50 border-r-4 border-b-4 border-coral-300 rotate-45" />
             </motion.div>
           )}
         </AnimatePresence>
 
         <div className="relative">
-          <div className="absolute inset-0 rounded-full bg-sparkle-300/40 blur-xl animate-sparkle" />
-          <div className="relative bg-cream-50 rounded-full p-2 shadow-float border-4 border-sparkle-300">
+          <div className="absolute inset-0 rounded-3xl bg-sparkle-300/40 blur-xl animate-sparkle" />
+          <div className="relative bg-cream-50 rounded-3xl p-2 shadow-float border-4 border-sparkle-300 flex items-end justify-center">
             <Companion character={character} mood={mood} size={70} />
           </div>
+          {/* Hide button on the right of buddy now (since we're on the left) */}
           <button
             onClick={() => setCollapsed(true)}
             aria-label="Hide buddy"
-            className="absolute -top-1 -left-1 w-6 h-6 rounded-full bg-ink-900 text-white text-xs font-bold flex items-center justify-center shadow-chunky hover:scale-110 transition-transform"
+            className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-ink-900 text-white text-xs font-bold flex items-center justify-center shadow-chunky hover:scale-110 transition-transform"
           >
             ×
           </button>
